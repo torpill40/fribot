@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="ConsoleStdOut" target="SYSTEM_OUT">
+			<ThresholdFilter level="ERROR" onMatch="DENY"
+				onMismatch="ACCEPT" />
+			<PatternLayout
+				pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<Console name="ConsoleStdErr" target="SYSTEM_ERR">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout
+				pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<Console name="SlowConsole" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%highlight{%d{HH:mm:ss.SSS} [%-5level] %logger{36}.%M() @%L - %msg%n}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=magenta}"
+				disableAnsi="false" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="SlowConsole" />
+		</Root>
+	</Loggers>
+</Configuration>

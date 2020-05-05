@@ -1,0 +1,5 @@
+FriBot/\.settings/
+FriBot/target/
+FriBot/logs/
+*.bat
+*.sh
