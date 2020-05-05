@@ -9,6 +9,7 @@ import org.javacord.api.DiscordApiBuilder;
 
 import com.torpill.fribot.commands.Command;
 import com.torpill.fribot.commands.HelpCommand;
+import com.torpill.fribot.commands.InfoCommand;
 import com.torpill.fribot.commands.KeyArgsCommand;
 import com.torpill.fribot.commands.NoneArgsCommand;
 import com.torpill.fribot.commands.QuoteArgsCommand;
@@ -46,6 +47,7 @@ public class DiscordBotBuilder {
 		
 		this.addListener(CommandListener.class)
 			.addCommand(HelpCommand.class)
+			.addCommand(InfoCommand.class)
 			.addCommand(NoneArgsCommand.class)
 			.addCommand(RawArgsCommand.class)
 			.addCommand(QuoteArgsCommand.class)

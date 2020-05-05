@@ -357,4 +357,19 @@ public class DiscordBot {
 		}
 		return list;
 	}
+
+	public String getCreationDate() {
+
+		return this.api.getYourself().getCreationTimestamp().toString();
+	}
+
+	public String getName() {
+
+		return this.api.getYourself().getDiscriminatedName();
+	}
+	
+	public Color getColor() {
+		
+		return this.color;
+	}
 }
