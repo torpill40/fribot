@@ -11,8 +11,25 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande permettant d'afficher la liste des
+ * commandes disponibles (hormis les commandes privées) et d'obtenir de l'aide
+ * sur chacunes d'elles.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class HelpCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>HelpCommand</code>.
+	 * 
+	 */
 	public HelpCommand() {
 
 		super("help", Command.ArgumentType.RAW);

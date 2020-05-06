@@ -10,8 +10,23 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande privée de test des arguments classiques.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class RawArgsCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>RawArgsCommand</code>.
+	 * 
+	 */
 	public RawArgsCommand() {
 		
 		super("__raw", Command.ArgumentType.RAW);

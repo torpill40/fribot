@@ -9,11 +9,34 @@ import org.apache.logging.log4j.Logger;
 import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.HelloCommand;
 
+/**
+ * 
+ * Un bot Discord collaboratif pour le serveur Fripouz Team. Pour plus
+ * d'informations, allez voir le
+ * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
+ * 
+ * @author torpill40
+ * @version BETA-1.1
+ *
+ */
+
 public class App {
 
 	public static final Logger LOGGER = LogManager.getLogger("FriBot");
 	public static final String VERSION = "BETA-1.1";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
+
+	/**
+	 * 
+	 * Point d'entrée du programme, démarrage du bot.
+	 * 
+	 * @param args
+	 *            <br />
+	 *            <b>--token &lt;TOKEN&gt;</b> : token du bot. <br />
+	 *            <b>--prefix &lt;PREFIX&gt;</b> : préfix du bot. <br />
+	 *            <b>--color &lt;R&gt; &lt;G&gt; &lt;B&gt;</b> : couleurs des embeds par défaut. <br />
+	 *            <b>--role &lt;ROLE_ID&gt;</b> : rôle utilisateur par défaut. <br />
+	 */
 
 	public static void main(String[] args) {
 

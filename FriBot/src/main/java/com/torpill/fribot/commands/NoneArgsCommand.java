@@ -10,28 +10,43 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande privée de test des arguments nuls.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class NoneArgsCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>NoneArgsCommand</code>.
+	 * 
+	 */
 	public NoneArgsCommand() {
-		
+
 		super("__none", Command.ArgumentType.NONE);
 	}
-	
+
 	@Override
 	public String getHelp() {
-	
+
 		return "Commande de test des arguments nuls.";
 	}
-	
+
 	@Override
 	public boolean deleteCommandUsage() {
-	
+
 		return false;
 	}
-	
+
 	@Override
 	public List<PermissionType> permissionNeeded() {
-		
+
 		return null;
 	}
 
@@ -61,16 +76,15 @@ public class NoneArgsCommand extends Command {
 
 	@Override
 	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
-		
+
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < args.length; i ++) {
-			
+		for (int i = 0; i < args.length; i++) {
+
 			builder.append(i + " : \n- " + args[i] + "\n");
 		}
-		
+
 		channel.sendMessage(builder.toString());
-		
+
 		return 0;
 	}
 }
-

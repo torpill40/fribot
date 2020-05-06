@@ -13,60 +13,213 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande.
+ * 
+ * @author torpill40
+ *
+ */
+
 public abstract class Command {
 
 	private final String name;
 	private final ArgumentType argumentType;
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>Command</code>.
+	 * 
+	 * @param name
+	 *            : nom de la commande.
+	 * @param argumentType
+	 *            : type d'argument de la commande.
+	 * 
+	 * @see com.torpill.fribot.commands.Command.ArgumentType
+	 */
 	protected Command(final String name, final ArgumentType argumentType) {
 
 		this.name = name;
 		this.argumentType = argumentType;
 	}
-	
+
+	/**
+	 * 
+	 * Récupérer le message d'aide de la commande.
+	 * 
+	 * @return message daide
+	 */
 	public abstract String getHelp();
-	
+
+	/**
+	 * 
+	 * Savoir si le message de la commande doit être supprimé lors de l'exécution.
+	 * 
+	 * @return booléen
+	 */
 	public abstract boolean deleteCommandUsage();
 
+	/**
+	 * 
+	 * Récupérer les permissions requises à l'utilisation de la commande.
+	 * 
+	 * @return liste de permissions.
+	 * 
+	 * @see org.javacord.api.entity.permission.PermissionType
+	 */
 	public abstract List<PermissionType> permissionNeeded();
 
+	/**
+	 * 
+	 * Récupérer les rôles sur la liste blanche de la commande.
+	 * 
+	 * @param bot
+	 *            : bot Discord récupérant les informations.
+	 * @param server
+	 *            : serveur sur lequel on cherche les informations.
+	 * @return liste de rôles
+	 * 
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public abstract List<Role> whiteListedRoles(final DiscordBot bot, final Server server);
 
+	/**
+	 * 
+	 * Récupérer les rôles sur la liste noire de la commande.
+	 * 
+	 * @param bot
+	 *            : bot Discord récupérant les informations.
+	 * @param server
+	 *            : serveur sur lequel on cherche les informations.
+	 * @return liste de rôles
+	 * 
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public abstract List<Role> blackListedRoles(final DiscordBot bot, final Server server);
 
+	/**
+	 * 
+	 * Récupérer les utilisateurs sur la liste blanche de la commande.
+	 * 
+	 * @param bot
+	 *            : bot Discord récupérant les informations.
+	 * @param server
+	 *            : serveur sur lequel on cherche les informations.
+	 * @return liste d'utilisateurs
+	 * 
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public abstract List<User> whiteListedUsers(final DiscordBot bot, final Server server);
 
+	/**
+	 * 
+	 * Récupérer les utilisateurs sur la liste noire de la commande.
+	 * 
+	 * @param bot
+	 *            : bot Discord récupérant les informations.
+	 * @param server
+	 *            : serveur sur lequel on cherche les informations.
+	 * @return liste d'utilisateurs
+	 * 
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public abstract List<User> blackListedUsers(final DiscordBot bot, final Server server);
 
-	public abstract int execute(final DiscordBot bot, final String args[], final User user, final TextChannel channel,
-			final Server server);
+	/**
+	 * 
+	 * Exécuter la commande.
+	 * 
+	 * @param bot
+	 *            : bot Discord a demandant l'exécution de la commande.
+	 * @param args
+	 *            : arguments passés lors de l'appel de la commande.
+	 * @param user
+	 *            : utilisateur utilisant la commande.
+	 * @param channel
+	 *            : salon dans lequel est exécutée la commande.
+	 * @param server
+	 *            : serveur dans lequel est exécutée la commande.
+	 * @return code d'erreur
+	 * 
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.channel.TextChannel
+	 * @see org.javacord.api.entity.server.Server
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
+	public abstract int execute(final DiscordBot bot, final String args[], final User user, final TextChannel channel, final Server server);
 
+	/**
+	 * 
+	 * Convertir les arguments au format demandé par la commande.
+	 * 
+	 * @param args
+	 *            : arguments en entrée.
+	 * @return arguments convertis
+	 */
 	public String[] parseArguments(final String[] args) {
 
 		return this.argumentType.parseArguments(args);
 	}
 
+	/**
+	 * 
+	 * Récupérer le nom de la commande.
+	 * 
+	 * @return nom de la commande
+	 */
 	public String getName() {
 
 		return this.name;
 	}
-	
+
+	/**
+	 * 
+	 * Récupérer le type d'argument de la commande.
+	 * 
+	 * @return type d'argument
+	 * 
+	 * @see com.torpill.fribot.commands.Command.ArgumentType
+	 */
 	public ArgumentType getType() {
 
 		return this.argumentType;
 	}
 
+	/**
+	 * 
+	 * Cette classe énumératrice représente les différents types d'argument.
+	 * 
+	 * @author torpill40
+	 *
+	 */
+
 	public enum ArgumentType {
 
-		NONE("none", "Aucun argument, si un argument est présent, il ne sera pas pris en compte.", "arg1 arg2 arg3 -> aucun argument gardé."),
-		RAW("raw", "Arguments classiques, séparés par des espaces.", "arg1 arg2 arg3 -> ARG1 = arg1, ARG2 = arg2, ARG3 = arg3."),
-		QUOTE("quote", "Arguments guillemets, les arguments sont écrits entre \"\", tous les arguments qui ne sont pas entre guillemets sont séparés par des espaces. Pour afficher un guillemet, il faut l'écrire \\\\\".", "arg1 \"arg2 \\\\\"arg3\\\\\"\" -> ARG1 = arg1, ARG2 = arg2 \"arg3\"."),
-		KEY("key", "Arguments clé / valeur, séparés en groupe. Un nom de groupe commence par --. Si un argument est placé avant le premier groupe, celui-ci est compté dans le groupe par défaut.", "arg1 arg2 --group1 arg3 --group2 arg4 arg5 -> DEFAULT = arg1 arg2, group1 = arg3, group2 = arg4 arg5.");
+		NONE("none", "Aucun argument, si un argument est présent, il ne sera pas pris en compte.", "arg1 arg2 arg3 -> aucun argument gardé."), RAW("raw", "Arguments classiques, séparés par des espaces.", "arg1 arg2 arg3 -> ARG1 = arg1, ARG2 = arg2, ARG3 = arg3."), QUOTE("quote", "Arguments guillemets, les arguments sont écrits entre \"\", tous les arguments qui ne sont pas entre guillemets sont séparés par des espaces. Pour afficher un guillemet, il faut l'écrire \\\\\".", "arg1 \"arg2 \\\\\"arg3\\\\\"\" -> ARG1 = arg1, ARG2 = arg2 \"arg3\"."), KEY("key", "Arguments clé / valeur, séparés en groupe. Un nom de groupe commence par --. Si un argument est placé avant le premier groupe, celui-ci est compté dans le groupe par défaut.", "arg1 arg2 --group1 arg3 --group2 arg4 arg5 -> DEFAULT = arg1 arg2, group1 = arg3, group2 = arg4 arg5.");
 
 		public final String NAME;
 		public final String DESCRIPTION;
 		public final String EXAMPLE;
-		
+
+		/**
+		 * 
+		 * Constructeur de la classe énumératrice <code>ArgumentType</code>.
+		 * 
+		 * @param name
+		 *            : nom du type d'argument.
+		 * @param description
+		 *            : description de l'utilisation du type d'argument.
+		 * @param example
+		 *            : exemple d'utilisation du type d'argument.
+		 */
 		private ArgumentType(final String name, final String description, final String example) {
 
 			this.NAME = name;
@@ -74,6 +227,14 @@ public abstract class Command {
 			this.EXAMPLE = example;
 		}
 
+		/**
+		 * 
+		 * Convertir les arguments au format du type d'argument.
+		 * 
+		 * @param args
+		 *            : arguments en entrée.
+		 * @return arguments convertis
+		 */
 		public String[] parseArguments(final String[] args) {
 
 			switch (this) {
@@ -93,13 +254,31 @@ public abstract class Command {
 			return args;
 		}
 
+		/**
+		 * 
+		 * Convertir les arguments au format nul.
+		 * 
+		 * @param args
+		 *            : arguments en entrée.
+		 * @return arguments convertis
+		 */
 		private String[] noneParse(final String args[]) {
 
-			String[] none = { args[0] };
+			String[] none = {
+					args[0]
+			};
 
 			return none;
 		}
 
+		/**
+		 * 
+		 * Convertir les arguments au format classique.
+		 * 
+		 * @param args
+		 *            : arguments en entrée.
+		 * @return arguments convertis
+		 */
 		private String[] rawParse(final String args[]) {
 
 			String[] raw = new String[args.length - 1];
@@ -111,6 +290,14 @@ public abstract class Command {
 			return raw;
 		}
 
+		/**
+		 * 
+		 * Convertir les arguments au format guillemet.
+		 * 
+		 * @param args
+		 *            : arguments en entrée.
+		 * @return arguments convertis
+		 */
 		private String[] quoteParse(final String args[]) {
 
 			final StringBuilder builder = new StringBuilder();
@@ -159,6 +346,14 @@ public abstract class Command {
 			return quote;
 		}
 
+		/**
+		 * 
+		 * Convertir les arguments au format clé / valeur.
+		 * 
+		 * @param args
+		 *            : arguments en entrée.
+		 * @return arguments convertis
+		 */
 		private String[] keyParse(final String args[]) {
 
 			final Map<String, StringBuilder> builders = new HashMap<>();

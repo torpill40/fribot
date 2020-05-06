@@ -10,8 +10,23 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande basique disant bonjour à l'utilisateur.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class HelloCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>HelloCommand</code>.
+	 * 
+	 */
 	public HelloCommand() {
 
 		super("hello", Command.ArgumentType.NONE);

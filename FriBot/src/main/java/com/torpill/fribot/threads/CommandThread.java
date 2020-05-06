@@ -11,8 +11,25 @@ import com.torpill.fribot.App;
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.util.ListBuilder;
 
+/**
+ * 
+ * Cette class repésente un thread de commande.
+ * 
+ * @author torpill40
+ *
+ */
+
 public class CommandThread extends BotThread {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>CommandThread</code>.
+	 * 
+	 * @param bot
+	 *            : bot Discord relié au thread.
+	 * 
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public CommandThread(DiscordBot bot) {
 
 		super(bot, "command");

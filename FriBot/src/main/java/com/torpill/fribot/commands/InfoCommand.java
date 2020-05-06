@@ -12,8 +12,24 @@ import org.javacord.api.entity.user.User;
 import com.torpill.fribot.App;
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande affichant les informations du bot
+ * Discord.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class InfoCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>InfoCommand</code>.
+	 * 
+	 */
 	public InfoCommand() {
 
 		super("info", Command.ArgumentType.NONE);

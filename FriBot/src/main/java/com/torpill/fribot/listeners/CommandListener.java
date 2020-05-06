@@ -13,8 +13,26 @@ import com.torpill.fribot.App;
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.threads.CommandThread;
 
+/**
+ * 
+ * Cete classe représente un écouteur dédié aux commandes.
+ * 
+ * @author torpill40
+ * 
+ * @see org.javacord.api.listener.message.MessageCreateListener
+ * @see com.torpill.fribot.listeners.BotListener
+ *
+ */
+
 public class CommandListener extends BotListener implements MessageCreateListener {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>CommandListener</code>.
+	 * 
+	 * @param bot
+	 *            : bot Discord communiquant avec l'écouteur.
+	 */
 	public CommandListener(final DiscordBot bot) {
 
 		super(bot);

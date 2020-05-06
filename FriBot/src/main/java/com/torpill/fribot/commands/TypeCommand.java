@@ -11,8 +11,24 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 
+/**
+ * 
+ * Cette classe représente une commande affichant les différents types
+ * d'argument, ainsi que leur fonctionnement et un exemple d'utilisation.
+ * 
+ * @author torpill40
+ * 
+ * @see com.torpill.fribot.commands.Command
+ *
+ */
+
 public class TypeCommand extends Command {
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>TypeCommand</code>.
+	 * 
+	 */
 	public TypeCommand() {
 
 		super("type", Command.ArgumentType.NONE);

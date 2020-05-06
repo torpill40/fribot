@@ -21,10 +21,27 @@ import com.torpill.fribot.commands.Command;
 import com.torpill.fribot.util.ListBuilder;
 import com.vdurmont.emoji.EmojiParser;
 
+/**
+ * 
+ * Cette classe représente un thread permettant la gestion de l'utilitaire d'aide.
+ * 
+ * @author torpill40
+ *
+ */
+
 public class HelpThread extends BotThread {
 
 	private int page;
 
+	/**
+	 * 
+	 * Constructeur de la classe <code>HelpThread</code>.
+	 * 
+	 * @param bot
+	 *            : bot Discord relié au thread.
+	 * 
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
 	public HelpThread(DiscordBot bot) {
 
 		super(bot, "help");
