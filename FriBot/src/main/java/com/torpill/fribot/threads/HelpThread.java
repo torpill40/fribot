@@ -68,7 +68,7 @@ public class HelpThread extends BotThread {
 		final int time = 60;
 		final int commandPerPage = 6;
 		final List<String> commandNames = new ArrayList<>();
-		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Aide", "Liste des commandes :", null);
+		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Aide :", "Liste des commandes :", null);
 		for (String commandName : commands.keySet()) {
 
 			if (!commandName.startsWith("__")) commandNames.add(commandName);
