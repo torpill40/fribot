@@ -108,7 +108,16 @@ public class DiscordBot {
 
 	public int startThread(Class<? extends BotThread> thread, Object... args) {
 
-		final BotThread target = this.threads.get(thread);
+		BotThread target = null;
+
+		try {
+
+			target = this.threads.get(thread).clone();
+
+		} catch (CloneNotSupportedException e) {
+
+			e.printStackTrace();
+		}
 
 		if (target == null) {
 

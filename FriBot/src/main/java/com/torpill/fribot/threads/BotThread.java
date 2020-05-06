@@ -5,7 +5,7 @@ import java.util.List;
 import com.torpill.fribot.App;
 import com.torpill.fribot.bot.DiscordBot;
 
-public abstract class BotThread implements Runnable {
+public abstract class BotThread implements Runnable, Cloneable {
 
 	protected final DiscordBot bot;
 	private final String name;
@@ -21,6 +21,12 @@ public abstract class BotThread implements Runnable {
 	public void run() {
 
 		this.args = null;
+	}
+	
+	@Override
+	public BotThread clone() throws CloneNotSupportedException {
+	
+		return (BotThread) super.clone();
 	}
 
 	protected abstract List<? extends Class<?>> args();
