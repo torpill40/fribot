@@ -1,4 +1,4 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.utility;
 
 import java.util.List;
 
@@ -9,10 +9,13 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
- * Cette classe représente une commande privée de test des arguments guillemets.
+ * Cette classe représente une commande privée de test des arguments nuls.
  * 
  * @author torpill40
  * 
@@ -20,22 +23,22 @@ import com.torpill.fribot.bot.DiscordBot;
  *
  */
 
-public class QuoteArgsCommand extends Command {
+public class NoneArgsCommand extends Command {
 
 	/**
 	 * 
-	 * Constructeur de la classe <code>QuoteArgsCommand</code>.
+	 * Constructeur de la classe <code>NoneArgsCommand</code>.
 	 * 
 	 */
-	public QuoteArgsCommand() {
+	public NoneArgsCommand() {
 
-		super("__quote", Command.ArgumentType.QUOTE, Command.Category.UTILITY);
+		super("__none", Command.ArgumentType.NONE, Command.Category.UTILITY);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Commande de test des arguments guillements.";
+		return "Commande de test des arguments nuls.";
 	}
 
 	@Override

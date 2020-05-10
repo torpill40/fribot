@@ -1,4 +1,4 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.utility;
 
 import java.util.List;
 
@@ -9,10 +9,14 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
- * Cette classe représente une commande basique disant bonjour à l'utilisateur.
+ * Cette classe représente une commande privée de test des arguments clé /
+ * valeur.
  * 
  * @author torpill40
  * 
@@ -20,28 +24,28 @@ import com.torpill.fribot.bot.DiscordBot;
  *
  */
 
-public class HelloCommand extends Command {
+public class KeyArgsCommand extends Command {
 
 	/**
 	 * 
-	 * Constructeur de la classe <code>HelloCommand</code>.
+	 * Constructeur de la classe <code>KeyArgsCommand</code>.
 	 * 
 	 */
-	public HelloCommand() {
+	public KeyArgsCommand() {
 
-		super("hello", Command.ArgumentType.NONE, Command.Category.FUN);
+		super("__key", Command.ArgumentType.KEY, Command.Category.UTILITY);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Dit \"Hello\" à l'auteur du message.";
+		return "Commande de test des arguments clé / valeur.";
 	}
 
 	@Override
 	public boolean deleteCommandUsage() {
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -71,13 +75,23 @@ public class HelloCommand extends Command {
 	@Override
 	public List<User> blackListedUsers(DiscordBot bot, Server server) {
 
-		return null;
+		return bot.allUsersFrom(server);
 	}
 
 	@Override
-	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
+	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
 
-		channel.sendMessage("Hello " + user.getMentionTag());
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < args.length; i += 2) {
+
+			builder.append(args[i] + " :\n");
+			for (String arg : args[i + 1].split(" ")) {
+
+				builder.append("- " + arg + "\n");
+			}
+		}
+
+		channel.sendMessage(builder.toString());
 
 		return 0;
 	}

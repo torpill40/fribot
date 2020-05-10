@@ -1,18 +1,23 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.utility;
 
 import java.util.List;
 
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
- * Cette classe représente une commande privée de test des arguments classiques.
+ * Cette classe représente une commande affichant les différents types
+ * d'argument, ainsi que leur fonctionnement et un exemple d'utilisation.
  * 
  * @author torpill40
  * 
@@ -20,33 +25,33 @@ import com.torpill.fribot.bot.DiscordBot;
  *
  */
 
-public class RawArgsCommand extends Command {
+public class TypeCommand extends Command {
 
 	/**
 	 * 
-	 * Constructeur de la classe <code>RawArgsCommand</code>.
+	 * Constructeur de la classe <code>TypeCommand</code>.
 	 * 
 	 */
-	public RawArgsCommand() {
-		
-		super("__raw", Command.ArgumentType.RAW, Command.Category.UTILITY);
+	public TypeCommand() {
+
+		super("type", Command.ArgumentType.NONE, Command.Category.UTILITY);
 	}
-	
+
 	@Override
 	public String getHelp() {
-	
-		return "Commande de test des arguments classiques.";
+
+		return "Affiche les différents types d'arguments et leur utilisation.";
 	}
-	
+
 	@Override
 	public boolean deleteCommandUsage() {
-	
-		return false;
+
+		return true;
 	}
-	
+
 	@Override
 	public List<PermissionType> permissionNeeded() {
-		
+
 		return null;
 	}
 
@@ -71,21 +76,20 @@ public class RawArgsCommand extends Command {
 	@Override
 	public List<User> blackListedUsers(DiscordBot bot, Server server) {
 
-		return bot.allUsersFrom(server);
+		return null;
 	}
 
 	@Override
 	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
-		
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < args.length; i ++) {
-			
-			builder.append(i + " : \n- " + args[i] + "\n");
+
+		final EmbedBuilder embed = bot.defaultEmbedBuilder("Type :", "Les différents types d'arguments :", user);
+		for (Command.ArgumentType type : Command.ArgumentType.values()) {
+
+			embed.addField(type.NAME + " :", type.DESCRIPTION + "\n" + bot.getPrefix() + "<cmd> " + type.EXAMPLE);
 		}
-		
-		channel.sendMessage(builder.toString());
-		
+		channel.sendMessage(embed);
+
 		return 0;
 	}
-}
 
+}

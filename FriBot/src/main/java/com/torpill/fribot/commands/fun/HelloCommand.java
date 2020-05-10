@@ -1,4 +1,4 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.fun;
 
 import java.util.List;
 
@@ -9,11 +9,13 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
- * Cette classe représente une commande privée de test des arguments clé /
- * valeur.
+ * Cette classe représente une commande basique disant bonjour à l'utilisateur.
  * 
  * @author torpill40
  * 
@@ -21,28 +23,28 @@ import com.torpill.fribot.bot.DiscordBot;
  *
  */
 
-public class KeyArgsCommand extends Command {
+public class HelloCommand extends Command {
 
 	/**
 	 * 
-	 * Constructeur de la classe <code>KeyArgsCommand</code>.
+	 * Constructeur de la classe <code>HelloCommand</code>.
 	 * 
 	 */
-	public KeyArgsCommand() {
+	public HelloCommand() {
 
-		super("__key", Command.ArgumentType.KEY, Command.Category.UTILITY);
+		super("hello", Command.ArgumentType.NONE, Command.Category.FUN);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Commande de test des arguments clé / valeur.";
+		return "Dit \"Hello\" à l'auteur du message.";
 	}
 
 	@Override
 	public boolean deleteCommandUsage() {
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -72,23 +74,13 @@ public class KeyArgsCommand extends Command {
 	@Override
 	public List<User> blackListedUsers(DiscordBot bot, Server server) {
 
-		return bot.allUsersFrom(server);
+		return null;
 	}
 
 	@Override
-	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
+	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < args.length; i += 2) {
-
-			builder.append(args[i] + " :\n");
-			for (String arg : args[i + 1].split(" ")) {
-
-				builder.append("- " + arg + "\n");
-			}
-		}
-
-		channel.sendMessage(builder.toString());
+		channel.sendMessage("Hello " + user.getMentionTag());
 
 		return 0;
 	}

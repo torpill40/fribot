@@ -1,20 +1,21 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.utility;
 
 import java.util.List;
 
 import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
- * Cette classe représente une commande affichant les différents types
- * d'argument, ainsi que leur fonctionnement et un exemple d'utilisation.
+ * Cette classe représente une commande privée de test des arguments guillemets.
  * 
  * @author torpill40
  * 
@@ -22,28 +23,28 @@ import com.torpill.fribot.bot.DiscordBot;
  *
  */
 
-public class TypeCommand extends Command {
+public class QuoteArgsCommand extends Command {
 
 	/**
 	 * 
-	 * Constructeur de la classe <code>TypeCommand</code>.
+	 * Constructeur de la classe <code>QuoteArgsCommand</code>.
 	 * 
 	 */
-	public TypeCommand() {
+	public QuoteArgsCommand() {
 
-		super("type", Command.ArgumentType.NONE, Command.Category.UTILITY);
+		super("__quote", Command.ArgumentType.QUOTE, Command.Category.UTILITY);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Affiche les différents types d'arguments et leur utilisation.";
+		return "Commande de test des arguments guillements.";
 	}
 
 	@Override
 	public boolean deleteCommandUsage() {
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -73,20 +74,20 @@ public class TypeCommand extends Command {
 	@Override
 	public List<User> blackListedUsers(DiscordBot bot, Server server) {
 
-		return null;
+		return bot.allUsersFrom(server);
 	}
 
 	@Override
 	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
 
-		final EmbedBuilder embed = bot.defaultEmbedBuilder("Type :", "Les différents types d'arguments :", user);
-		for (Command.ArgumentType type : Command.ArgumentType.values()) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < args.length; i++) {
 
-			embed.addField(type.NAME + " :", type.DESCRIPTION + "\n" + bot.getPrefix() + "<cmd> " + type.EXAMPLE);
+			builder.append(i + " : \n- " + args[i] + "\n");
 		}
-		channel.sendMessage(embed);
+
+		channel.sendMessage(builder.toString());
 
 		return 0;
 	}
-
 }

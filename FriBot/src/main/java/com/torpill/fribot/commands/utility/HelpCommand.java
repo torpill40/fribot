@@ -1,4 +1,4 @@
-package com.torpill.fribot.commands;
+package com.torpill.fribot.commands.utility;
 
 import java.util.List;
 
@@ -10,6 +10,9 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.Command.ArgumentType;
+import com.torpill.fribot.commands.Command.Category;
 import com.torpill.fribot.threads.HelpThread;
 
 /**
