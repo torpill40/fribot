@@ -32,7 +32,7 @@ public class HelpCommand extends Command {
 	 */
 	public HelpCommand() {
 
-		super("help", Command.ArgumentType.RAW);
+		super("help", Command.ArgumentType.RAW, Command.Category.UTILITY);
 	}
 
 	@Override

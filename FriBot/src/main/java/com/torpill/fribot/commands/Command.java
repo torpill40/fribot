@@ -25,6 +25,7 @@ public abstract class Command {
 
 	private final String name;
 	private final ArgumentType argumentType;
+	private final Category category;
 
 	/**
 	 * 
@@ -34,13 +35,17 @@ public abstract class Command {
 	 *            : nom de la commande.
 	 * @param argumentType
 	 *            : type d'argument de la commande.
+	 * @param category
+	 *            : catégorie de la commande.
 	 * 
 	 * @see com.torpill.fribot.commands.Command.ArgumentType
+	 * @see com.torpill.fribot.commands.Command.Category
 	 */
-	protected Command(final String name, final ArgumentType argumentType) {
+	protected Command(final String name, final ArgumentType argumentType, final Category category) {
 
 		this.name = name;
 		this.argumentType = argumentType;
+		this.category = category;
 	}
 
 	/**
@@ -191,6 +196,19 @@ public abstract class Command {
 	public ArgumentType getType() {
 
 		return this.argumentType;
+	}
+
+	/**
+	 * 
+	 * Récupérer la catégorie de la commande.
+	 * 
+	 * @return catégorie
+	 * 
+	 * @see com.torpill.fribot.commands.Command.Category
+	 */
+	public Category getCategory() {
+
+		return this.category;
 	}
 
 	/**
@@ -380,6 +398,41 @@ public abstract class Command {
 			}
 
 			return key;
+		}
+	}
+	
+	/**
+	 * 
+	 * Cette classe énumératrice représente les différents catégories de commande.
+	 * 
+	 * @author torpill40
+	 *
+	 */
+	
+	public static enum Category {
+		
+		UTILITY("utilitaire", "Commandes utiles aux membres du serveur."),
+		GAME("jeu", "Commandes permettant de jouer à un jeu."),
+		MODERATION("modération", "Commandes permettant de modérer un serveur."),
+		FUN("fun", "Commandes qui permettent de s'amuser un peu."),
+		TUTORIAL("tutoriel", "Commandes issues du tutoriel.");
+
+		public final String NAME;
+		public final String DESCRIPTION;
+		
+		/**
+		 * 
+		 * Constructeur de la classe énumératrice <code>Category</code>.
+		 * 
+		 * @param name
+		 *            : nom du type d'argument.
+		 * @param description
+		 *            : description de l'utilisation du type d'argument.
+		 */
+		private Category(String name, String description) {
+
+			this.NAME = name;
+			this.DESCRIPTION = description;
 		}
 	}
 }

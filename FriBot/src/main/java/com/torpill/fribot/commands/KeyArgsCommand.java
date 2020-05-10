@@ -30,7 +30,7 @@ public class KeyArgsCommand extends Command {
 	 */
 	public KeyArgsCommand() {
 
-		super("__key", Command.ArgumentType.KEY);
+		super("__key", Command.ArgumentType.KEY, Command.Category.UTILITY);
 	}
 
 	@Override

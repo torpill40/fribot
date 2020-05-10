@@ -16,7 +16,7 @@ import com.torpill.fribot.commands.HelloCommand;
  * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
  * 
  * @author torpill40
- * @version BETA-1.0.1
+ * @version BETA-1.0.2
  *
  */
 

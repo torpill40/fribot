@@ -29,7 +29,7 @@ public class QuoteArgsCommand extends Command {
 	 */
 	public QuoteArgsCommand() {
 
-		super("__quote", Command.ArgumentType.QUOTE);
+		super("__quote", Command.ArgumentType.QUOTE, Command.Category.UTILITY);
 	}
 
 	@Override

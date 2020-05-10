@@ -29,7 +29,7 @@ public class RawArgsCommand extends Command {
 	 */
 	public RawArgsCommand() {
 		
-		super("__raw", Command.ArgumentType.RAW);
+		super("__raw", Command.ArgumentType.RAW, Command.Category.UTILITY);
 	}
 	
 	@Override

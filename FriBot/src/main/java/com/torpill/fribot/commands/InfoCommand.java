@@ -32,7 +32,7 @@ public class InfoCommand extends Command {
 	 */
 	public InfoCommand() {
 
-		super("info", Command.ArgumentType.NONE);
+		super("info", Command.ArgumentType.NONE, Command.Category.UTILITY);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class NoneArgsCommand extends Command {
 	 */
 	public NoneArgsCommand() {
 
-		super("__none", Command.ArgumentType.NONE);
+		super("__none", Command.ArgumentType.NONE, Command.Category.UTILITY);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class HelloCommand extends Command {
 	 */
 	public HelloCommand() {
 
-		super("hello", Command.ArgumentType.NONE);
+		super("hello", Command.ArgumentType.NONE, Command.Category.FUN);
 	}
 
 	@Override

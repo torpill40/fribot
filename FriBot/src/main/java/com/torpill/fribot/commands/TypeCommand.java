@@ -31,7 +31,7 @@ public class TypeCommand extends Command {
 	 */
 	public TypeCommand() {
 
-		super("type", Command.ArgumentType.NONE);
+		super("type", Command.ArgumentType.NONE, Command.Category.UTILITY);
 	}
 
 	@Override
