@@ -83,9 +83,11 @@ public class InfoCommand extends Command {
 		final EmbedBuilder embed = bot.defaultEmbedBuilder("Informations :", bot.getName() + " :", user);
 		embed.addField("Propriétaire :", bot.owner().getDiscriminatedName(), true);
 		embed.addField("Version :", App.VERSION, true);
+		embed.addField("Préfix :", bot.getPrefix(), true);
 		embed.addField("Date de création :", bot.getCreationDate(), false);
 		embed.addField("Couleur :", "RGB(" + bot.getColor().getRed() + ", " + bot.getColor().getGreen() + ", " + bot.getColor().getBlue() + ")", true);
-		embed.addField("Github :", App.GITHUB, true);
+		embed.addField("Langage :", "Java", true);
+		embed.addField("Github :", App.GITHUB, false);
 		channel.sendMessage(embed);
 
 		return 0;
