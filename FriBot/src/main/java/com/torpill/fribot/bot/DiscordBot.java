@@ -308,6 +308,23 @@ public class DiscordBot {
 
 	/**
 	 * 
+	 * Renvoyer le nom de la catégorie d'une commande.
+	 * 
+	 * @param commandName
+	 *            : nom de la commande.
+	 * @return type d'argument.
+	 * 
+	 * @see com.torpill.fribot.commands.Command
+	 * @see com.torpill.fribot.commands.Command.Category
+	 */
+	public String getCategoryFor(String commandName) {
+
+		final Command command = this.commands.get(commandName);
+		return (command == null ? null : command.getCategory().NAME);
+	}
+
+	/**
+	 * 
 	 * Récupérer les commandes dans une catégorie particulière.
 	 * 
 	 * @param category

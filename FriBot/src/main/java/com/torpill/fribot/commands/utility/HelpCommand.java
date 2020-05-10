@@ -1,6 +1,7 @@
 package com.torpill.fribot.commands.utility;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -11,8 +12,6 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
-import com.torpill.fribot.commands.Command.ArgumentType;
-import com.torpill.fribot.commands.Command.Category;
 import com.torpill.fribot.threads.HelpThread;
 
 /**
@@ -86,13 +85,25 @@ public class HelpCommand extends Command {
 
 		switch (args.length) {
 		case 0:
-			bot.startThread(HelpThread.class, user, channel);
+			try {
+
+				TextChannel dm = user.openPrivateChannel().get();
+				if (bot.startThread(HelpThread.class, user, dm) == 0) {
+
+					channel.sendMessage("Utilitaire d'aide envoyé en MP " + user.getMentionTag());
+				}
+
+			} catch (InterruptedException | ExecutionException e) {
+
+				e.printStackTrace();
+			}
 			break;
 
 		case 1:
 			final String commandName = args[0];
 			final String help = bot.getHelpFor(commandName);
 			final String type = bot.getTypeFor(commandName);
+			final String category = bot.getCategoryFor(commandName);
 
 			if (help == null) {
 
@@ -101,6 +112,7 @@ public class HelpCommand extends Command {
 
 			final EmbedBuilder embed = bot.defaultEmbedBuilder("Aide :", commandName + " :", user);
 			embed.addField("Description :", help);
+			embed.addField("Catégorie :", category);
 			embed.addField("Type d'arguments :", type);
 			if (!bot.isOwner(user)) {
 
