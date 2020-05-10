@@ -89,11 +89,11 @@ public class HelpThread extends BotThread {
 			Message message = channel.sendMessage(embed).get();
 			message.addReaction(EmojiParser.parseToUnicode(":arrow_left:"));
 			message.addReaction(EmojiParser.parseToUnicode(":arrow_right:"));
-			message.addReaction(EmojiParser.parseToUnicode(":one:"));
-			message.addReaction(EmojiParser.parseToUnicode(":two:"));
-			message.addReaction(EmojiParser.parseToUnicode(":three:"));
-			message.addReaction(EmojiParser.parseToUnicode(":four:"));
-			message.addReaction(EmojiParser.parseToUnicode(":five:"));
+			if (this.bot.commandsIn(Command.Category.UTILITY) != null) message.addReaction(EmojiParser.parseToUnicode(":one:"));
+			if (this.bot.commandsIn(Command.Category.FUN) != null) message.addReaction(EmojiParser.parseToUnicode(":two:"));
+			if (this.bot.commandsIn(Command.Category.MODERATION) != null) message.addReaction(EmojiParser.parseToUnicode(":three:"));
+			if (this.bot.commandsIn(Command.Category.GAME) != null) message.addReaction(EmojiParser.parseToUnicode(":four:"));
+			if (this.bot.commandsIn(Command.Category.TUTORIAL) != null) message.addReaction(EmojiParser.parseToUnicode(":five:"));
 			ReactionAddListener listener = new ReactionAddListener() {
 
 				@Override

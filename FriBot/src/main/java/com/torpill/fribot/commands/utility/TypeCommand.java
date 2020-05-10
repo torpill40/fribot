@@ -11,8 +11,6 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
-import com.torpill.fribot.commands.Command.ArgumentType;
-import com.torpill.fribot.commands.Command.Category;
 
 /**
  * 
