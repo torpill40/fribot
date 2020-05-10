@@ -425,9 +425,9 @@ public abstract class Command {
 		 * Constructeur de la classe énumératrice <code>Category</code>.
 		 * 
 		 * @param name
-		 *            : nom du type d'argument.
+		 *            : nom de la catégorie.
 		 * @param description
-		 *            : description de l'utilisation du type d'argument.
+		 *            : description de la catégorie.
 		 */
 		private Category(String name, String description) {
 
