@@ -20,7 +20,6 @@ import org.javacord.api.entity.user.User;
 import com.torpill.fribot.App;
 import com.torpill.fribot.commands.Command;
 import com.torpill.fribot.threads.BotThread;
-import com.torpill.fribot.threads.HelpThread;
 
 /**
  * 
@@ -34,6 +33,7 @@ public class DiscordBot {
 
 	private final String prefix;
 	private final Map<String, Command> commands;
+	private final Map<Command.Category, List<Command>> categories;
 	private final Map<Class<? extends BotThread>, BotThread> threads;
 	private final Color color;
 	private final String role;
@@ -56,6 +56,7 @@ public class DiscordBot {
 		this.color = color;
 		this.role = role;
 		this.commands = new HashMap<>();
+		this.categories = new HashMap<>();
 		this.threads = new HashMap<>();
 	}
 
@@ -69,6 +70,14 @@ public class DiscordBot {
 	public void addCommand(final Command command) {
 
 		this.commands.put(command.getName(), command);
+		List<Command> category = this.categories.get(command.getCategory());
+		if (category == null) {
+
+			category = new ArrayList<Command>();
+			this.categories.put(command.getCategory(), category);
+		}
+
+		category.add(command);
 	}
 
 	/**
@@ -299,27 +308,26 @@ public class DiscordBot {
 
 	/**
 	 * 
-	 * Afficher l'utilitaire d'aide du bot.
+	 * Récupérer les commandes dans une catégorie particulière.
 	 * 
-	 * @param channel
-	 *            : salon dans lequel l'utilitaire d'aide doit s'afficher.
-	 * @param user
-	 *            : utilisateur demandant l'affichage de l'utilitaire d'aide.
-	 *            
-	 * @see org.javacord.api.entity.channel.TextChannel
-	 * @see org.javacord.api.entity.user.User
-	 * @see com.torpill.fribot.threads.HelpThread
+	 * @param category
+	 *            : la catégorie dont l'on veut récupérer les commandes.
+	 * @return liste de commandes
+	 * 
+	 * @see com.torpill.fribot.commands.Command
+	 * @see com.torpill.fribot.commands.Command.Category
 	 */
-	public void displayCommandList(TextChannel channel, User user) {
+	public List<Command> commandsIn(Command.Category category) {
 
-		this.startThread(HelpThread.class, user, channel, this.commands);
+		return this.categories.get(category);
 	}
 
 	/**
 	 * 
 	 * Savoir si l'utilisateur passé en argument est le bot.
 	 * 
-	 * @param user : utilisateur à comparer.
+	 * @param user
+	 *            : utilisateur à comparer.
 	 * @return booléen
 	 * 
 	 * @see org.javacord.entity.user.User
@@ -331,10 +339,13 @@ public class DiscordBot {
 
 	/**
 	 * 
-	 * Savoir si l'utilisateur passé en argument est un administrateur du serveur passé en argument.
+	 * Savoir si l'utilisateur passé en argument est un administrateur du serveur
+	 * passé en argument.
 	 * 
-	 * @param user : utilisateur à tester.
-	 * @param server : serveur sur lequel on teste l'utilisateur.
+	 * @param user
+	 *            : utilisateur à tester.
+	 * @param server
+	 *            : serveur sur lequel on teste l'utilisateur.
 	 * @return booléen
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -357,7 +368,8 @@ public class DiscordBot {
 	 * 
 	 * Savoir si l'utilisateur passé en argument est le propriétaire du bot.
 	 * 
-	 * @param user : utilisateur à comparer.
+	 * @param user
+	 *            : utilisateur à comparer.
 	 * @return booléen
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -377,9 +389,12 @@ public class DiscordBot {
 	 * 
 	 * Vérifier si un utilisateur à les permissions pour exécuter une commande.
 	 * 
-	 * @param user : utilisateur voulant exécuter la commande.
-	 * @param commandName : commande à exécuter.
-	 * @param server : serveur sur lequel l'utilisateur veut exécuter la commande.
+	 * @param user
+	 *            : utilisateur voulant exécuter la commande.
+	 * @param commandName
+	 *            : commande à exécuter.
+	 * @param server
+	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -417,9 +432,12 @@ public class DiscordBot {
 	 * 
 	 * Savoir si un utilisateur est sur la liste noire d'une commande.
 	 * 
-	 * @param user : utilisateur voulant exécuter la commande.
-	 * @param commandName : commande à exécuter.
-	 * @param server : serveur sur lequel l'utilisateur veut exécuter la commande.
+	 * @param user
+	 *            : utilisateur voulant exécuter la commande.
+	 * @param commandName
+	 *            : commande à exécuter.
+	 * @param server
+	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -455,9 +473,12 @@ public class DiscordBot {
 	 * 
 	 * Savoir si un utilisateur est sur la liste blanche d'une commande.
 	 * 
-	 * @param user : utilisateur voulant exécuter la commande.
-	 * @param commandName : commande à exécuter.
-	 * @param server : serveur sur lequel l'utilisateur veut exécuter la commande.
+	 * @param user
+	 *            : utilisateur voulant exécuter la commande.
+	 * @param commandName
+	 *            : commande à exécuter.
+	 * @param server
+	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -493,9 +514,12 @@ public class DiscordBot {
 	 * 
 	 * Savoir si un utilisateur possède un role sur la liste noire d'une commande.
 	 * 
-	 * @param user : utilisateur voulant exécuter la commande.
-	 * @param commandName : commande à exécuter.
-	 * @param server : serveur sur lequel l'utilisateur veut exécuter la commande.
+	 * @param user
+	 *            : utilisateur voulant exécuter la commande.
+	 * @param commandName
+	 *            : commande à exécuter.
+	 * @param server
+	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -533,9 +557,12 @@ public class DiscordBot {
 	 * 
 	 * Savoir si un utilisateur possède un role sur la liste blanche d'une commande.
 	 * 
-	 * @param user : utilisateur voulant exécuter la commande.
-	 * @param commandName : commande à exécuter.
-	 * @param server : serveur sur lequel l'utilisateur veut exécuter la commande.
+	 * @param user
+	 *            : utilisateur voulant exécuter la commande.
+	 * @param commandName
+	 *            : commande à exécuter.
+	 * @param server
+	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -573,7 +600,8 @@ public class DiscordBot {
 	 * 
 	 * Récupérer tous les utilisateurs membres du serveur passé en argument.
 	 * 
-	 * @param server : serveur dont on veut récupérer les utilisateurs.
+	 * @param server
+	 *            : serveur dont on veut récupérer les utilisateurs.
 	 * @return liste des utilisateurs membres
 	 * 
 	 * @see org.javacord.api.entity.user.User
@@ -593,7 +621,8 @@ public class DiscordBot {
 	 * 
 	 * Récupérer tous les rôles du serveur passé en argument.
 	 * 
-	 * @param server : serveur dont on veut récupérer les rôles.
+	 * @param server
+	 *            : serveur dont on veut récupérer les rôles.
 	 * @return liste des rôles
 	 * 
 	 * @see org.javacord.api.entity.permission.Role
@@ -606,10 +635,13 @@ public class DiscordBot {
 
 	/**
 	 * 
-	 * Récupérer les rôles, dont les IDs ont été passés en arguments, du serveur passé en argument.
+	 * Récupérer les rôles, dont les IDs ont été passés en arguments, du serveur
+	 * passé en argument.
 	 * 
-	 * @param server : serveur dont on veut récupérer les rôles.
-	 * @param roles : IDs des rôles que l'on veut récupérer.
+	 * @param server
+	 *            : serveur dont on veut récupérer les rôles.
+	 * @param roles
+	 *            : IDs des rôles que l'on veut récupérer.
 	 * @return liste des rôles
 	 * 
 	 * @see org.javacord.api.entity.permission.Role
@@ -627,12 +659,13 @@ public class DiscordBot {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 
 	 * Récupérer les utilisateurs dont les IDs ont été passés en arguments.
 	 * 
-	 * @param users : IDs des rôles que l'on veut récupérer.
+	 * @param users
+	 *            : IDs des rôles que l'on veut récupérer.
 	 * @return liste des utilisateurs
 	 * 
 	 * @see org.javacord.api.entity.user.User

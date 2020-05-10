@@ -403,7 +403,7 @@ public abstract class Command {
 	
 	/**
 	 * 
-	 * Cette classe énumératrice représente les différents catégories de commande.
+	 * Cette classe énumératrice représente les différentes catégories de commande.
 	 * 
 	 * @author torpill40
 	 *
@@ -411,11 +411,11 @@ public abstract class Command {
 	
 	public static enum Category {
 		
-		UTILITY("utilitaire", "Commandes utiles aux membres du serveur."),
-		GAME("jeu", "Commandes permettant de jouer à un jeu."),
-		MODERATION("modération", "Commandes permettant de modérer un serveur."),
-		FUN("fun", "Commandes qui permettent de s'amuser un peu."),
-		TUTORIAL("tutoriel", "Commandes issues du tutoriel.");
+		UTILITY("utilitaire", "Commandes utiles aux membres du serveur"),
+		GAME("jeu", "Commandes permettant de jouer à un jeu"),
+		MODERATION("modération", "Commandes permettant de modérer un serveur"),
+		FUN("fun", "Commandes qui permettent de s'amuser un peu"),
+		TUTORIAL("tutoriel", "Commandes issues du tutoriel");
 
 		public final String NAME;
 		public final String DESCRIPTION;

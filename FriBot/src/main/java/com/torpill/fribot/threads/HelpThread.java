@@ -2,7 +2,6 @@ package com.torpill.fribot.threads;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +22,8 @@ import com.vdurmont.emoji.EmojiParser;
 
 /**
  * 
- * Cette classe représente un thread permettant la gestion de l'utilitaire d'aide.
+ * Cette classe représente un thread permettant la gestion de l'utilitaire
+ * d'aide.
  * 
  * @author torpill40
  *
@@ -31,7 +31,10 @@ import com.vdurmont.emoji.EmojiParser;
 
 public class HelpThread extends BotThread {
 
-	private int page;
+	private int page, numberOfPage, commandPerPage;
+	private Command.Category category;
+	private List<Command> commandList;
+	private List<String> commandNames;
 
 	/**
 	 * 
@@ -50,7 +53,7 @@ public class HelpThread extends BotThread {
 	@Override
 	protected List<? extends Class<?>> args() {
 
-		return ListBuilder.listOf(User.class, TextChannel.class, Map.class);
+		return ListBuilder.listOf(User.class, TextChannel.class);
 	}
 
 	@Override
@@ -60,30 +63,24 @@ public class HelpThread extends BotThread {
 
 		final User user = (User) this.args[0];
 		final TextChannel channel = (TextChannel) this.args[1];
-		@SuppressWarnings("unchecked")
-		final Map<String, Command> commands = (Map<String, Command>) this.args[2];
 
 		App.LOGGER.debug("'" + Thread.currentThread().getName() + "' paramètres récupérés avec succès.");
 
-		final int time = 60;
-		final int commandPerPage = 6;
-		final List<String> commandNames = new ArrayList<>();
-		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Aide :", "Liste des commandes :", null);
-		for (String commandName : commands.keySet()) {
+		this.commandPerPage = 6;
+		this.category = Command.Category.UTILITY;
+		this.commandList = this.bot.commandsIn(this.category);
+		this.changeCategory(this.category);
 
-			if (!commandName.startsWith("__")) commandNames.add(commandName);
-		}
-		final int numberOfPage = Math.floorDiv(commandNames.size() - 1, commandPerPage) + 1;
-		this.page = 1;
-		embed.setFooter("Page : " + this.page + " / " + numberOfPage, user.getAvatar());
+		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Aide :", this.category.DESCRIPTION + " :", null);
+		embed.setFooter("Page : " + this.page + " / " + this.numberOfPage, user.getAvatar());
 
-		for (int i = 0; i < commandPerPage; i++) {
+		for (int i = 0; i < this.commandPerPage; i++) {
 
-			int index = i + (this.page - 1) * commandPerPage;
-			if (index < commandNames.size()) {
+			int index = i + (this.page - 1) * this.commandPerPage;
+			if (index < this.commandNames.size()) {
 
-				String commandName = commandNames.get(index);
-				embed.addField(commandName + " :", commands.get(commandName).getHelp().split("\n")[0]);
+				String command = this.commandNames.get(index);
+				embed.addField(command + " :", this.bot.getHelpFor(command).split("\n")[0]);
 			}
 		}
 
@@ -92,6 +89,11 @@ public class HelpThread extends BotThread {
 			Message message = channel.sendMessage(embed).get();
 			message.addReaction(EmojiParser.parseToUnicode(":arrow_left:"));
 			message.addReaction(EmojiParser.parseToUnicode(":arrow_right:"));
+			message.addReaction(EmojiParser.parseToUnicode(":one:"));
+			message.addReaction(EmojiParser.parseToUnicode(":two:"));
+			message.addReaction(EmojiParser.parseToUnicode(":three:"));
+			message.addReaction(EmojiParser.parseToUnicode(":four:"));
+			message.addReaction(EmojiParser.parseToUnicode(":five:"));
 			ReactionAddListener listener = new ReactionAddListener() {
 
 				@Override
@@ -107,29 +109,50 @@ public class HelpThread extends BotThread {
 						App.LOGGER.debug("Reaction '" + EmojiParser.parseToAliases(emoji.getMentionTag()) + "' added !");
 
 						reaction.removeUser(user);
-						if (EmojiParser.parseToAliases(emoji.getMentionTag()).equals(":arrow_right:")) HelpThread.this.page++;
-						else if (EmojiParser.parseToAliases(emoji.getMentionTag()).equals(":arrow_left:")) HelpThread.this.page--;
-						else return;
 
-						if (HelpThread.this.page > numberOfPage) {
+						switch (EmojiParser.parseToAliases(emoji.getMentionTag())) {
+						case ":arrow_right:":
+							HelpThread.this.next();
+							break;
 
-							HelpThread.this.page = 1;
+						case ":arrow_left:":
+							HelpThread.this.prev();
+							break;
 
-						} else if (HelpThread.this.page < 1) {
+						case ":one:":
+							HelpThread.this.changeCategory(Command.Category.UTILITY);
+							break;
 
-							HelpThread.this.page = numberOfPage;
+						case ":two:":
+							HelpThread.this.changeCategory(Command.Category.FUN);
+							break;
+
+						case ":three:":
+							HelpThread.this.changeCategory(Command.Category.MODERATION);
+							break;
+
+						case ":four:":
+							HelpThread.this.changeCategory(Command.Category.GAME);
+							break;
+
+						case ":five:":
+							HelpThread.this.changeCategory(Command.Category.TUTORIAL);
+							break;
+
+						default:
+							return;
 						}
 
-						final EmbedBuilder embed = HelpThread.this.bot.defaultEmbedBuilder("Aide", "Liste des commandes :", null);
-						embed.setFooter("Page : " + HelpThread.this.page + " / " + numberOfPage, user.getAvatar());
+						final EmbedBuilder embed = HelpThread.this.bot.defaultEmbedBuilder("Aide :", HelpThread.this.category.DESCRIPTION + " :", null);
+						embed.setFooter("Page : " + HelpThread.this.page + " / " + HelpThread.this.numberOfPage, user.getAvatar());
 
-						for (int i = 0; i < commandPerPage; i++) {
+						for (int i = 0; i < HelpThread.this.commandPerPage; i++) {
 
-							int index = i + (HelpThread.this.page - 1) * commandPerPage;
-							if (index < commandNames.size()) {
+							int index = i + (HelpThread.this.page - 1) * HelpThread.this.commandPerPage;
+							if (index < HelpThread.this.commandNames.size()) {
 
-								String commandName = commandNames.get(index);
-								embed.addField(commandName + " :", commands.get(commandName).getHelp().split("\n")[0]);
+								String command = HelpThread.this.commandNames.get(index);
+								embed.addField(command + " :", HelpThread.this.bot.getHelpFor(command).split("\n")[0]);
 							}
 						}
 						event.editMessage(embed);
@@ -139,6 +162,7 @@ public class HelpThread extends BotThread {
 
 			message.addReactionAddListener(listener);
 
+			final int time = 60; // En secondes
 			Thread.sleep(time * 1000);
 
 			message.removeListener(ReactionAddListener.class, listener);
@@ -149,5 +173,60 @@ public class HelpThread extends BotThread {
 		}
 
 		super.run();
+	}
+
+	/**
+	 * 
+	 * Changer de categorie dans l'utilitaire d'aide.
+	 * 
+	 * @param category
+	 *            : nouvelle catégorie.
+	 * 
+	 * @see com.torpill.fribot.commands.Command.Category
+	 */
+	private void changeCategory(Command.Category category) {
+
+		if ((this.commandList = this.bot.commandsIn(category)) == null) {
+
+			this.commandList = this.bot.commandsIn(this.category);
+			return;
+		}
+
+		this.category = category;
+		this.commandNames = new ArrayList<>();
+		for (Command command : this.commandList) {
+
+			if (!command.getName().startsWith("__")) this.commandNames.add(command.getName());
+		}
+		this.numberOfPage = Math.floorDiv(this.commandNames.size() - 1, this.commandPerPage) + 1;
+		this.page = 1;
+	}
+
+	/**
+	 * 
+	 * Passer à la page suivante.
+	 * 
+	 */
+	private void next() {
+
+		this.page++;
+		if (this.page > this.numberOfPage) {
+
+			this.page = 1;
+		}
+	}
+
+	/**
+	 * 
+	 * Passer à la page précédente.
+	 * 
+	 */
+	private void prev() {
+
+		this.page--;
+		if (this.page < 1) {
+
+			this.page = this.numberOfPage;
+		}
 	}
 }

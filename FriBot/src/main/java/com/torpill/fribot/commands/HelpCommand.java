@@ -10,6 +10,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
+import com.torpill.fribot.threads.HelpThread;
 
 /**
  * 
@@ -82,7 +83,7 @@ public class HelpCommand extends Command {
 
 		switch (args.length) {
 		case 0:
-			bot.displayCommandList(channel, user);
+			bot.startThread(HelpThread.class, user, channel);
 			break;
 
 		case 1:

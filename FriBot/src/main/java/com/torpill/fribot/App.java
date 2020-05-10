@@ -23,7 +23,7 @@ import com.torpill.fribot.commands.HelloCommand;
 public class App {
 
 	public static final Logger LOGGER = LogManager.getLogger("FriBot");
-	public static final String VERSION = "BETA-1.0.1";
+	public static final String VERSION = "BETA-1.0.2";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 
 	/**
@@ -58,6 +58,9 @@ public class App {
 				break;
 			case "--role":
 				botBuilder.setRole(args[i + 1]);
+				break;
+			case "--devrole":
+				// TODO Ajout du DevRole
 				break;
 			}
 		}
