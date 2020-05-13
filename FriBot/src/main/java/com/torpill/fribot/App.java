@@ -16,14 +16,14 @@ import com.torpill.fribot.commands.fun.HelloCommand;
  * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
  * 
  * @author torpill40
- * @version BETA-1.0.2
+ * @version BETA-1.0.3
  *
  */
 
 public class App {
 
 	public static final Logger LOGGER = LogManager.getLogger("FriBot");
-	public static final String VERSION = "BETA-1.0.2";
+	public static final String VERSION = "BETA-1.0.3";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 
 	/**
@@ -37,6 +37,8 @@ public class App {
 	 *            <b>--color &lt;R&gt; &lt;G&gt; &lt;B&gt;</b> : couleurs des embeds
 	 *            par défaut. <br />
 	 *            <b>--role &lt;ROLE_ID&gt;</b> : rôle utilisateur par défaut.
+	 *            <br />
+	 *            <b>--devrole &lt;ROLE_ID&gt;</b> : rôle développeur par défaut.
 	 *            <br />
 	 */
 
@@ -60,7 +62,7 @@ public class App {
 				botBuilder.setRole(args[i + 1]);
 				break;
 			case "--devrole":
-				// TODO Ajout du DevRole
+				botBuilder.setDevRole(args[i + 1]);
 				break;
 			}
 		}

@@ -8,6 +8,7 @@ import java.util.List;
 import org.javacord.api.DiscordApiBuilder;
 
 import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.utility.DevRoleCommand;
 import com.torpill.fribot.commands.utility.HelpCommand;
 import com.torpill.fribot.commands.utility.InfoCommand;
 import com.torpill.fribot.commands.utility.KeyArgsCommand;
@@ -34,7 +35,7 @@ public class DiscordBotBuilder {
 	private String token;
 	private String prefix = "?:";
 	private Color color = Color.WHITE;
-	private String role = null;
+	private String role = null, devrole = null;
 	private final List<Class<? extends BotListener>> listeners;
 	private final List<Class<? extends Command>> commands;
 	private final List<Class<? extends BotThread>> threads;
@@ -70,7 +71,7 @@ public class DiscordBotBuilder {
 	public DiscordBot build() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		final DiscordApiBuilder builder = new DiscordApiBuilder().setToken(this.token);
-		final DiscordBot bot = new DiscordBot(this.prefix, this.color, this.role);
+		final DiscordBot bot = new DiscordBot(this.prefix, this.color, this.role, this.devrole);
 
 		// @formatter:off
 		
@@ -82,6 +83,7 @@ public class DiscordBotBuilder {
 			.addCommand(QuoteArgsCommand.class)
 			.addCommand(KeyArgsCommand.class)
 			.addCommand(TypeCommand.class)
+			.addCommand(DevRoleCommand.class)
 			.addThread(CommandThread.class)
 			.addThread(HelpThread.class);
 		
@@ -158,6 +160,20 @@ public class DiscordBotBuilder {
 	public DiscordBotBuilder setRole(String role) {
 
 		this.role = role;
+		return this;
+	}
+
+	/**
+	 * 
+	 * Configurer le rôle développeur du bot.
+	 * 
+	 * @param role
+	 *            : ID du rôle utilisateur.
+	 * @return this
+	 */
+	public DiscordBotBuilder setDevRole(String devrole) {
+
+		this.devrole = devrole;
 		return this;
 	}
 

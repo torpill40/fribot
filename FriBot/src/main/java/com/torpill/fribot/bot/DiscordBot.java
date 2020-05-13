@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import org.javacord.api.DiscordApi;
@@ -36,7 +37,7 @@ public class DiscordBot {
 	private final Map<Command.Category, List<Command>> categories;
 	private final Map<Class<? extends BotThread>, BotThread> threads;
 	private final Color color;
-	private final String role;
+	private final String role, devrole;
 	private DiscordApi api;
 
 	/**
@@ -49,12 +50,15 @@ public class DiscordBot {
 	 *            : couleur par défaut des embeds.
 	 * @param role
 	 *            : rôle utilisateur par défaut.
+	 * @param devrole
+	 *            : rôle développeur par défaut.
 	 */
-	public DiscordBot(final String prefix, final Color color, final String role) {
+	public DiscordBot(final String prefix, final Color color, final String role, final String devrole) {
 
 		this.prefix = prefix;
 		this.color = color;
 		this.role = role;
+		this.devrole = devrole;
 		this.commands = new HashMap<>();
 		this.categories = new HashMap<>();
 		this.threads = new HashMap<>();
@@ -127,9 +131,50 @@ public class DiscordBot {
 	 * 
 	 * @return ID du rôle
 	 */
-	public String getUserRole() {
+	public String getUserRoleID() {
 
 		return this.role;
+	}
+
+	/**
+	 * 
+	 * Récupérer l'ID du rôle développeur.
+	 * 
+	 * @return ID du rôle
+	 */
+	public String getDevRoleID() {
+
+		return this.devrole;
+	}
+
+	/**
+	 * 
+	 * Récupérer le rôle utilisateur.
+	 * 
+	 * @return rôle utilisateur
+	 * 
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public Role getUserRole(Server server) {
+
+		Optional<Role> role = server.getRoleById(this.role);
+		return (role.isPresent() ? role.get() : null);
+	}
+
+	/**
+	 * 
+	 * Récupérer le rôle développeur.
+	 * 
+	 * @return rôle développeur
+	 * 
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public Role getDevRole(Server server) {
+
+		Optional<Role> devrole = server.getRoleById(this.devrole);
+		return (devrole.isPresent() ? devrole.get() : null);
 	}
 
 	/**
