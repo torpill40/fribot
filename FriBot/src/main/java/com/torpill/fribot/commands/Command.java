@@ -210,6 +210,17 @@ public abstract class Command {
 
 		return this.category;
 	}
+	
+	/**
+	 * 
+	 * Savoir si la commande est privée.
+	 * 
+	 * @return booléen
+	 */
+	public boolean isPrivate() {
+
+		return this.name.startsWith("__");
+	}
 
 	/**
 	 * 

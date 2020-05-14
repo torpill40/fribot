@@ -73,7 +73,7 @@ public class KeyArgsCommand extends Command {
 	@Override
 	public List<User> blackListedUsers(DiscordBot bot, Server server) {
 
-		return bot.allUsersFrom(server);
+		return null;
 	}
 
 	@Override

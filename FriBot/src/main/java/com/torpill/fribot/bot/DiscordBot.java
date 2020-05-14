@@ -236,6 +236,8 @@ public class DiscordBot {
 
 		if (!this.isOwner(user)) {
 
+			if (command.isPrivate()) return -2;
+			
 			if (this.onBlacklist(user, commandName, server) == 1) return -2;
 			else if (this.onWhitelist(user, commandName, server) == 0) return -2;
 			else if (!this.isAdmin(user, server)) {

@@ -196,7 +196,7 @@ public class HelpThread extends BotThread {
 		this.commandNames = new ArrayList<>();
 		for (Command command : this.commandList) {
 
-			if (!command.getName().startsWith("__")) this.commandNames.add(command.getName());
+			if (!command.isPrivate()) this.commandNames.add(command.getName());
 		}
 		this.numberOfPage = Math.floorDiv(this.commandNames.size() - 1, this.commandPerPage) + 1;
 		this.page = 1;
