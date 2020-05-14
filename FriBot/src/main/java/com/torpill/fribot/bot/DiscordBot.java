@@ -237,7 +237,7 @@ public class DiscordBot {
 		if (!this.isOwner(user)) {
 
 			if (command.isPrivate()) return -2;
-			
+
 			if (this.onBlacklist(user, commandName, server) == 1) return -2;
 			else if (this.onWhitelist(user, commandName, server) == 0) return -2;
 			else if (!this.isAdmin(user, server)) {
@@ -658,6 +658,22 @@ public class DiscordBot {
 			App.LOGGER.debug("Pas de liste blanche pour les roles.");
 			return -1;
 		}
+	}
+
+	/**
+	 * 
+	 * Savoir si une commande est privée.
+	 * 
+	 * @param commandName
+	 *            : nom de la commande.
+	 * @return booléen
+	 * 
+	 * @see com.torpill.fribot.commands.Command
+	 */
+	public boolean isPrivate(String commandName) {
+
+		final Command command = this.commands.get(commandName);
+		return command.isPrivate();
 	}
 
 	/**

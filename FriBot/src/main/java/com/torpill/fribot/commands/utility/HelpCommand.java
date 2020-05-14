@@ -116,7 +116,8 @@ public class HelpCommand extends Command {
 			embed.addField("Type d'arguments :", type);
 			if (!bot.isOwner(user)) {
 
-				if (bot.onBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Vous êtes sur la liste noire, vous ne pouvez pas utiliser cette commande.");
+				if (bot.isPrivate(commandName)) embed.addField("Commande privée :", "Seul le propriétaire du bot peut utiliser cette commande.");
+				else if (bot.onBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Vous êtes sur la liste noire, vous ne pouvez pas utiliser cette commande.");
 				else if (bot.onWhitelist(user, commandName, server) == 0) embed.addField("Liste blanche :", "Vous n'êtes pas sur la liste blanche, vous ne pouvez pas pas utiliser cette commande.");
 				else if (!bot.isAdmin(user, server)) {
 
