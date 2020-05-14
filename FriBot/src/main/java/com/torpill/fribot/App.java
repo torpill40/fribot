@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.HelloCommand;
+import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 
 /**
  * 
@@ -16,14 +17,14 @@ import com.torpill.fribot.commands.fun.HelloCommand;
  * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
  * 
  * @author torpill40
- * @version BETA-1.0.3
+ * @version BETA-1.0.4
  *
  */
 
 public class App {
 
 	public static final Logger LOGGER = LogManager.getLogger("FriBot");
-	public static final String VERSION = "BETA-1.0.3";
+	public static final String VERSION = "BETA-1.0.4";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 
 	/**
@@ -72,6 +73,7 @@ public class App {
 			// @formatter:off
 			
 			botBuilder.addCommand(HelloCommand.class)
+				.addCommand(TutorialTorpill40Command.class)
 				.build();
 			
 			// @formatter:on
