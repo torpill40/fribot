@@ -72,7 +72,10 @@ public abstract class Command {
 	 * 
 	 * @see org.javacord.api.entity.permission.PermissionType
 	 */
-	public abstract List<PermissionType> permissionNeeded();
+	public List<PermissionType> permissionNeeded() {
+
+		return null;
+	}
 
 	/**
 	 * 
@@ -88,7 +91,10 @@ public abstract class Command {
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public abstract List<Role> whiteListedRoles(final DiscordBot bot, final Server server);
+	public List<Role> whiteListedRoles(DiscordBot bot, Server server) {
+
+		return null;
+	}
 
 	/**
 	 * 
@@ -104,7 +110,10 @@ public abstract class Command {
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public abstract List<Role> blackListedRoles(final DiscordBot bot, final Server server);
+	public List<Role> blackListedRoles(DiscordBot bot, Server server) {
+
+		return null;
+	}
 
 	/**
 	 * 
@@ -120,7 +129,10 @@ public abstract class Command {
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public abstract List<User> whiteListedUsers(final DiscordBot bot, final Server server);
+	public List<User> whiteListedUsers(DiscordBot bot, Server server) {
+
+		return null;
+	}
 
 	/**
 	 * 
@@ -136,7 +148,10 @@ public abstract class Command {
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public abstract List<User> blackListedUsers(final DiscordBot bot, final Server server);
+	public List<User> blackListedUsers(DiscordBot bot, Server server) {
+
+		return null;
+	}
 
 	/**
 	 * 

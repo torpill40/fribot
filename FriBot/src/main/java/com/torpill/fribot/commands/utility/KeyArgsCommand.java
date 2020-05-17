@@ -1,10 +1,6 @@
 package com.torpill.fribot.commands.utility;
 
-import java.util.List;
-
 import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.permission.PermissionType;
-import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
@@ -44,36 +40,6 @@ public class KeyArgsCommand extends Command {
 	public boolean deleteCommandUsage() {
 
 		return false;
-	}
-
-	@Override
-	public List<PermissionType> permissionNeeded() {
-
-		return null;
-	}
-
-	@Override
-	public List<Role> whiteListedRoles(DiscordBot bot, Server server) {
-
-		return null;
-	}
-
-	@Override
-	public List<Role> blackListedRoles(DiscordBot bot, Server server) {
-
-		return null;
-	}
-
-	@Override
-	public List<User> whiteListedUsers(DiscordBot bot, Server server) {
-
-		return null;
-	}
-
-	@Override
-	public List<User> blackListedUsers(DiscordBot bot, Server server) {
-
-		return null;
 	}
 
 	@Override
