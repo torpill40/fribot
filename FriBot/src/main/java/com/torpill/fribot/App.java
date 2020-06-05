@@ -11,11 +11,11 @@ import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 
 /**
- * 
+ *
  * Un bot Discord collaboratif pour le serveur Fripouz Team. Pour plus
  * d'informations, allez voir le
  * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
- * 
+ *
  * @author torpill40
  * @version BETA-1.0.5
  *
@@ -28,9 +28,9 @@ public class App {
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 
 	/**
-	 * 
+	 *
 	 * Point d'entrée du programme, démarrage du bot.
-	 * 
+	 *
 	 * @param args
 	 *            <br />
 	 *            <b>--token &lt;TOKEN&gt;</b> : token du bot. <br />
@@ -43,7 +43,7 @@ public class App {
 	 *            <br />
 	 */
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
 		final DiscordBotBuilder botBuilder = new DiscordBotBuilder();
 
@@ -71,11 +71,11 @@ public class App {
 		try {
 
 			// @formatter:off
-			
+
 			botBuilder.addCommand(HelloCommand.class)
 				.addCommand(TutorialTorpill40Command.class)
 				.build();
-			
+
 			// @formatter:on
 
 			LOGGER.info("FriBot est prêt !");

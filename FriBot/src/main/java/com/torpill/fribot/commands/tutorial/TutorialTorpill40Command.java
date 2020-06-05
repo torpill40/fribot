@@ -11,11 +11,11 @@ import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
 
 /**
- * 
+ *
  * Cette classe représente la commande du tutoriel débutant créée par torpill40.
- * 
+ *
  * @author torpill40
- * 
+ *
  * @see com.torpill.fribot.commands.Command
  *
  */
@@ -23,9 +23,9 @@ import com.torpill.fribot.commands.Command;
 public class TutorialTorpill40Command extends Command {
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>TutorialTorpill40Command</code>.
-	 * 
+	 *
 	 */
 	public TutorialTorpill40Command() {
 
@@ -45,15 +45,15 @@ public class TutorialTorpill40Command extends Command {
 	}
 
 	@Override
-	public List<User> whiteListedUsers(DiscordBot bot, Server server) {
+	public List<User> whiteListedUsers(final DiscordBot bot, final Server server) {
 
 		return bot.users("392722513202774016");
 	}
 
 	@Override
-	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
+	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
-		Role role = bot.getDevRole(server);
+		final Role role = bot.getDevRole(server);
 
 		if (role != null) {
 
