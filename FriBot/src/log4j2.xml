@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
 	<Appenders>
-		<Console name="ConsoleStdOut" target="SYSTEM_OUT">
-			<ThresholdFilter level="ERROR" onMatch="DENY"
-				onMismatch="ACCEPT" />
+		<File name="FullLogFile" fileName="logs/full-latest.log"
+			append="false">
 			<PatternLayout
-				pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
-		</Console>
-		<Console name="ConsoleStdErr" target="SYSTEM_ERR">
-			<ThresholdFilter level="ERROR" onMatch="ACCEPT"
-				onMismatch="DENY" />
+				pattern="%d{HH:mm:ss.SSS} [%-5level] %logger{36} (%t) - %C.%M() @%L > %msg%n" />
+		</File>
+		<File name="LogFile" fileName="logs/latest.log" append="false">
 			<PatternLayout
-				pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
-		</Console>
-		<Console name="SlowConsole" target="SYSTEM_OUT">
+				pattern="%d{HH:mm:ss.SSS} [%-5level] %logger{36} (%t) - %C.%M() @%L > %msg%n" />
+		</File>
+		<Console name="STDOUT" target="SYSTEM_OUT">
 			<PatternLayout
-				pattern="%highlight{%d{HH:mm:ss.SSS} [%-5level] %logger{36}.%M() @%L - %msg%n}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=magenta}"
+				pattern="%d{HH:mm:ss.SSS} %highlight{[%-5level]}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=magenta} %logger{36} (%t) - %C.%M() @%L > %msg%n"
 				disableAnsi="false" />
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Root level="debug">
-			<AppenderRef ref="SlowConsole" />
+		<Root level="all">
+			<AppenderRef ref="STDOUT" level="debug" />
+			<AppenderRef ref="FullLogFile" />
+			<AppenderRef ref="LogFile" level="info" />
 		</Root>
 	</Loggers>
 </Configuration>
