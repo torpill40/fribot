@@ -23,9 +23,9 @@ import com.torpill.fribot.commands.Command;
 import com.torpill.fribot.threads.BotThread;
 
 /**
- * 
+ *
  * Cette classe représente un bot Discord. Contient l'api en membre privé.
- * 
+ *
  * @author torpill40
  *
  */
@@ -41,9 +41,9 @@ public class DiscordBot {
 	private DiscordApi api;
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>DiscordBot</code>.
-	 * 
+	 *
 	 * @param prefix
 	 *            : prefix du bot.
 	 * @param color
@@ -65,9 +65,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Ajouter une commande au bot.
-	 * 
+	 *
 	 * @param command
 	 *            : commande à rajouter.
 	 */
@@ -77,7 +77,7 @@ public class DiscordBot {
 		List<Command> category = this.categories.get(command.getCategory());
 		if (category == null) {
 
-			category = new ArrayList<Command>();
+			category = new ArrayList<>();
 			this.categories.put(command.getCategory(), category);
 		}
 
@@ -85,12 +85,12 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Rajouter un thread au bot.
-	 * 
+	 *
 	 * @param thread
 	 *            : thread à rajouter.
-	 * 
+	 *
 	 * @see com.torpill.fribot.threads.BotThread
 	 */
 	public void addThread(final BotThread thread) {
@@ -99,13 +99,13 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Relier l'API Javacord avec le bot.
-	 * 
+	 *
 	 * @param api
 	 *            : API Javacord.
 	 * @return this
-	 * 
+	 *
 	 * @see org.javacord.api.DiscordApi
 	 */
 	public DiscordBot api(final DiscordApi api) {
@@ -115,9 +115,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le préfix du bot.
-	 * 
+	 *
 	 * @return préfix
 	 */
 	public String getPrefix() {
@@ -126,9 +126,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer l'ID du rôle utilisateur.
-	 * 
+	 *
 	 * @return ID du rôle
 	 */
 	public String getUserRoleID() {
@@ -137,9 +137,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer l'ID du rôle développeur.
-	 * 
+	 *
 	 * @return ID du rôle
 	 */
 	public String getDevRoleID() {
@@ -148,41 +148,41 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le rôle utilisateur.
-	 * 
+	 *
 	 * @return rôle utilisateur
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public Role getUserRole(Server server) {
+	public Role getUserRole(final Server server) {
 
-		Optional<Role> role = server.getRoleById(this.role);
-		return (role.isPresent() ? role.get() : null);
+		final Optional<Role> role = server.getRoleById(this.role);
+		return role.isPresent() ? role.get() : null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le rôle développeur.
-	 * 
+	 *
 	 * @return rôle développeur
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public Role getDevRole(Server server) {
+	public Role getDevRole(final Server server) {
 
-		Optional<Role> devrole = server.getRoleById(this.devrole);
-		return (devrole.isPresent() ? devrole.get() : null);
+		final Optional<Role> devrole = server.getRoleById(this.devrole);
+		return devrole.isPresent() ? devrole.get() : null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer l'utilisateur du propriétaire du bot.
-	 * 
+	 *
 	 * @return propriétaire
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 */
 	public User owner() {
@@ -200,9 +200,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Exécuter une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur de la commande.
 	 * @param channel
@@ -216,7 +216,7 @@ public class DiscordBot {
 	 * @param args
 	 *            : arguments passés à la commande.
 	 * @return code d'erreur
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.channel.TextChannel
 	 * @see org.javacord.api.entity.message.Message
@@ -227,12 +227,11 @@ public class DiscordBot {
 
 		final Command command = this.commands.get(commandName);
 
-		if (command == null) {
+		if (command == null) return -1;
 
-			return -1;
+		if (command.deleteCommandUsage()) {
+			message.delete();
 		}
-
-		if (command.deleteCommandUsage()) message.delete();
 
 		if (!this.isOwner(user)) {
 
@@ -252,18 +251,18 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Démarrer un thread connu du bot.
-	 * 
+	 *
 	 * @param thread
 	 *            : class du thread à démarrer.
 	 * @param args
 	 *            : arguments passés au thread.
 	 * @return code d'erreur
-	 * 
+	 *
 	 * @see com.torpill.fribot.threads.BotThread
 	 */
-	public int startThread(Class<? extends BotThread> thread, Object... args) {
+	public int startThread(final Class<? extends BotThread> thread, final Object... args) {
 
 		BotThread target = null;
 
@@ -271,22 +270,19 @@ public class DiscordBot {
 
 			target = this.threads.get(thread).clone();
 
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 
 			e.printStackTrace();
 		}
 
-		if (target == null) {
-
-			return -1;
-		}
+		if (target == null) return -1;
 
 		App.LOGGER.debug("BotThread '" + target.getName() + "' trouvé, préparation de l'éxecution.");
 
 		final int response = target.setArgs(args);
 		if (response == 0) {
 
-			Thread thr = new Thread(target);
+			final Thread thr = new Thread(target);
 			thr.setName(target.getName());
 			App.LOGGER.debug("Démarrage de '" + thr.getName() + "'.");
 			thr.start();
@@ -296,9 +292,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Générer l'embed par défaut du bot.
-	 * 
+	 *
 	 * @param title
 	 *            : titre de l'embed.
 	 * @param description
@@ -306,117 +302,123 @@ public class DiscordBot {
 	 * @param user
 	 *            : utilisateur demandant la création de l'embed.
 	 * @return embed par défaut
-	 * 
+	 *
 	 * @see org.javacord.api.entity.message.embed.EmbedBuilder
 	 */
-	public EmbedBuilder defaultEmbedBuilder(String title, String description, User user) {
+	public EmbedBuilder defaultEmbedBuilder(final String title, final String description, final User user) {
 
-		EmbedBuilder embed = new EmbedBuilder();
-		if (title != null) embed.setTitle(title);
-		if (description != null) embed.setDescription(description);
+		final EmbedBuilder embed = new EmbedBuilder();
+		if (title != null) {
+			embed.setTitle(title);
+		}
+		if (description != null) {
+			embed.setDescription(description);
+		}
 		embed.setColor(this.color);
 		embed.setThumbnail(this.api.getYourself().getAvatar());
-		if (user != null) embed.setFooter("En réponse à " + user.getDiscriminatedName(), user.getAvatar());
+		if (user != null) {
+			embed.setFooter("En réponse à " + user.getDiscriminatedName(), user.getAvatar());
+		}
 		return embed;
 	}
 
 	/**
-	 * 
+	 *
 	 * Renvoyer le message d'aide d'une commande.
-	 * 
+	 *
 	 * @param commandName
 	 *            : nom de la commande.
 	 * @return message d'aide
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public String getHelpFor(String commandName) {
+	public String getHelpFor(final String commandName) {
 
 		final Command command = this.commands.get(commandName);
-		return (command == null ? null : command.getHelp());
+		return command == null ? null : command.getHelp();
 	}
 
 	/**
-	 * 
+	 *
 	 * Renvoyer le type d'argument d'une commande.
-	 * 
+	 *
 	 * @param commandName
 	 *            : nom de la commande.
 	 * @return type d'argument.
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command
 	 * @see com.torpill.fribot.commands.Command.ArgumentType
 	 */
-	public String getTypeFor(String commandName) {
+	public String getTypeFor(final String commandName) {
 
 		final Command command = this.commands.get(commandName);
-		return (command == null ? null : command.getType().NAME);
+		return command == null ? null : command.getType().NAME;
 	}
 
 	/**
-	 * 
+	 *
 	 * Renvoyer le nom de la catégorie d'une commande.
-	 * 
+	 *
 	 * @param commandName
 	 *            : nom de la commande.
 	 * @return type d'argument.
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command
 	 * @see com.torpill.fribot.commands.Command.Category
 	 */
-	public String getCategoryFor(String commandName) {
+	public String getCategoryFor(final String commandName) {
 
 		final Command command = this.commands.get(commandName);
-		return (command == null ? null : command.getCategory().NAME);
+		return command == null ? null : command.getCategory().NAME;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les commandes dans une catégorie particulière.
-	 * 
+	 *
 	 * @param category
 	 *            : la catégorie dont l'on veut récupérer les commandes.
 	 * @return liste de commandes
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command
 	 * @see com.torpill.fribot.commands.Command.Category
 	 */
-	public List<Command> commandsIn(Command.Category category) {
+	public List<Command> commandsIn(final Command.Category category) {
 
 		return this.categories.get(category);
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si l'utilisateur passé en argument est le bot.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur à comparer.
 	 * @return booléen
-	 * 
+	 *
 	 * @see org.javacord.entity.user.User
 	 */
-	public boolean is(User user) {
+	public boolean is(final User user) {
 
 		return this.api.getYourself() == user;
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si l'utilisateur passé en argument est un administrateur du serveur
 	 * passé en argument.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur à tester.
 	 * @param server
 	 *            : serveur sur lequel on teste l'utilisateur.
 	 * @return booléen
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see org.javacord.api.entity.permission.PermissionType
 	 */
-	public boolean isAdmin(User user, Server server) {
+	public boolean isAdmin(final User user, final Server server) {
 
 		final Collection<PermissionType> userPermissions = server.getAllowedPermissions(user);
 		if (userPermissions.contains(PermissionType.ADMINISTRATOR)) {
@@ -429,16 +431,16 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si l'utilisateur passé en argument est le propriétaire du bot.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur à comparer.
 	 * @return booléen
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 */
-	public boolean isOwner(User user) {
+	public boolean isOwner(final User user) {
 
 		if (user.getId() == this.owner().getId()) {
 
@@ -450,9 +452,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Vérifier si un utilisateur à les permissions pour exécuter une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur voulant exécuter la commande.
 	 * @param commandName
@@ -460,20 +462,20 @@ public class DiscordBot {
 	 * @param server
 	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see org.javacord.api.entity.permission.PermissionType
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public int canUse(User user, String commandName, Server server) {
+	public int canUse(final User user, final String commandName, final Server server) {
 
 		final Command command = this.commands.get(commandName);
 		final List<PermissionType> needed = command.permissionNeeded();
 		final Collection<PermissionType> userPermissions = server.getAllowedPermissions(user);
 		if (needed != null) {
 
-			for (PermissionType permission : needed) {
+			for (final PermissionType permission : needed) {
 
 				if (!userPermissions.contains(permission)) {
 
@@ -493,9 +495,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si un utilisateur est sur la liste noire d'une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur voulant exécuter la commande.
 	 * @param commandName
@@ -503,18 +505,18 @@ public class DiscordBot {
 	 * @param server
 	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public int onBlacklist(User user, String commandName, Server server) {
+	public int onBlacklist(final User user, final String commandName, final Server server) {
 
 		final Command command = this.commands.get(commandName);
 		final List<User> blackListedUsers = command.blackListedUsers(this, server);
 		if (blackListedUsers != null) {
 
-			for (User blackListedUser : blackListedUsers) {
+			for (final User blackListedUser : blackListedUsers) {
 
 				if (blackListedUser != null && user.getId() == blackListedUser.getId()) {
 
@@ -534,9 +536,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si un utilisateur est sur la liste blanche d'une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur voulant exécuter la commande.
 	 * @param commandName
@@ -544,18 +546,18 @@ public class DiscordBot {
 	 * @param server
 	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public int onWhitelist(User user, String commandName, Server server) {
+	public int onWhitelist(final User user, final String commandName, final Server server) {
 
 		final Command command = this.commands.get(commandName);
 		final List<User> whiteListedUsers = command.whiteListedUsers(this, server);
 		if (whiteListedUsers != null) {
 
-			for (User whiteListedUser : whiteListedUsers) {
+			for (final User whiteListedUser : whiteListedUsers) {
 
 				if (whiteListedUser != null && user.getId() == whiteListedUser.getId()) {
 
@@ -575,9 +577,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si un utilisateur possède un role sur la liste noire d'une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur voulant exécuter la commande.
 	 * @param commandName
@@ -585,20 +587,20 @@ public class DiscordBot {
 	 * @param server
 	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public int onRoleBlacklist(User user, String commandName, Server server) {
+	public int onRoleBlacklist(final User user, final String commandName, final Server server) {
 
 		final Command command = this.commands.get(commandName);
 		final List<Role> userRoles = server.getRoles(user);
 		final List<Role> blackListedRoles = command.blackListedRoles(this, server);
 		if (blackListedRoles != null) {
 
-			for (Role blackListedRole : blackListedRoles) {
+			for (final Role blackListedRole : blackListedRoles) {
 
 				if (blackListedRole != null && userRoles.contains(blackListedRole)) {
 
@@ -618,9 +620,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si un utilisateur possède un role sur la liste blanche d'une commande.
-	 * 
+	 *
 	 * @param user
 	 *            : utilisateur voulant exécuter la commande.
 	 * @param commandName
@@ -628,20 +630,20 @@ public class DiscordBot {
 	 * @param server
 	 *            : serveur sur lequel l'utilisateur veut exécuter la commande.
 	 * @return code d'exécution
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public int onRoleWhitelist(User user, String commandName, Server server) {
+	public int onRoleWhitelist(final User user, final String commandName, final Server server) {
 
 		final Command command = this.commands.get(commandName);
 		final List<Role> userRoles = server.getRoles(user);
 		final List<Role> whiteListedRoles = command.whiteListedRoles(this, server);
 		if (whiteListedRoles != null) {
 
-			for (Role whiteListedRole : whiteListedRoles) {
+			for (final Role whiteListedRole : whiteListedRoles) {
 
 				if (whiteListedRole != null && userRoles.contains(whiteListedRole)) {
 
@@ -661,36 +663,36 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Savoir si une commande est privée.
-	 * 
+	 *
 	 * @param commandName
 	 *            : nom de la commande.
 	 * @return booléen
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command
 	 */
-	public boolean isPrivate(String commandName) {
+	public boolean isPrivate(final String commandName) {
 
 		final Command command = this.commands.get(commandName);
 		return command.isPrivate();
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer tous les utilisateurs membres du serveur passé en argument.
-	 * 
+	 *
 	 * @param server
 	 *            : serveur dont on veut récupérer les utilisateurs.
 	 * @return liste des utilisateurs membres
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public List<User> allUsersFrom(Server server) {
+	public List<User> allUsersFrom(final Server server) {
 
-		List<User> users = new ArrayList<>();
-		for (User user : server.getMembers()) {
+		final List<User> users = new ArrayList<>();
+		for (final User user : server.getMembers()) {
 
 			users.add(user);
 		}
@@ -698,39 +700,39 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer tous les rôles du serveur passé en argument.
-	 * 
+	 *
 	 * @param server
 	 *            : serveur dont on veut récupérer les rôles.
 	 * @return liste des rôles
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public List<Role> allRolesFrom(Server server) {
+	public List<Role> allRolesFrom(final Server server) {
 
 		return server.getRoles();
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les rôles, dont les IDs ont été passés en arguments, du serveur
 	 * passé en argument.
-	 * 
+	 *
 	 * @param server
 	 *            : serveur dont on veut récupérer les rôles.
 	 * @param roles
 	 *            : IDs des rôles que l'on veut récupérer.
 	 * @return liste des rôles
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public List<Role> roles(Server server, String... roles) {
+	public List<Role> roles(final Server server, final String... roles) {
 
-		List<Role> list = new ArrayList<>();
-		for (String roleId : roles) {
+		final List<Role> list = new ArrayList<>();
+		for (final String roleId : roles) {
 
 			server.getRoleById(roleId).ifPresent(role -> {
 
@@ -741,20 +743,20 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les utilisateurs dont les IDs ont été passés en arguments.
-	 * 
+	 *
 	 * @param users
 	 *            : IDs des rôles que l'on veut récupérer.
 	 * @return liste des utilisateurs
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 */
-	public List<User> users(String... users) {
+	public List<User> users(final String... users) {
 
-		List<User> list = new ArrayList<>();
-		for (String userId : users) {
+		final List<User> list = new ArrayList<>();
+		for (final String userId : users) {
 
 			try {
 
@@ -769,9 +771,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer la date de création du bot.
-	 * 
+	 *
 	 * @return date de création
 	 */
 	public String getCreationDate() {
@@ -780,9 +782,9 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le nom du bot.
-	 * 
+	 *
 	 * @return nom du bot
 	 */
 	public String getName() {
@@ -791,13 +793,39 @@ public class DiscordBot {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer la couleur par défaut du bot.
-	 * 
+	 *
 	 * @return couleur par défaut.
 	 */
 	public Color getColor() {
 
 		return this.color;
+	}
+
+	/**
+	 *
+	 * Ajouter un rôle à un membre d'un serveur.
+	 *
+	 * @param user
+	 *            : Membre du serveur
+	 * @param server
+	 *            : Serveur sur lequel on ajoute le rôle
+	 * @param id
+	 *            : ID du rôle à ajouter
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public void addRoleToUser(final User user, final Server server, final String id) {
+
+		final Optional<Role> optRole = server.getRoleById(id);
+
+		if (optRole.isPresent()) {
+
+			final Role role = optRole.get();
+			server.addRoleToUser(user, role);
+		}
 	}
 }
