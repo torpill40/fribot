@@ -344,11 +344,30 @@ public class DiscordBot {
 
 	/**
 	 *
+	 * Renvoyer l'exemple d'utilisation d'une commande.
+	 *
+	 * @param commandName
+	 *            : nom de la commande.
+	 * @param user
+	 *            : utilisateur sur lequel on applique l'exemple
+	 * @return exemple d'utilisation
+	 *
+	 * @see com.torpill.fribot.commands.Command
+	 * @see org.javacord.api.entity.user.User
+	 */
+	public String getExampleFor(final String commandName, final User user) {
+
+		final Command command = this.commands.get(commandName);
+		return command == null ? null : command.getExample(this.prefix, user);
+	}
+
+	/**
+	 *
 	 * Renvoyer le type d'argument d'une commande.
 	 *
 	 * @param commandName
 	 *            : nom de la commande.
-	 * @return type d'argument.
+	 * @return type d'argument
 	 *
 	 * @see com.torpill.fribot.commands.Command
 	 * @see com.torpill.fribot.commands.Command.ArgumentType

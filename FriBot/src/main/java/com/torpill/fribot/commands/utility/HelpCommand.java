@@ -12,13 +12,13 @@ import com.torpill.fribot.commands.Command;
 import com.torpill.fribot.threads.HelpThread;
 
 /**
- * 
+ *
  * Cette classe représente une commande permettant d'afficher la liste des
  * commandes disponibles (hormis les commandes privées) et d'obtenir de l'aide
  * sur chacunes d'elles.
- * 
+ *
  * @author torpill40
- * 
+ *
  * @see com.torpill.fribot.commands.Command
  *
  */
@@ -26,9 +26,9 @@ import com.torpill.fribot.threads.HelpThread;
 public class HelpCommand extends Command {
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>HelpCommand</code>.
-	 * 
+	 *
 	 */
 	public HelpCommand() {
 
@@ -48,13 +48,13 @@ public class HelpCommand extends Command {
 	}
 
 	@Override
-	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
+	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		switch (args.length) {
 		case 0:
 			try {
 
-				TextChannel dm = user.openPrivateChannel().get();
+				final TextChannel dm = user.openPrivateChannel().get();
 				if (bot.startThread(HelpThread.class, user, dm) == 0) {
 
 					channel.sendMessage("Utilitaire d'aide envoyé en MP " + user.getMentionTag());
@@ -69,6 +69,7 @@ public class HelpCommand extends Command {
 		case 1:
 			final String commandName = args[0];
 			final String help = bot.getHelpFor(commandName);
+			final String example = bot.getExampleFor(commandName, user);
 			final String type = bot.getTypeFor(commandName);
 			final String category = bot.getCategoryFor(commandName);
 
@@ -79,6 +80,7 @@ public class HelpCommand extends Command {
 
 			final EmbedBuilder embed = bot.defaultEmbedBuilder("Aide :", commandName + " :", user);
 			embed.addField("Description :", help);
+			if (example != null) embed.addField("Exemple :", example);
 			embed.addField("Catégorie :", category);
 			embed.addField("Type d'arguments :", type);
 			if (!bot.isOwner(user)) {

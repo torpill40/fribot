@@ -42,6 +42,12 @@ public class DogCommand extends Command {
 	}
 
 	@Override
+	public String getExample(final String prefix, final User user) {
+
+		return prefix + this.getName() + "\n" + prefix + this.getName() + " " + user.getMentionTag();
+	}
+
+	@Override
 	public boolean deleteCommandUsage() {
 
 		return true;

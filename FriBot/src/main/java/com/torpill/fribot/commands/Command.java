@@ -14,9 +14,9 @@ import org.javacord.api.entity.user.User;
 import com.torpill.fribot.bot.DiscordBot;
 
 /**
- * 
+ *
  * Cette classe représente une commande.
- * 
+ *
  * @author torpill40
  *
  */
@@ -28,16 +28,16 @@ public abstract class Command {
 	private final Category category;
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>Command</code>.
-	 * 
+	 *
 	 * @param name
 	 *            : nom de la commande.
 	 * @param argumentType
 	 *            : type d'argument de la commande.
 	 * @param category
 	 *            : catégorie de la commande.
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command.ArgumentType
 	 * @see com.torpill.fribot.commands.Command.Category
 	 */
@@ -49,27 +49,27 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le message d'aide de la commande.
-	 * 
+	 *
 	 * @return message daide
 	 */
 	public abstract String getHelp();
 
 	/**
-	 * 
+	 *
 	 * Savoir si le message de la commande doit être supprimé lors de l'exécution.
-	 * 
+	 *
 	 * @return booléen
 	 */
 	public abstract boolean deleteCommandUsage();
 
 	/**
-	 * 
+	 *
 	 * Récupérer les permissions requises à l'utilisation de la commande.
-	 * 
+	 *
 	 * @return liste de permissions.
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.PermissionType
 	 */
 	public List<PermissionType> permissionNeeded() {
@@ -78,85 +78,85 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les rôles sur la liste blanche de la commande.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord récupérant les informations.
 	 * @param server
 	 *            : serveur sur lequel on cherche les informations.
 	 * @return liste de rôles
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public List<Role> whiteListedRoles(DiscordBot bot, Server server) {
+	public List<Role> whiteListedRoles(final DiscordBot bot, final Server server) {
 
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les rôles sur la liste noire de la commande.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord récupérant les informations.
 	 * @param server
 	 *            : serveur sur lequel on cherche les informations.
 	 * @return liste de rôles
-	 * 
+	 *
 	 * @see org.javacord.api.entity.permission.Role
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public List<Role> blackListedRoles(DiscordBot bot, Server server) {
+	public List<Role> blackListedRoles(final DiscordBot bot, final Server server) {
 
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les utilisateurs sur la liste blanche de la commande.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord récupérant les informations.
 	 * @param server
 	 *            : serveur sur lequel on cherche les informations.
 	 * @return liste d'utilisateurs
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public List<User> whiteListedUsers(DiscordBot bot, Server server) {
+	public List<User> whiteListedUsers(final DiscordBot bot, final Server server) {
 
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer les utilisateurs sur la liste noire de la commande.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord récupérant les informations.
 	 * @param server
 	 *            : serveur sur lequel on cherche les informations.
 	 * @return liste d'utilisateurs
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.server.Server
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public List<User> blackListedUsers(DiscordBot bot, Server server) {
+	public List<User> blackListedUsers(final DiscordBot bot, final Server server) {
 
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * Exécuter la commande.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord a demandant l'exécution de la commande.
 	 * @param args
@@ -168,7 +168,7 @@ public abstract class Command {
 	 * @param server
 	 *            : serveur dans lequel est exécutée la commande.
 	 * @return code d'erreur
-	 * 
+	 *
 	 * @see org.javacord.api.entity.user.User
 	 * @see org.javacord.api.entity.channel.TextChannel
 	 * @see org.javacord.api.entity.server.Server
@@ -177,9 +177,26 @@ public abstract class Command {
 	public abstract int execute(final DiscordBot bot, final String args[], final User user, final TextChannel channel, final Server server);
 
 	/**
-	 * 
+	 *
+	 * Récupérer l'exemple d'utilisation de la commande.
+	 *
+	 * @param prefix
+	 *            : prefix à appliquer à l'exemple
+	 * @param user
+	 *            : utilisateur sur lequel on applique l'exemple
+	 * @return exemple d'utilisation
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 */
+	public String getExample(final String prefix, final User user) {
+
+		return null;
+	}
+
+	/**
+	 *
 	 * Convertir les arguments au format demandé par la commande.
-	 * 
+	 *
 	 * @param args
 	 *            : arguments en entrée.
 	 * @return arguments convertis
@@ -190,9 +207,9 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le nom de la commande.
-	 * 
+	 *
 	 * @return nom de la commande
 	 */
 	public String getName() {
@@ -201,11 +218,11 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer le type d'argument de la commande.
-	 * 
+	 *
 	 * @return type d'argument
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command.ArgumentType
 	 */
 	public ArgumentType getType() {
@@ -214,22 +231,22 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Récupérer la catégorie de la commande.
-	 * 
+	 *
 	 * @return catégorie
-	 * 
+	 *
 	 * @see com.torpill.fribot.commands.Command.Category
 	 */
 	public Category getCategory() {
 
 		return this.category;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Savoir si la commande est privée.
-	 * 
+	 *
 	 * @return booléen
 	 */
 	public boolean isPrivate() {
@@ -238,9 +255,9 @@ public abstract class Command {
 	}
 
 	/**
-	 * 
+	 *
 	 * Cette classe énumératrice représente les différents types d'argument.
-	 * 
+	 *
 	 * @author torpill40
 	 *
 	 */
@@ -254,9 +271,9 @@ public abstract class Command {
 		public final String EXAMPLE;
 
 		/**
-		 * 
+		 *
 		 * Constructeur de la classe énumératrice <code>ArgumentType</code>.
-		 * 
+		 *
 		 * @param name
 		 *            : nom du type d'argument.
 		 * @param description
@@ -272,9 +289,9 @@ public abstract class Command {
 		}
 
 		/**
-		 * 
+		 *
 		 * Convertir les arguments au format du type d'argument.
-		 * 
+		 *
 		 * @param args
 		 *            : arguments en entrée.
 		 * @return arguments convertis
@@ -299,16 +316,16 @@ public abstract class Command {
 		}
 
 		/**
-		 * 
+		 *
 		 * Convertir les arguments au format nul.
-		 * 
+		 *
 		 * @param args
 		 *            : arguments en entrée.
 		 * @return arguments convertis
 		 */
 		private String[] noneParse(final String args[]) {
 
-			String[] none = {
+			final String[] none = {
 					args[0]
 			};
 
@@ -316,16 +333,16 @@ public abstract class Command {
 		}
 
 		/**
-		 * 
+		 *
 		 * Convertir les arguments au format classique.
-		 * 
+		 *
 		 * @param args
 		 *            : arguments en entrée.
 		 * @return arguments convertis
 		 */
 		private String[] rawParse(final String args[]) {
 
-			String[] raw = new String[args.length - 1];
+			final String[] raw = new String[args.length - 1];
 			for (int i = 0; i < raw.length; i++) {
 
 				raw[i] = args[i + 1];
@@ -335,9 +352,9 @@ public abstract class Command {
 		}
 
 		/**
-		 * 
+		 *
 		 * Convertir les arguments au format guillemet.
-		 * 
+		 *
 		 * @param args
 		 *            : arguments en entrée.
 		 * @return arguments convertis
@@ -355,9 +372,9 @@ public abstract class Command {
 			for (int j = 0, i = 0; j < chrs.length; j++) {
 
 				final char chr = chrs[j];
-				final char prev = (j == 0 ? ' ' : chrs[j - 1]);
-				final char beforePrev = (j <= 1 ? ' ' : chrs[j - 2]);
-				final char next = (j == chrs.length - 1 ? ' ' : chrs[j + 1]);
+				final char prev = j == 0 ? ' ' : chrs[j - 1];
+				final char beforePrev = j <= 1 ? ' ' : chrs[j - 2];
+				final char next = j == chrs.length - 1 ? ' ' : chrs[j + 1];
 				final boolean in = i % 2 != 0;
 
 				if (prev != '\\' && chr == '\"') {
@@ -369,19 +386,19 @@ public abstract class Command {
 
 				} else {
 
-					if (!in && ((beforePrev != '\\' && prev == '\"') || chr == ' ') && next != ' ' && next != '\"') {
+					if (!in && (beforePrev != '\\' && prev == '\"' || chr == ' ') && next != ' ' && next != '\"') {
 
 						builders.add(0, new StringBuilder());
 					}
 
-					if (!(chr == '\\' || (!in && chr == ' '))) {
+					if (!(chr == '\\' || !in && chr == ' ')) {
 
 						builders.get(0).append(chr);
 					}
 				}
 			}
 
-			String[] quote = new String[builders.size()];
+			final String[] quote = new String[builders.size()];
 			for (int i = 0; i < quote.length; i++) {
 
 				quote[i] = builders.get(builders.size() - 1 - i).toString();
@@ -391,9 +408,9 @@ public abstract class Command {
 		}
 
 		/**
-		 * 
+		 *
 		 * Convertir les arguments au format clé / valeur.
-		 * 
+		 *
 		 * @param args
 		 *            : arguments en entrée.
 		 * @return arguments convertis
@@ -403,7 +420,7 @@ public abstract class Command {
 			final Map<String, StringBuilder> builders = new HashMap<>();
 			String currentKey = "%";
 			builders.put(currentKey, new StringBuilder());
-			for (String arg : this.rawParse(args)) {
+			for (final String arg : this.rawParse(args)) {
 
 				if (arg.startsWith("--")) {
 
@@ -417,7 +434,7 @@ public abstract class Command {
 
 			final String[] key = new String[builders.size() * 2];
 			int i = 0;
-			for (String builderKey : builders.keySet()) {
+			for (final String builderKey : builders.keySet()) {
 
 				key[i++] = builderKey;
 				key[i++] = builders.get(builderKey).toString();
@@ -426,36 +443,32 @@ public abstract class Command {
 			return key;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Cette classe énumératrice représente les différentes catégories de commande.
-	 * 
+	 *
 	 * @author torpill40
 	 *
 	 */
-	
-	public static enum Category {
-		
-		UTILITY("utilitaire", "Commandes utiles aux membres du serveur"),
-		GAME("jeu", "Commandes permettant de jouer à un jeu"),
-		MODERATION("modération", "Commandes permettant de modérer un serveur"),
-		FUN("fun", "Commandes qui permettent de s'amuser un peu"),
-		TUTORIAL("tutoriel", "Commandes issues du tutoriel");
+
+	public enum Category {
+
+		UTILITY("utilitaire", "Commandes utiles aux membres du serveur"), GAME("jeu", "Commandes permettant de jouer à un jeu"), MODERATION("modération", "Commandes permettant de modérer un serveur"), FUN("fun", "Commandes qui permettent de s'amuser un peu"), TUTORIAL("tutoriel", "Commandes issues du tutoriel");
 
 		public final String NAME;
 		public final String DESCRIPTION;
-		
+
 		/**
-		 * 
+		 *
 		 * Constructeur de la classe énumératrice <code>Category</code>.
-		 * 
+		 *
 		 * @param name
 		 *            : nom de la catégorie.
 		 * @param description
 		 *            : description de la catégorie.
 		 */
-		private Category(String name, String description) {
+		private Category(final String name, final String description) {
 
 			this.NAME = name;
 			this.DESCRIPTION = description;
