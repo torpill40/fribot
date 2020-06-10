@@ -1,6 +1,7 @@
 package com.torpill.fribot.bot;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -193,7 +197,7 @@ public class DiscordBot {
 
 		} catch (InterruptedException | ExecutionException e) {
 
-			e.printStackTrace();
+			App.LOGGER.error("ERREUR: ", e);
 		}
 
 		return null;
@@ -764,7 +768,7 @@ public class DiscordBot {
 
 			} catch (InterruptedException | ExecutionException e) {
 
-				e.printStackTrace();
+				App.LOGGER.error("ERREUR: ", e);
 			}
 		}
 		return list;
@@ -808,9 +812,9 @@ public class DiscordBot {
 	 * Ajouter un rôle à un membre d'un serveur.
 	 *
 	 * @param user
-	 *            : Membre du serveur
+	 *            : membre du serveur
 	 * @param server
-	 *            : Serveur sur lequel on ajoute le rôle
+	 *            : serveur sur lequel on ajoute le rôle
 	 * @param id
 	 *            : ID du rôle à ajouter
 	 *
@@ -827,5 +831,129 @@ public class DiscordBot {
 			final Role role = optRole.get();
 			server.addRoleToUser(user, role);
 		}
+	}
+
+	/**
+	 *
+	 * Récupérer l'avatar d'un utilisateur.
+	 *
+	 * @param user
+	 *            : utilisateur dont on veut récupérer l'avatar
+	 * @return avatar de l'utilisateur
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see java.awt.image.BufferedImage
+	 */
+	public BufferedImage getAvatar(final User user) {
+
+		try {
+
+			return user.getAvatar().asBufferedImage().get();
+
+		} catch (InterruptedException | ExecutionException e) {
+
+			App.LOGGER.error("ERREUR: ", e);
+		}
+
+		return new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+	}
+
+	/**
+	 *
+	 * Récupérer le salon textuel d'un serveur selon une mention.
+	 *
+	 * @param mention
+	 *            : mention du salon
+	 * @param server
+	 *            : serveur sur lequel on cherche le salon
+	 * @return salon textuel correspondant
+	 *
+	 * @see org.javacord.api.entity.channel.TextChannel
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public TextChannel getTextChannelFromMention(final String mention, final Server server) {
+
+		final Pattern pattern = Pattern.compile("^<#[0-9]{1,}>$");
+		final Matcher matcher = pattern.matcher(mention);
+		TextChannel channel = null;
+
+		while (matcher.find()) {
+
+			if (channel != null) return null;
+
+			final Optional<ServerTextChannel> optChannel = server.getTextChannelById(mention.split("<#")[1].split(">")[0]);
+			if (optChannel.isPresent()) {
+
+				channel = optChannel.get();
+			}
+		}
+
+		return channel;
+	}
+
+	/**
+	 *
+	 * Récupérer le rôle d'un serveur selon une mention.
+	 *
+	 * @param mention
+	 *            : mention du rôle
+	 * @param server
+	 *            : serveur sur lequel on cherche le rôle
+	 * @return rôle correspondant
+	 *
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public Role getRoleFromMention(final String mention, final Server server) {
+
+		final Pattern pattern = Pattern.compile("^<@&[0-9]{1,}>$");
+		final Matcher matcher = pattern.matcher(mention);
+		Role role = null;
+
+		while (matcher.find()) {
+
+			if (role != null) return null;
+
+			final Optional<Role> optRole = server.getRoleById(mention.split("<@&")[1].split(">")[0]);
+			if (optRole.isPresent()) {
+
+				role = optRole.get();
+			}
+		}
+
+		return role;
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur selon sa mention.
+	 *
+	 * @param mention
+	 *            : mention de l'utilisateur
+	 * @return utilisateur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 */
+	public User getUserFromMention(final String mention) {
+
+		final Pattern pattern = Pattern.compile("^<@![0-9]{1,}>$");
+		final Matcher matcher = pattern.matcher(mention);
+		User user = null;
+
+		while (matcher.find()) {
+
+			if (user != null) return null;
+
+			try {
+
+				user = this.api.getUserById(mention.split("<@!")[1].split(">")[0]).get();
+
+			} catch (InterruptedException | ExecutionException e) {
+
+				App.LOGGER.error("ERREUR: ", e);
+			}
+		}
+
+		return user;
 	}
 }

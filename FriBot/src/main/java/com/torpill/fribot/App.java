@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.torpill.fribot.bot.DiscordBotBuilder;
+import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 import com.torpill.fribot.listeners.NitroListener;
@@ -24,7 +25,9 @@ import com.torpill.fribot.listeners.NitroListener;
 
 public class App {
 
-	public static final Logger LOGGER = LogManager.getLogger("FriBot");
+	public static final String APP_NAME = "FriBot";
+	public static final String APP_ID = "fribot";
+	public static final Logger LOGGER = LogManager.getLogger(APP_NAME);
 	public static final String VERSION = "RELEASE-1.0";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 
@@ -75,6 +78,7 @@ public class App {
 
 			botBuilder.addCommand(HelloCommand.class)
 				.addCommand(TutorialTorpill40Command.class)
+				.addCommand(DogCommand.class)
 				.addListener(NitroListener.class)
 				.build();
 
