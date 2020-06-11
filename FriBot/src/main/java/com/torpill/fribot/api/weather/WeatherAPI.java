@@ -136,13 +136,13 @@ public class WeatherAPI {
 									// @formatter:on
 								}
 
-								final JSONObject clouds = JSON.getJSONObject(weatherElem, "clouds");
+								final JSONObject clouds = JSON.getJSONObject(listElem, "clouds");
 								if (clouds != null) {
 
 									weather.setClouds(JSON.getDouble(clouds, "all"));
 								}
 
-								final JSONObject wind = JSON.getJSONObject(weatherElem, "wind");
+								final JSONObject wind = JSON.getJSONObject(listElem, "wind");
 								if (wind != null) {
 
 									// @formatter:off
@@ -153,13 +153,13 @@ public class WeatherAPI {
 									// @formatter:on
 								}
 
-								final JSONObject rain = JSON.getJSONObject(weatherElem, "rain");
+								final JSONObject rain = JSON.getJSONObject(listElem, "rain");
 								if (rain != null) {
 
 									weather.setRain(JSON.getDouble(rain, "3h"));
 								}
 
-								final JSONObject snow = JSON.getJSONObject(weatherElem, "snow");
+								final JSONObject snow = JSON.getJSONObject(listElem, "snow");
 								if (snow != null) {
 
 									weather.setSnow(JSON.getDouble(snow, "3h"));

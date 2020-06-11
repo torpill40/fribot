@@ -11,6 +11,7 @@ import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
+import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
 
 /**
@@ -86,6 +87,7 @@ public class App {
 			botBuilder.addCommand(HelloCommand.class)
 				.addCommand(TutorialTorpill40Command.class)
 				.addCommand(DogCommand.class)
+				.addCommand(WeatherCommand.class)
 				.addListener(NitroListener.class)
 				.build();
 
