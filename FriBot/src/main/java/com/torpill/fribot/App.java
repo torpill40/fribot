@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.torpill.fribot.api.weather.WeatherAPI;
 import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.HelloCommand;
@@ -30,6 +31,7 @@ public class App {
 	public static final Logger LOGGER = LogManager.getLogger(APP_NAME);
 	public static final String VERSION = "RELEASE-1.0";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
+	public static final WeatherAPI WEATHER = new WeatherAPI();
 
 	/**
 	 *
@@ -44,6 +46,8 @@ public class App {
 	 *            <b>--role &lt;ROLE_ID&gt;</b> : rôle utilisateur par défaut.
 	 *            <br />
 	 *            <b>--devrole &lt;ROLE_ID&gt;</b> : rôle développeur par défaut.
+	 *            <br />
+	 *            <b>--weather &lt;APP_ID&gt;</b> : clé d'API Open Weather Map.
 	 *            <br />
 	 */
 
@@ -69,6 +73,9 @@ public class App {
 			case "--devrole":
 				botBuilder.setDevRole(args[i + 1]);
 				break;
+			case "--weather":
+				App.WEATHER.setAppID(args[i + 1]);
+				break;
 			}
 		}
 
@@ -84,7 +91,7 @@ public class App {
 
 			// @formatter:on
 
-			LOGGER.info("FriBot est prêt !");
+			App.LOGGER.info("FriBot est prêt !");
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 
