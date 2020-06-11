@@ -71,4 +71,122 @@ public class ImageProcessor {
 
 		return res;
 	}
+
+	private static double gaussianModel(final double x, final double y, final double variance) {
+
+		return 1 / (2 * Math.PI * Math.pow(variance, 2)) * Math.exp(-(Math.pow(x, 2) + Math.pow(y, 2)) / (2 * Math.pow(variance, 2)));
+	}
+
+	private static double[] generateWeightMatrix(final int radius, final double variance) {
+
+		final double[] weights = new double[radius * radius];
+		double sum = 0;
+
+		for (int i = 0; i < radius; i++) {
+
+			for (int j = 0; j < radius; j++) {
+
+				weights[i + j * radius] = ImageProcessor.gaussianModel(i - radius / 2, j - radius / 2, variance);
+				sum += weights[i + j * radius];
+			}
+		}
+
+		for (int i = 0; i < radius; i++) {
+
+			for (int j = 0; j < radius; j++) {
+
+				weights[i + j * radius] /= sum;
+			}
+		}
+
+		return weights;
+	}
+
+	/**
+	 *
+	 * Créer un flou gaussien sur une image.
+	 *
+	 * @param source
+	 *            : image source
+	 * @param radius
+	 *            : rayon d'impact du flou gaussien
+	 * @param variance
+	 *            : intensité du flou
+	 * @return image floutée
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage createGaussianBlur(final BufferedImage source, final int radius, final double variance) {
+
+		final double weights[] = ImageProcessor.generateWeightMatrix(radius, variance);
+		final BufferedImage res = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_RGB);
+		for (int i = 0; i < source.getWidth(); i++) {
+
+			for (int j = 0; j < source.getHeight(); j++) {
+
+				final double[] weightsRed = new double[radius * radius];
+				final double[] weightsGreen = new double[radius * radius];
+				final double[] weightsBlue = new double[radius * radius];
+
+				for (int weightX = 0; weightX < radius; weightX++) {
+
+					for (int weightY = 0; weightY < radius; weightY++) {
+
+						int sampleX = i + weightX - radius / 2;
+						int sampleY = j + weightY - radius / 2;
+
+						if (sampleX > source.getWidth() - 1) {
+
+							final int offset = sampleX - (source.getWidth() - 1);
+							sampleX = source.getWidth() - 1 - offset;
+						}
+
+						if (sampleY > source.getHeight() - 1) {
+
+							final int offset = sampleY - (source.getHeight() - 1);
+							sampleY = source.getHeight() - 1 - offset;
+						}
+
+						if (sampleX < 0) {
+
+							sampleX = -sampleX;
+						}
+
+						if (sampleY < 0) {
+
+							sampleY = -sampleY;
+						}
+
+						final double currentWeight = weights[weightX + weightY * radius];
+
+						final int sampledColor = source.getRGB(sampleX, sampleY);
+
+						weightsRed[weightX + weightY * radius] = currentWeight * (sampledColor >> 16 & 0xFF);
+						weightsGreen[weightX + weightY * radius] = currentWeight * (sampledColor >> 8 & 0xFF);
+						weightsBlue[weightX + weightY * radius] = currentWeight * (sampledColor & 0xFF);
+					}
+				}
+
+				final int red = ImageProcessor.getWeightedColorValue(weightsRed);
+				final int green = ImageProcessor.getWeightedColorValue(weightsGreen);
+				final int blue = ImageProcessor.getWeightedColorValue(weightsBlue);
+				final int rgb = red << 16 | green << 8 | blue;
+				res.setRGB(i, j, rgb);
+			}
+		}
+
+		return res;
+	}
+
+	private static int getWeightedColorValue(final double[] weightedColor) {
+
+		double sum = 0;
+
+		for (int i = 0; i < weightedColor.length; i++) {
+
+			sum += weightedColor[i];
+		}
+
+		return (int) sum;
+	}
 }
