@@ -13,6 +13,7 @@ import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
+import com.torpill.fribot.threads.WeatherThread;
 
 /**
  *
@@ -89,6 +90,7 @@ public class App {
 				.addCommand(DogCommand.class)
 				.addCommand(WeatherCommand.class)
 				.addListener(NitroListener.class)
+				.addThread(WeatherThread.class)
 				.build();
 
 			// @formatter:on

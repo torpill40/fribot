@@ -1,15 +1,15 @@
 package com.torpill.fribot.commands.utility;
 
 import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.App;
-import com.torpill.fribot.api.weather.Weather;
+import com.torpill.fribot.api.APIException;
 import com.torpill.fribot.api.weather.WeatherCity;
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.threads.WeatherThread;
 
 /**
  *
@@ -62,7 +62,10 @@ public class WeatherCommand extends Command {
 			switch (args[i]) {
 			case "%":
 			case "city":
-				cityName = args[i + 1];
+				if (!args[i + 1].equals("")) {
+
+					cityName = args[i + 1];
+				}
 				break;
 
 			case "query":
@@ -116,23 +119,30 @@ public class WeatherCommand extends Command {
 			}
 		}
 
-		final WeatherCity weatherCity = App.WEATHER.getForecast(cityName);
-		if (weatherCity == null) {
+		if (cityName == null) {
 
-			channel.sendMessage(user.getMentionTag() + " veuillez cibler une ville valide.");
+			channel.sendMessage(user.getMentionTag() + " veuillez renseigner une ville : `" + bot.getPrefix() + this.getName() + " Paris`.");
 			return 2;
 		}
 
-		final Weather weather = weatherCity.getWeather(0);
-		final EmbedBuilder embed = bot.defaultEmbedBuilder("Météo :", "Prévisons pour " + weatherCity.getCityName() + " (" + weatherCity.getCityCountry() + ") (" + weather.getDate() + ")", user);
-		if (temp) embed.addField("Température :", weather.getTemp() + "°C", true);
-		if (humidity) embed.addField("Humidité :", weather.getHumidity() + "%", true);
-		if (pressure) embed.addField("Pression atmosphérique :", weather.getPressure() + "hPa", true);
-		if (clouds) embed.addField("Nuages :", weather.getClouds() + "%", true);
-		if (wind) embed.addField("Vent :", weather.getWindSpeed() + "m/s, " + weather.getWindDir() + "°", true);
-		if (rain) embed.addField("Pluie :", weather.getRain() + "mm", true);
-		if (snow) embed.addField("Neige :", weather.getSnow() + "mm", true);
-		channel.sendMessage(embed);
+		try {
+
+			final WeatherCity weatherCity = App.WEATHER.getForecast(cityName);
+
+			if (weatherCity == null) {
+
+				channel.sendMessage(user.getMentionTag() + " `" + cityName.trim() + "` n'est pas une ville disponnible.");
+				return 2;
+			}
+
+			bot.startThread(WeatherThread.class, user, channel, weatherCity, new boolean[] {
+					temp, humidity, pressure, clouds, wind, rain, snow
+			});
+
+		} catch (final APIException e) {
+
+			channel.sendMessage("Une erreur est survenue : " + e.getMessage());
+		}
 
 		return 0;
 	}

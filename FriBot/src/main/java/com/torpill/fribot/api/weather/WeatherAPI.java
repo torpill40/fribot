@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.torpill.fribot.App;
+import com.torpill.fribot.api.APIException;
 import com.torpill.fribot.api.JSON;
 
 /**
@@ -44,8 +45,8 @@ public class WeatherAPI {
 
 		if (this.appID == null) {
 
-			App.LOGGER.warn("API Météo non-chargée.");
-			return null;
+			App.LOGGER.error(APIException.NO_KEY);
+			throw new APIException(APIException.NO_KEY);
 		}
 
 		try {
@@ -72,14 +73,14 @@ public class WeatherAPI {
 
 		} catch (final MalformedURLException e) {
 
-			App.LOGGER.error("Erreur dans l'URL: ", e);
+			App.LOGGER.error(APIException.BAD_URL);
+			throw new APIException(APIException.BAD_URL);
 
 		} catch (final IOException e) {
 
-			App.LOGGER.error("Erreur dans l'établissement de la connexion: ", e);
+			App.LOGGER.error(APIException.NO_CONNECTION);
+			return null;
 		}
-
-		return null;
 	}
 
 	/**
