@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.torpill.fribot.api.weather.WeatherAPI;
 import com.torpill.fribot.bot.DiscordBotBuilder;
+import com.torpill.fribot.commands.fun.ClydeCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
@@ -56,31 +57,35 @@ public class App {
 	public static void main(final String[] args) {
 
 		final DiscordBotBuilder botBuilder = new DiscordBotBuilder();
-
 		for (int i = 0; i < args.length; i++) {
 
 			switch (args[i]) {
+
 			case "--token":
 				botBuilder.setToken(args[i + 1]);
 				break;
+
 			case "--prefix":
 				botBuilder.setPrefix(args[i + 1]);
 				break;
+
 			case "--color":
 				botBuilder.setColor(new Color(Integer.parseInt(args[i + 1]), Integer.parseInt(args[i + 2]), Integer.parseInt(args[i + 3])));
 				break;
+
 			case "--role":
 				botBuilder.setRole(args[i + 1]);
 				break;
+
 			case "--devrole":
 				botBuilder.setDevRole(args[i + 1]);
 				break;
+
 			case "--weather":
 				App.WEATHER.setAppID(args[i + 1]);
 				break;
 			}
 		}
-
 		try {
 
 			// @formatter:off
@@ -88,6 +93,7 @@ public class App {
 			botBuilder.addCommand(HelloCommand.class)
 				.addCommand(TutorialTorpill40Command.class)
 				.addCommand(DogCommand.class)
+				.addCommand(ClydeCommand.class)
 				.addCommand(WeatherCommand.class)
 				.addListener(NitroListener.class)
 				.addThread(WeatherThread.class)

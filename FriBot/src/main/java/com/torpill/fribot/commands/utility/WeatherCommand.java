@@ -131,7 +131,7 @@ public class WeatherCommand extends Command {
 
 			if (weatherCity == null) {
 
-				channel.sendMessage(user.getMentionTag() + " `" + cityName.trim() + "` n'est pas une ville disponnible.");
+				channel.sendMessage(user.getMentionTag() + " `" + cityName.trim() + "` n'est pas une ville disponible.");
 				return 2;
 			}
 

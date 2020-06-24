@@ -79,7 +79,7 @@ public class WeatherThread extends BotThread {
 
 		final Weather weather = weatherCity.getWeather(this.page - 1);
 		final String description = weather.getDescription().replaceFirst(".", (weather.getDescription().charAt(0) + "").toUpperCase());
-		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Météo :", "Prévisons pour " + weatherCity.getCityName() + " (" + weatherCity.getCityCountry() + ") (" + weather.getDate() + ")", null);
+		final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Météo :", "Prévisions pour " + weatherCity.getCityName() + " (" + weatherCity.getCityCountry() + ") (" + weather.getDate() + ")", null);
 		embed.setFooter("Page : " + this.page + " / " + this.numberOfPage, user.getAvatar());
 		embed.addField("Description :", description);
 		if (temp) embed.addField("Température :", weather.getTemp() + "°C", true);
@@ -123,7 +123,7 @@ public class WeatherThread extends BotThread {
 
 					final Weather weather1 = weatherCity.getWeather(this.page - 1);
 					final String description1 = weather1.getDescription().replaceFirst(".", (weather1.getDescription().charAt(0) + "").toUpperCase());
-					final EmbedBuilder embed1 = this.bot.defaultEmbedBuilder("Météo :", "Prévisons pour " + weatherCity.getCityName() + " (" + weatherCity.getCityCountry() + ") (" + weather1.getDate() + ")", null);
+					final EmbedBuilder embed1 = this.bot.defaultEmbedBuilder("Météo :", "Prévisions pour " + weatherCity.getCityName() + " (" + weatherCity.getCityCountry() + ") (" + weather1.getDate() + ")", null);
 					embed1.setFooter("Page : " + this.page + " / " + this.numberOfPage, user.getAvatar());
 					embed1.addField("Description :", description1);
 					if (temp) embed1.addField("Température :", weather1.getTemp() + "°C", true);
