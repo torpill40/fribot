@@ -249,6 +249,8 @@ public class ImageProcessor {
 	 *            : dispersion du bruit (0 : pas de bruit -> 1 : bruit sur tous les
 	 *            pixels)
 	 * @return image bruitée
+	 *
+	 * @see java.awt.image.BufferedImage
 	 */
 	public static BufferedImage noise(final BufferedImage source, final float intensity, final float saturation, final float dispersion) {
 
@@ -300,6 +302,28 @@ public class ImageProcessor {
 		return res;
 	}
 
+	/**
+	 *
+	 * Ecrire un texte sur une image.
+	 *
+	 * @param source
+	 *            : image sur laquelle on écrit le texte
+	 * @param text
+	 *            : texte à écrire
+	 * @param x
+	 *            : position en abscisse du texte
+	 * @param y
+	 *            : position en ordonnée du texte
+	 * @param font
+	 *            : fonte du texte
+	 * @param color
+	 *            : couleur du texte
+	 * @return image avec le texte
+	 *
+	 * @see java.awt.image.BufferedImage
+	 * @see java.awt.Font
+	 * @see java.awt.Color
+	 */
 	public static BufferedImage write(final BufferedImage source, final String text, final int x, final int y, final Font font, final Color color) {
 
 		final BufferedImage res = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_INT_ARGB);

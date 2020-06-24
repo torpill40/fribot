@@ -27,6 +27,8 @@ public class FontLoader {
 	 * @param path
 	 *            : chemin relatif depuis le dossier dde fontes vers la fonte
 	 * @return fonte chargée
+	 *
+	 * @see java.awt.Font
 	 */
 	public static Font loadFont(final String path) {
 
