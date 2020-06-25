@@ -9,11 +9,12 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.util.ImageLoader;
 import com.torpill.fribot.util.ImageProcessor;
 
 /**
  *
- * Cette commande permet de tester les filtres d'images.
+ * Devenir un bot le temps d'une image.
  *
  * @author torpill40
  *
@@ -21,28 +22,34 @@ import com.torpill.fribot.util.ImageProcessor;
  *
  */
 
-public class ImageCommand extends Command {
+public class ComputerCommand extends Command {
 
 	/**
 	 *
-	 * Constructeur de la classe <code>ImageCommand</code>.
+	 * Constructeur de la classe <code>ComputerCommand</code>.
 	 *
 	 */
-	public ImageCommand() {
+	public ComputerCommand() {
 
-		super("__image", Command.ArgumentType.RAW, Command.Category.FUN);
+		super("computer", Command.ArgumentType.RAW, Command.Category.FUN);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Cette commande permet de tester les filtres d'images.";
+		return "Prendre place dans un vieil ordinateur.\nSans argument pour cibler l'auteur du message.\nAvec un argument en mention pour cibler un autre membre.";
+	}
+
+	@Override
+	public String getExample(final String prefix, final User user) {
+
+		return prefix + this.getName() + "\n" + prefix + this.getName() + " " + user.getMentionTag();
 	}
 
 	@Override
 	public boolean deleteCommandUsage() {
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -58,22 +65,19 @@ public class ImageCommand extends Command {
 			user0 = user;
 		}
 
-		final BufferedImage avatar = bot.getAvatar(user0);
-		final BufferedImage gray = ImageProcessor.multiply(ImageProcessor.noise(ImageProcessor.grayScale(avatar), 0.15F, 0F, 1F), 0.75F, 0.75F, 0.75F);
+		final BufferedImage gray = ImageProcessor.multiply(ImageProcessor.noise(ImageProcessor.grayScale(bot.getAvatar(user0)), 0.15F, 0F, 1F), 0.75F, 0.75F, 0.75F);
 		final BufferedImage redMask = ImageProcessor.createGaussianBlur(ImageProcessor.redMask(gray), 5, 2.5F);
 		final BufferedImage greenMask = ImageProcessor.greenMask(gray);
 		final BufferedImage blueMask = ImageProcessor.blueMask(gray);
-		final BufferedImage res = ImageProcessor.applyRGBMasks(redMask, -2, 0, greenMask, 2, -1, blueMask, 2, -1);
+		final BufferedImage avatar = ImageProcessor.applyRGBMasks(redMask, -2, 0, greenMask, 2, -1, blueMask, 2, -1);
+		final BufferedImage computer = ImageLoader.loadImage("computer.png");
+		final int maskX = 182, maskY = 85, maskWidth = 198, maskHeight = 198;
+		final BufferedImage res = ImageProcessor.applyMask(computer, avatar, maskX, maskY, maskWidth, maskHeight);
 
 		// @formatter:off
 
 		new MessageBuilder()
-			.append("Avant :")
-			.addAttachment(avatar, user.getName() + ".png")
-			.send(channel).join();
-		new MessageBuilder()
-			.append("Après :")
-			.addAttachment(res, user.getName() + ".png")
+			.addAttachment(res, user0.getName() + ".png")
 			.send(channel);
 
 		// @formatter:on

@@ -336,4 +336,220 @@ public class ImageProcessor {
 
 		return res;
 	}
+
+	/**
+	 *
+	 * Récupérer le calque rouge d'une image.
+	 *
+	 * @param source
+	 *            : image dont on souhaite récupérer le calque rouge
+	 * @return calque rouge de l'image
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage redMask(final BufferedImage source) {
+
+		return ImageProcessor.multiply(source, 1F, 0F, 0F);
+	}
+
+	/**
+	 *
+	 * Récupérer le calque vert d'une image.
+	 *
+	 * @param source
+	 *            : image dont on souhaite récupérer le calque vert
+	 * @return calque vert de l'image
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage greenMask(final BufferedImage source) {
+
+		return ImageProcessor.multiply(source, 0F, 1F, 0F);
+	}
+
+	/**
+	 *
+	 * Récupérer le calque bleu d'une image.
+	 *
+	 * @param source
+	 *            : image dont on souhaite récupérer le calque bleu
+	 * @return calque bleu de l'image
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage blueMask(final BufferedImage source) {
+
+		return ImageProcessor.multiply(source, 0F, 0F, 1F);
+	}
+
+	/**
+	 *
+	 * Superposer des calques RVB
+	 *
+	 * @param redM
+	 *            : calque rouge
+	 * @param redX
+	 *            : offset en abscisse du calque rouge
+	 * @param redY
+	 *            : offset en ordonnée du calque rouge
+	 * @param greenM
+	 *            : calque vert
+	 * @param greenX
+	 *            : offset en abscisse du calque vert
+	 * @param greenY
+	 *            : offset en ordonnée du calque vert
+	 * @param blueM
+	 *            : calque bleu
+	 * @param blueX
+	 *            : offset en abscisse du calque bleu
+	 * @param blueY
+	 *            : offset en ordonnée du calque bleu
+	 * @return image avec les masques superposés
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage applyRGBMasks(final BufferedImage redM, final int redX, final int redY, final BufferedImage greenM, final int greenX, final int greenY, final BufferedImage blueM, final int blueX, final int blueY) {
+
+		final int width = redM.getWidth(), height = redM.getHeight();
+
+		final BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		final int pixels[] = ((DataBufferInt) res.getRaster().getDataBuffer()).getData();
+		for (int i = 0; i < width; i++) {
+
+			for (int j = 0; j < height; j++) {
+
+				final int pix = i + j * width;
+
+				int redI = i - redX, redJ = j - redY;
+				int greenI = i - greenX, greenJ = j - greenY;
+				int blueI = i - blueX, blueJ = j - blueY;
+
+				if (redI < 0) redI = -redI;
+				if (redI >= width) redI -= (redI - width) * 2 + 1;
+				if (redJ < 0) redJ = -redJ;
+				if (redJ >= height) redJ -= (redJ - height) * 2 + 1;
+
+				if (greenI < 0) greenI = -greenI;
+				if (greenI >= width) greenI -= (greenI - width) * 2 + 1;
+				if (greenJ < 0) greenJ = -greenJ;
+				if (greenJ >= height) greenJ -= (greenJ - height) * 2 + 1;
+
+				if (blueI < 0) blueI = -blueI;
+				if (blueI >= width) blueI -= (blueI - width) * 2 + 1;
+				if (blueJ < 0) blueJ = -blueJ;
+				if (blueJ >= height) blueJ -= (blueJ - height) * 2 + 1;
+
+				final int red = redM.getRGB(redI, redJ) & 0x00FF0000;
+				final int green = greenM.getRGB(greenI, greenJ) & 0x0000FF00;
+				final int blue = blueM.getRGB(blueI, blueJ) & 0x000000FF;
+
+				pixels[pix] = 0xFF000000 | red | green | blue;
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 *
+	 * Superposer des calques RVB d'une image source.
+	 *
+	 * @param source
+	 *            : image source
+	 * @param redX
+	 *            : offset en abscisse du calque rouge
+	 * @param redY
+	 *            : offset en ordonnée du calque rouge
+	 * @param greenX
+	 *            : offset en abscisse du calque vert
+	 * @param greenY
+	 *            : offset en ordonnée du calque vert
+	 * @param blueX
+	 *            : offset en abscisse du calque bleu
+	 * @param blueY
+	 *            : offset en ordonnée du calque bleu
+	 * @return image avec les masques superposés
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage applyRGBMasks(final BufferedImage source, final int redX, final int redY, final int greenX, final int greenY, final int blueX, final int blueY) {
+
+		final int width = source.getWidth(), height = source.getHeight();
+
+		final BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		final int pixels[] = ((DataBufferInt) res.getRaster().getDataBuffer()).getData();
+		for (int i = 0; i < width; i++) {
+
+			for (int j = 0; j < height; j++) {
+
+				final int pix = i + j * width;
+
+				int redI = i - redX, redJ = j - redY;
+				int greenI = i - greenX, greenJ = j - greenY;
+				int blueI = i - blueX, blueJ = j - blueY;
+
+				if (redI < 0) redI = -redI;
+				if (redI >= width) redI -= (redI - width) * 2 + 1;
+				if (redJ < 0) redJ = -redJ;
+				if (redJ >= height) redJ -= (redJ - height) * 2 + 1;
+
+				if (greenI < 0) greenI = -greenI;
+				if (greenI >= width) greenI -= (greenI - width) * 2 + 1;
+				if (greenJ < 0) greenJ = -greenJ;
+				if (greenJ >= height) greenJ -= (greenJ - height) * 2 + 1;
+
+				if (blueI < 0) blueI = -blueI;
+				if (blueI >= width) blueI -= (blueI - width) * 2 + 1;
+				if (blueJ < 0) blueJ = -blueJ;
+				if (blueJ >= height) blueJ -= (blueJ - height) * 2 + 1;
+
+				final int red = source.getRGB(redI, redJ) & 0x00FF0000;
+				final int green = source.getRGB(greenI, greenJ) & 0x0000FF00;
+				final int blue = source.getRGB(blueI, blueJ) & 0x000000FF;
+
+				pixels[pix] = 0xFF000000 | red | green | blue;
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 *
+	 * Convertir une image en niveaux de gris.
+	 *
+	 * @param source
+	 *            : image à convertir en niveaux de gris.
+	 * @return image en niveaux de gris
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage grayScale(final BufferedImage source) {
+
+		final int width = source.getWidth(), height = source.getHeight();
+
+		final BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		final int pixels[] = ((DataBufferInt) res.getRaster().getDataBuffer()).getData();
+		for (int i = 0; i < width; i++) {
+
+			for (int j = 0; j < height; j++) {
+
+				final int pix = i + j * width;
+
+				final int rgb = source.getRGB(i, j);
+
+				final int red = (int) ((rgb >> 16 & 255) * 0.299F);
+				final int green = (int) ((rgb >> 8 & 255) * 0.587F);
+				final int blue = (int) ((rgb & 255) * 0.114F);
+				final int gray = red + green + blue;
+
+				pixels[pix] = 0xFF000000 | gray << 16 | gray << 8 | gray;
+			}
+		}
+
+		return res;
+	}
 }

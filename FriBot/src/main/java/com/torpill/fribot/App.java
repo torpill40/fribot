@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.torpill.fribot.api.weather.WeatherAPI;
 import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.ClydeCommand;
+import com.torpill.fribot.commands.fun.ComputerCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
@@ -94,6 +95,7 @@ public class App {
 				.addCommand(TutorialTorpill40Command.class)
 				.addCommand(DogCommand.class)
 				.addCommand(ClydeCommand.class)
+				.addCommand(ComputerCommand.class)
 				.addCommand(WeatherCommand.class)
 				.addListener(NitroListener.class)
 				.addThread(WeatherThread.class)
