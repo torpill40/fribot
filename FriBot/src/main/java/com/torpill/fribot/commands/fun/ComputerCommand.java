@@ -56,14 +56,8 @@ public class ComputerCommand extends Command {
 	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		User user0 = null;
-		if (args.length > 0) {
-
-			user0 = bot.getUserFromMention(args[0]);
-		}
-		if (user0 == null) {
-
-			user0 = user;
-		}
+		if (args.length > 0) user0 = bot.getUserFromMention(args[0]);
+		if (user0 == null) user0 = user;
 
 		final BufferedImage gray = ImageProcessor.multiply(ImageProcessor.noise(ImageProcessor.grayScale(bot.getAvatar(user0)), 0.15F, 0F, 1F), 0.75F, 0.75F, 0.75F);
 		final BufferedImage redMask = ImageProcessor.createGaussianBlur(ImageProcessor.redMask(gray), 5, 2.5F);

@@ -232,11 +232,10 @@ public class DiscordBot {
 		final Command command = this.commands.get(commandName);
 
 		if (command == null) return -1;
-
 		if (command.deleteCommandUsage()) {
+
 			message.delete();
 		}
-
 		if (!this.isOwner(user)) {
 
 			if (command.isPrivate()) return -2;
@@ -269,7 +268,6 @@ public class DiscordBot {
 	public int startThread(final Class<? extends BotThread> thread, final Object... args) {
 
 		BotThread target = null;
-
 		try {
 
 			target = this.threads.get(thread).clone();
@@ -313,14 +311,17 @@ public class DiscordBot {
 
 		final EmbedBuilder embed = new EmbedBuilder();
 		if (title != null) {
+
 			embed.setTitle(title);
 		}
 		if (description != null) {
+
 			embed.setDescription(description);
 		}
 		embed.setColor(this.color);
 		embed.setThumbnail(this.api.getYourself().getAvatar());
 		if (user != null) {
+
 			embed.setFooter("En réponse à " + user.getDiscriminatedName(), user.getAvatar());
 		}
 		return embed;
@@ -844,7 +845,6 @@ public class DiscordBot {
 	public void addRoleToUser(final User user, final Server server, final String id) {
 
 		final Optional<Role> optRole = server.getRoleById(id);
-
 		if (optRole.isPresent()) {
 
 			final Role role = optRole.get();
@@ -895,7 +895,6 @@ public class DiscordBot {
 		final Pattern pattern = Pattern.compile("^<#[0-9]{1,}>$");
 		final Matcher matcher = pattern.matcher(mention);
 		TextChannel channel = null;
-
 		while (matcher.find()) {
 
 			if (channel != null) return null;
@@ -928,7 +927,6 @@ public class DiscordBot {
 		final Pattern pattern = Pattern.compile("^<@&[0-9]{1,}>$");
 		final Matcher matcher = pattern.matcher(mention);
 		Role role = null;
-
 		while (matcher.find()) {
 
 			if (role != null) return null;
@@ -955,17 +953,17 @@ public class DiscordBot {
 	 */
 	public User getUserFromMention(final String mention) {
 
-		final Pattern pattern = Pattern.compile("^<@![0-9]{1,}>$");
-		final Matcher matcher = pattern.matcher(mention);
+		final String text = mention.replace("!", "");
+		final Pattern pattern = Pattern.compile("^<@[0-9]{1,}>$");
+		final Matcher matcher = pattern.matcher(text);
 		User user = null;
 
 		while (matcher.find()) {
 
 			if (user != null) return null;
-
 			try {
 
-				user = this.api.getUserById(mention.split("<@!")[1].split(">")[0]).get();
+				user = this.api.getUserById(text.split("<@")[1].split(">")[0]).get();
 
 			} catch (InterruptedException | ExecutionException e) {
 
