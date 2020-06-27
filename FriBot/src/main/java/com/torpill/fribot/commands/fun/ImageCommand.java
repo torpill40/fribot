@@ -49,14 +49,8 @@ public class ImageCommand extends Command {
 	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		User user0 = null;
-		if (args.length > 0) {
-
-			user0 = bot.getUserFromMention(args[0]);
-		}
-		if (user0 == null) {
-
-			user0 = user;
-		}
+		if (args.length > 0) user0 = bot.getUserFromMention(args[0]);
+		if (user0 == null) user0 = user;
 
 		final BufferedImage avatar = bot.getAvatar(user0);
 		final BufferedImage gray = ImageProcessor.multiply(ImageProcessor.noise(ImageProcessor.grayScale(avatar), 0.15F, 0F, 1F), 0.75F, 0.75F, 0.75F);
