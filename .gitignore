@@ -1,5 +1,14 @@
+# Eclipse IDE
 FriBot/\.settings/
-FriBot/target/
 FriBot/logs/
+
+# VS Code
+/\.vscode/
+/logs/
+
+# Maven 
+FriBot/target/
+
+# Global
 *.bat
 *.sh
