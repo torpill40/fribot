@@ -12,7 +12,7 @@
 		</File>
 		<Console name="STDOUT" target="SYSTEM_OUT">
 			<PatternLayout
-				pattern="%d{HH:mm:ss.SSS} %highlight{[%-5level]}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=magenta} %logger{36} (%t) - %C.%M() @%L > %msg%n"
+				pattern="%style{%d{HH:mm:ss.SSS}}{red} %highlight{[%-5level]}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan, TRACE=magenta} %logger{36} %style{(%t)}{bright, red} - %style{%C.%M()}{underline, cyan} %style{@%L}{underline, bright} %style{>}{blink, red} %msg%n"
 				disableAnsi="false" />
 		</Console>
 	</Appenders>
