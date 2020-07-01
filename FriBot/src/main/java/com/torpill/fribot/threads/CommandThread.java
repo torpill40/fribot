@@ -12,9 +12,9 @@ import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.util.ListBuilder;
 
 /**
- * 
+ *
  * Cette class repésente un thread de commande.
- * 
+ *
  * @author torpill40
  *
  */
@@ -22,17 +22,17 @@ import com.torpill.fribot.util.ListBuilder;
 public class CommandThread extends BotThread {
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>CommandThread</code>.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord relié au thread.
-	 * 
+	 *
 	 * @see com.torpill.fribot.bot.DiscordBot
 	 */
-	public CommandThread(DiscordBot bot) {
+	public CommandThread(final DiscordBot bot) {
 
-		super(bot, "command");
+		super(bot, "Command");
 	}
 
 	@Override
@@ -60,13 +60,24 @@ public class CommandThread extends BotThread {
 
 			App.LOGGER.info(user.getDiscriminatedName() + " a utilisé la commande '" + commandName + "' : " + response);
 
-		} else if (response > 0) {
-
-			App.LOGGER.warn(user.getDiscriminatedName() + " n'a pas pu utilisé la commande '" + commandName + "' : " + response);
-
 		} else {
 
-			App.LOGGER.error(user.getDiscriminatedName() + " n'a pas pu utilisé la commande '" + commandName + "' : " + response);
+			App.LOGGER.info(user.getDiscriminatedName() + " n'a pas pu utilisé la commande '" + commandName + "' : " + response);
+			switch (response) {
+
+			case -1:
+				message.delete();
+				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : faites `" + this.bot.getPrefix() + "help` pour avoir la liste des commandes.");
+				break;
+
+			case -2:
+				channel.sendMessage(user.getMentionTag() + ", vous n'avez pas les permissions pour exécuter cette commande : faites `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
+				break;
+
+			case 1:
+				channel.sendMessage(user.getMentionTag() + ", vous n'avez pas entré un nombre correct d'arguments : faites `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
+				break;
+			}
 		}
 
 		super.run();

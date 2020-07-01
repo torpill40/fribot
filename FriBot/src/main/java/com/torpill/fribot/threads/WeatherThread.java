@@ -45,7 +45,7 @@ public class WeatherThread extends BotThread {
 	 */
 	public WeatherThread(final DiscordBot bot) {
 
-		super(bot, "weather");
+		super(bot, "Weather");
 	}
 
 	@Override
@@ -109,6 +109,7 @@ public class WeatherThread extends BotThread {
 					reaction.removeUser(user1);
 
 					switch (EmojiParser.parseToAliases(emoji.getMentionTag())) {
+
 					case ":arrow_right:":
 						WeatherThread.this.next();
 						break;

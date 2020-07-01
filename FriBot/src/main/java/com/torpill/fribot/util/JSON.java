@@ -1,4 +1,4 @@
-package com.torpill.fribot.api;
+package com.torpill.fribot.util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +71,32 @@ public class JSON {
 		return 0;
 	}
 
+	public static int getInt(final JSONObject source, final String key) {
+
+		try {
+
+			return source.getInt(key);
+
+		} catch (final JSONException e) {
+
+		}
+
+		return 0;
+	}
+
+	public static boolean getBoolean(final JSONObject source, final String key) {
+
+		try {
+
+			return source.getBoolean(key);
+
+		} catch (final JSONException e) {
+
+		}
+
+		return false;
+	}
+
 	public static JSONObject getJSONObject(final JSONArray source, final int index) {
 
 		try {
@@ -121,5 +147,31 @@ public class JSON {
 		}
 
 		return 0;
+	}
+
+	public static int getInt(final JSONArray source, final int index) {
+
+		try {
+
+			return source.getInt(index);
+
+		} catch (final JSONException e) {
+
+		}
+
+		return 0;
+	}
+
+	public static boolean getBoolean(final JSONArray source, final int index) {
+
+		try {
+
+			return source.getBoolean(index);
+
+		} catch (final JSONException e) {
+
+		}
+
+		return false;
 	}
 }

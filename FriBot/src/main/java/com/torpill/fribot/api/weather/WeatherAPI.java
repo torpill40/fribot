@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import com.torpill.fribot.App;
 import com.torpill.fribot.api.APIException;
-import com.torpill.fribot.api.JSON;
+import com.torpill.fribot.util.JSON;
 
 /**
  *

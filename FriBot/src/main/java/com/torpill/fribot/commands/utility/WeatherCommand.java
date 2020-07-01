@@ -60,6 +60,7 @@ public class WeatherCommand extends Command {
 		for (int i = 0; i < args.length; i += 2) {
 
 			switch (args[i]) {
+
 			case "%":
 			case "city":
 				if (!args[i + 1].equals("")) {
@@ -76,6 +77,7 @@ public class WeatherCommand extends Command {
 				for (final String arg : args[i + 1].split(" ")) {
 
 					switch (arg) {
+
 					case "temp":
 						temp = true;
 						break;
@@ -121,7 +123,7 @@ public class WeatherCommand extends Command {
 
 		if (cityName == null) {
 
-			channel.sendMessage(user.getMentionTag() + " veuillez renseigner une ville : `" + bot.getPrefix() + this.getName() + " Paris`.");
+			channel.sendMessage(user.getMentionTag() + ", veuillez renseigner une ville : `" + bot.getPrefix() + this.getName() + " Paris`.");
 			return 2;
 		}
 
@@ -131,7 +133,7 @@ public class WeatherCommand extends Command {
 
 			if (weatherCity == null) {
 
-				channel.sendMessage(user.getMentionTag() + " `" + cityName.trim() + "` n'est pas une ville disponible.");
+				channel.sendMessage(user.getMentionTag() + ", `" + cityName.trim() + "` n'est pas une ville disponible.");
 				return 2;
 			}
 

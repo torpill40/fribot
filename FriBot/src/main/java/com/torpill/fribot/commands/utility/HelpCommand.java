@@ -51,6 +51,7 @@ public class HelpCommand extends Command {
 	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		switch (args.length) {
+
 		case 0:
 			try {
 
@@ -75,6 +76,7 @@ public class HelpCommand extends Command {
 
 			if (help == null) {
 
+				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : faites `" + bot.getPrefix() + "help` pour avoir la liste des commandes.");
 				return 2;
 			}
 

@@ -32,6 +32,8 @@ import com.torpill.fribot.threads.BotThread;
  *
  * @author torpill40
  *
+ * @see org.javacord.api.DiscordApi
+ *
  */
 
 public class DiscordBot {
@@ -84,6 +86,8 @@ public class DiscordBot {
 			category = new ArrayList<>();
 			this.categories.put(command.getCategory(), category);
 		}
+
+		App.LOGGER.debug("Commande {} (\u001B[4m\u001B[91m{}\u001B[96m.class\u001B[0m) ajoutée dans {}.", command.getName(), command.getClass().getSimpleName(), command.getCategory());
 
 		category.add(command);
 	}
@@ -756,8 +760,40 @@ public class DiscordBot {
 	public List<Role> roles(final Server server, final String... roles) {
 
 		final List<Role> list = new ArrayList<>();
-		for (final String roleId : roles) {
+		for (String roleId : roles) {
 
+			if (roleId.equals("user-role")) roleId = this.getUserRoleID();
+			if (roleId.equals("dev-role")) roleId = this.getDevRoleID();
+			server.getRoleById(roleId).ifPresent(role -> {
+
+				list.add(role);
+			});
+		}
+		return list;
+	}
+
+	/**
+	 *
+	 * Récupérer les rôles, dont les IDs ont été passés en arguments, du serveur
+	 * passé en argument.
+	 *
+	 * @param server
+	 *            : serveur dont on veut récupérer les rôles.
+	 * @param roles
+	 *            : IDs des rôles que l'on veut récupérer.
+	 * @return liste des rôles
+	 *
+	 * @see org.javacord.api.entity.permission.Role
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public List<Role> rolesList(final Server server, final List<String> roles) {
+
+		if (roles == null) return null;
+		final List<Role> list = new ArrayList<>();
+		for (String roleId : roles) {
+
+			if (roleId.equals("user-role")) roleId = this.getUserRoleID();
+			if (roleId.equals("dev-role")) roleId = this.getDevRoleID();
 			server.getRoleById(roleId).ifPresent(role -> {
 
 				list.add(role);
@@ -771,7 +807,7 @@ public class DiscordBot {
 	 * Récupérer les utilisateurs dont les IDs ont été passés en arguments.
 	 *
 	 * @param users
-	 *            : IDs des rôles que l'on veut récupérer.
+	 *            : IDs des utilisateurs que l'on veut récupérer.
 	 * @return liste des utilisateurs
 	 *
 	 * @see org.javacord.api.entity.user.User
@@ -779,6 +815,35 @@ public class DiscordBot {
 	 */
 	public List<User> users(final String... users) {
 
+		final List<User> list = new ArrayList<>();
+		for (final String userId : users) {
+
+			try {
+
+				list.add(this.api.getUserById(userId).get());
+
+			} catch (InterruptedException | ExecutionException e) {
+
+				App.LOGGER.error("ERREUR: ", e);
+			}
+		}
+		return list;
+	}
+
+	/**
+	 *
+	 * Récupérer les utilisateurs dont les IDs ont été passés en arguments.
+	 *
+	 * @param users
+	 *            : IDs des utilisateurs que l'on veut récupérer.
+	 * @return liste des utilisateurs
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public List<User> usersList(final List<String> users) {
+
+		if (users == null) return null;
 		final List<User> list = new ArrayList<>();
 		for (final String userId : users) {
 

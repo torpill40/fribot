@@ -190,7 +190,7 @@ public abstract class Command {
 	 */
 	public String getExample(final String prefix, final User user) {
 
-		return null;
+		return prefix + this.getName();
 	}
 
 	/**
@@ -299,6 +299,7 @@ public abstract class Command {
 		public String[] parseArguments(final String[] args) {
 
 			switch (this) {
+
 			case KEY:
 				return this.keyParse(args);
 

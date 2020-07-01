@@ -48,7 +48,7 @@ public class HelpThread extends BotThread {
 	 */
 	public HelpThread(final DiscordBot bot) {
 
-		super(bot, "help");
+		super(bot, "Help");
 	}
 
 	@Override
@@ -109,6 +109,7 @@ public class HelpThread extends BotThread {
 					reaction.removeUser(user1);
 
 					switch (EmojiParser.parseToAliases(emoji.getMentionTag())) {
+
 					case ":arrow_right:":
 						HelpThread.this.next();
 						break;

@@ -107,7 +107,7 @@ public class App {
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 
-			e.printStackTrace();
+			App.LOGGER.fatal("Une erreur est survenue : ", e);
 		}
 	}
 }
