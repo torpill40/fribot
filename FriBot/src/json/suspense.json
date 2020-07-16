@@ -1,0 +1,51 @@
+{
+	"name": "suspense",
+	"args": "raw",
+	"category": "fun",
+	"help": "Ajouter du suspens à l'envoi d'un message.",
+	"example": "{bot.prefix}{cmd.name} {user.mention} est vraiment super sympa !\n{bot.prefix}{cmd.name} Salut @everyone !\n{bot.prefix}{cmd.name} Pomme de terre, escargot.",
+	"rolesWhiteList": 
+	[
+		"user-role"
+	],
+	"send": 
+	[
+		{
+			"lines": 
+			[
+				"5..."
+			]
+		},
+		{
+			"lines": 
+			[
+				"4..."
+			]
+		},
+		{
+			"lines": 
+			[
+				"3..."
+			]
+		},
+		{
+			"lines": 
+			[
+				"2..."
+			]
+		},
+		{
+			"lines": 
+			[
+				"1..."
+			]
+		},
+		{
+			"lines": 
+			[
+				"{arg:0:*}"
+			]
+		}
+	],
+	"interval": 2.0
+}

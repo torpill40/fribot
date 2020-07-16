@@ -71,6 +71,7 @@ public class CommandThread extends BotThread {
 				break;
 
 			case -2:
+				message.delete();
 				channel.sendMessage(user.getMentionTag() + ", vous n'avez pas les permissions pour exécuter cette commande : faites `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
 				break;
 

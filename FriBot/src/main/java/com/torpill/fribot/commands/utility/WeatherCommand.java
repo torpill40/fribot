@@ -143,7 +143,7 @@ public class WeatherCommand extends Command {
 
 		} catch (final APIException e) {
 
-			channel.sendMessage("Une erreur est survenue : " + e.getMessage());
+			channel.sendMessage("```Une erreur est survenue : " + e.getMessage() + "```");
 		}
 
 		return 0;

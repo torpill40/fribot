@@ -1,13 +1,17 @@
 package com.torpill.fribot.bot;
 
 import java.awt.Color;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.javacord.api.DiscordApiBuilder;
+import org.json.JSONObject;
 
+import com.torpill.fribot.App;
 import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.commands.JSONCommand;
 import com.torpill.fribot.commands.fun.ImageCommand;
 import com.torpill.fribot.commands.utility.DevRoleCommand;
 import com.torpill.fribot.commands.utility.HelpCommand;
@@ -22,6 +26,7 @@ import com.torpill.fribot.listeners.CommandListener;
 import com.torpill.fribot.threads.BotThread;
 import com.torpill.fribot.threads.CommandThread;
 import com.torpill.fribot.threads.HelpThread;
+import com.torpill.fribot.util.FileUtils;
 
 /**
  *
@@ -104,6 +109,16 @@ public class DiscordBotBuilder {
 		for (final Class<? extends BotThread> thread : this.threads) {
 
 			bot.addThread(thread.getConstructor(DiscordBot.class).newInstance(bot));
+		}
+
+		final File jsonDir = new File(App.SRC + "json/");
+		if (jsonDir.exists() && jsonDir.isDirectory()) {
+
+			for (final String file : jsonDir.list()) {
+
+				final JSONObject command = FileUtils.readJSONFile(jsonDir.getPath() + File.separator + file);
+				if (command != null) bot.addCommand(new JSONCommand(command));
+			}
 		}
 
 		return bot.api(builder.login().join());

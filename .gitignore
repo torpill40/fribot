@@ -12,3 +12,4 @@ FriBot/target/
 # Global
 *.bat
 *.sh
+\.pydevproject

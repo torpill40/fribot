@@ -11,7 +11,6 @@ import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.ClydeCommand;
 import com.torpill.fribot.commands.fun.ComputerCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
-import com.torpill.fribot.commands.fun.HelloCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
@@ -24,7 +23,7 @@ import com.torpill.fribot.threads.WeatherThread;
  * <a href="https://github.com/torpill40/fribot">Dépot Github</a>.
  *
  * @author torpill40
- * @version RELEASE-1.0
+ * @version RELEASE-1.1
  *
  */
 
@@ -33,9 +32,11 @@ public class App {
 	public static final String APP_NAME = "FriBot";
 	public static final String APP_ID = "fribot";
 	public static final Logger LOGGER = LogManager.getLogger(APP_NAME);
-	public static final String VERSION = "RELEASE-1.0";
+	public static final String VERSION = "RELEASE-1.1";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 	public static final WeatherAPI WEATHER = new WeatherAPI();
+
+	public static String SRC = "./src/";
 
 	/**
 	 *
@@ -52,6 +53,8 @@ public class App {
 	 *            <b>--devrole &lt;ROLE_ID&gt;</b> : rôle développeur par défaut.
 	 *            <br />
 	 *            <b>--weather &lt;APP_ID&gt;</b> : clé d'API Open Weather Map.
+	 *            <br />
+	 *            <b>--src &lt;SRC&gt;</b> : chemin vers le dossier de sources.
 	 *            <br />
 	 */
 
@@ -82,17 +85,21 @@ public class App {
 				botBuilder.setDevRole(args[i + 1]);
 				break;
 
+			case "--src":
+				App.SRC = args[i + 1];
+				break;
+
 			case "--weather":
 				App.WEATHER.setAppID(args[i + 1]);
 				break;
 			}
 		}
+
 		try {
 
 			// @formatter:off
 
-			botBuilder.addCommand(HelloCommand.class)
-				.addCommand(TutorialTorpill40Command.class)
+			botBuilder.addCommand(TutorialTorpill40Command.class)
 				.addCommand(DogCommand.class)
 				.addCommand(ClydeCommand.class)
 				.addCommand(ComputerCommand.class)

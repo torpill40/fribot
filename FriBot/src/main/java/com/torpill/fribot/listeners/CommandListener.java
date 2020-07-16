@@ -14,11 +14,11 @@ import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.threads.CommandThread;
 
 /**
- * 
+ *
  * Cete classe représente un écouteur dédié aux commandes.
- * 
+ *
  * @author torpill40
- * 
+ *
  * @see org.javacord.api.listener.message.MessageCreateListener
  * @see com.torpill.fribot.listeners.BotListener
  *
@@ -27,9 +27,9 @@ import com.torpill.fribot.threads.CommandThread;
 public class CommandListener extends BotListener implements MessageCreateListener {
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>CommandListener</code>.
-	 * 
+	 *
 	 * @param bot
 	 *            : bot Discord communiquant avec l'écouteur.
 	 */
@@ -55,7 +55,7 @@ public class CommandListener extends BotListener implements MessageCreateListene
 
 			App.LOGGER.debug("Commande envoyée par " + user.getDiscriminatedName() + ": " + message);
 
-			final String command = content.substring(this.bot.getPrefix().length(), content.length());
+			final String command = content.substring(this.bot.getPrefix().length(), content.length()).replace("\n", " ");
 			final String[] args = command.split(" ");
 			final String commandName = args[0];
 
