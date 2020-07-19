@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import com.torpill.fribot.util.math.Matrix4f;
+import com.torpill.fribot.util.math.Vector2f;
+import com.torpill.fribot.util.math.Vector4f;
+
 /**
  *
  * Cette classe permet de manipuler des images.
@@ -547,6 +551,94 @@ public class ImageProcessor {
 				final int gray = red + green + blue;
 
 				pixels[pix] = 0xFF000000 | gray << 16 | gray << 8 | gray;
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 *
+	 * Projeter une image dans un espace en 3D.
+	 *
+	 * @param source
+	 *            : image que l'on veut projeter
+	 * @param transform
+	 *            : matrice de transformation 3D
+	 * @param z
+	 *            : position de l'image en profondeur
+	 * @return : image projetée
+	 *
+	 * @see java.awt.image.BufferedImage
+	 * @see com.torpill.fribot.util.math.Matrix4f
+	 */
+	public static BufferedImage projectImage(final BufferedImage source, final Matrix4f transform, final float z) {
+
+		final int width = source.getWidth();
+		final int height = source.getHeight();
+		final float ar = (float) width / (float) height;
+		final Matrix4f projection = Matrix4f.projection(90, width, height);
+		final Matrix4f zTranslate = Matrix4f.translate(0, 0, z);
+		final int doubleWidth = width * 2;
+		final int doubleHeight = height * 2;
+
+		final BufferedImage res = new BufferedImage(doubleWidth, doubleHeight, BufferedImage.TYPE_INT_ARGB);
+		final int pixels[] = ((DataBufferInt) res.getRaster().getDataBuffer()).getData();
+		for (int i = 0; i < pixels.length; i++) pixels[i] = 0x00FF0000;
+
+		//@formatter:off
+
+		final Vector2f tl = new Vector2f(-ar,  1);
+		final Vector2f tr = new Vector2f( ar,  1);
+		final Vector2f bl = new Vector2f(-ar, -1);
+		final Vector2f br = new Vector2f( ar, -1);
+
+		//@formatter:on
+
+		final Vector4f worldTL = zTranslate.multiply(transform.multiply(new Vector4f(tl.getX(), tl.getY(), 0, 1)));
+		final Vector4f worldTR = zTranslate.multiply(transform.multiply(new Vector4f(tr.getX(), tr.getY(), 0, 1)));
+		final Vector4f worldBL = zTranslate.multiply(transform.multiply(new Vector4f(bl.getX(), bl.getY(), 0, 1)));
+		final Vector4f worldBR = zTranslate.multiply(transform.multiply(new Vector4f(br.getX(), br.getY(), 0, 1)));
+
+		final Vector4f clipTL = projection.multiply(worldTL);
+		final Vector4f clipTR = projection.multiply(worldTR);
+		final Vector4f clipBL = projection.multiply(worldBL);
+		final Vector4f clipBR = projection.multiply(worldBR);
+
+		final Vector4f ndcTL = clipTL.scale(1F / clipTL.getW());
+		final Vector4f ndcTR = clipTR.scale(1F / clipTR.getW());
+		final Vector4f ndcBL = clipBL.scale(1F / clipBL.getW());
+		final Vector4f ndcBR = clipBR.scale(1F / clipBR.getW());
+
+		final float accuracy = 1F / 64F * ((width + height) / 256F);
+
+		for (float i = 0; i < width; i += accuracy) {
+
+			for (float j = 0; j < height; j += accuracy) {
+
+				final float wxa = (width - i) / width;
+				final float wxb = i / width;
+				final float wya = (height - j) / height;
+				final float wyb = j / height;
+
+				final float wa = wxa * wya;
+				final float wb = wxb * wya;
+				final float wc = wxa * wyb;
+				final float wd = wxb * wyb;
+
+				final float ndcx = wa * ndcTL.getX() + wb * ndcTR.getX() + wc * ndcBL.getX() + wd * ndcBR.getX();
+				final float ndcy = wa * ndcTL.getY() + wb * ndcTR.getY() + wc * ndcBL.getY() + wd * ndcBR.getY();
+				final float ndcz = wa * ndcTL.getZ() + wb * ndcTR.getZ() + wc * ndcBL.getZ() + wd * ndcBR.getZ();
+				final Vector4f ndc = new Vector4f(ndcx, ndcy, ndcz, 1);
+				final Vector2f dc = ndc.toDeviceCoordinatesFromNDC(width, height);
+
+				final int x = (int) dc.getX();
+				final int y = (int) dc.getY();
+				if (x >= -width / 2 && x < width + width / 2 && y >= -height / 2 && y < height + height / 2 && ndc.getZ() >= -1 && ndc.getZ() < 1) {
+
+					final int pix = y * doubleWidth + x + width / 2 + width * height;
+					if (pixels[pix] == 0x00FF0000) pixels[pix] = source.getRGB((int) i, (int) j);
+				}
 			}
 		}
 

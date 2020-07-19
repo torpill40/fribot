@@ -9,13 +9,14 @@ import org.javacord.api.entity.user.User;
 
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
+import com.torpill.fribot.util.ImageLoader;
 import com.torpill.fribot.util.ImageProcessor;
 import com.torpill.fribot.util.math.Matrix4f;
 import com.torpill.fribot.util.math.Vector3f;
 
 /**
  *
- * Cette commande permet de tester les filtres d'images.
+ * Passes à la télé sans avoir à payer !
  *
  * @author torpill40
  *
@@ -23,28 +24,34 @@ import com.torpill.fribot.util.math.Vector3f;
  *
  */
 
-public class ImageCommand extends Command {
+public class TVCommand extends Command {
 
 	/**
 	 *
-	 * Constructeur de la classe <code>ImageCommand</code>.
+	 * Constructeur de la classe <code>TVCommand</code>.
 	 *
 	 */
-	public ImageCommand() {
+	public TVCommand() {
 
-		super("__image", Command.ArgumentType.RAW, Command.Category.FUN);
+		super("tv", Command.ArgumentType.RAW, Command.Category.FUN);
 	}
 
 	@Override
 	public String getHelp() {
 
-		return "Cette commande permet de tester les filtres d'images.";
+		return "Passes à la télé sans avoir à payer !\nSans argument pour cibler l'auteur du message.\nAvec un argument en mention pour cibler un autre membre.";
+	}
+
+	@Override
+	public String getExample(final String prefix, final User user) {
+
+		return prefix + this.getName() + "\n" + prefix + this.getName() + " " + user.getMentionTag();
 	}
 
 	@Override
 	public boolean deleteCommandUsage() {
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -55,21 +62,19 @@ public class ImageCommand extends Command {
 		if (user0 == null) user0 = user;
 
 		final BufferedImage avatar = bot.getAvatar(user0);
-		final Vector3f translate = new Vector3f(0, 0, 0);
-		final Vector3f rotate = new Vector3f(0, 0, 45);
-		final Vector3f scale = new Vector3f(1, 1, 1);
+		final Vector3f translate = new Vector3f(0, -0.74F, 0.15F);
+		final Vector3f rotate = new Vector3f(0, -3, 0.5F);
+		final Vector3f scale = new Vector3f(1, 0.75F, 1);
 		final Matrix4f transform = Matrix4f.transform(translate, rotate, scale);
-		final BufferedImage res = ImageProcessor.projectImage(avatar, transform, 1);
+		final BufferedImage projection = ImageProcessor.projectImage(avatar, transform, 1);
+		final BufferedImage tv = ImageLoader.loadImage("tv.png");
+		final int maskX = 99, maskY = 29, maskWidth = 260, maskHeight = 240;
+		final BufferedImage res = ImageProcessor.applyMask(tv, projection, maskX, maskY, maskWidth, maskHeight);
 
 		// @formatter:off
 
 		new MessageBuilder()
-			.append("Avant :")
-			.addAttachment(avatar, user.getName() + ".png")
-			.send(channel).join();
-		new MessageBuilder()
-			.append("Après :")
-			.addAttachment(res, user.getName() + ".png")
+			.addAttachment(res, user0.getName() + ".png")
 			.send(channel);
 
 		// @formatter:on
