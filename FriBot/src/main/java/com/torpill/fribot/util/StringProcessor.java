@@ -1,5 +1,7 @@
 package com.torpill.fribot.util;
 
+import java.text.Normalizer;
+
 /**
  *
  * Cette classe permet de travailler avec des chaines de caractères.
@@ -34,5 +36,18 @@ public class StringProcessor {
 			if (i < end) builder.append(" ");
 		}
 		return builder.toString();
+	}
+
+	/**
+	 *
+	 * Enlever tous les accents d'une chaine de caractères.
+	 *
+	 * @param text
+	 *            : chaine de caractère dont on veut retirer les accents
+	 * @return chaine de caractère sans accents
+	 */
+	public static String removeAccent(final String text) {
+
+		return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
 	}
 }

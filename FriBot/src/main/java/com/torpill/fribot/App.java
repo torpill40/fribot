@@ -11,6 +11,7 @@ import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.ClydeCommand;
 import com.torpill.fribot.commands.fun.ComputerCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
+import com.torpill.fribot.commands.fun.ProphecyCommand;
 import com.torpill.fribot.commands.fun.TVCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 import com.torpill.fribot.commands.utility.WeatherCommand;
@@ -105,6 +106,7 @@ public class App {
 				.addCommand(ClydeCommand.class)
 				.addCommand(ComputerCommand.class)
 				.addCommand(TVCommand.class)
+				.addCommand(ProphecyCommand.class)
 				.addCommand(WeatherCommand.class)
 				.addListener(NitroListener.class)
 				.addThread(WeatherThread.class)

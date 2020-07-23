@@ -55,8 +55,8 @@ public class ImageCommand extends Command {
 		if (user0 == null) user0 = user;
 
 		final BufferedImage avatar = bot.getAvatar(user0);
-		final Vector3f translate = new Vector3f(0, 0, 0);
-		final Vector3f rotate = new Vector3f(0, 0, 45);
+		final Vector3f translate = new Vector3f(0, 0, 1);
+		final Vector3f rotate = new Vector3f(0, 20, 0);
 		final Vector3f scale = new Vector3f(1, 1, 1);
 		final Matrix4f transform = Matrix4f.transform(translate, rotate, scale);
 		final BufferedImage res = ImageProcessor.projectImage(avatar, transform, 1);
