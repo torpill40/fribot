@@ -1204,7 +1204,4 @@ public class DiscordBot {
 			});
 		});
 	}
-
-		return user;
-	}
 }
