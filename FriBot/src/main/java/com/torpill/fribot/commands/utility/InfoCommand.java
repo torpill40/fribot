@@ -10,12 +10,12 @@ import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.commands.Command;
 
 /**
- * 
+ *
  * Cette classe représente une commande affichant les informations du bot
  * Discord.
- * 
+ *
  * @author torpill40
- * 
+ *
  * @see com.torpill.fribot.commands.Command
  *
  */
@@ -23,9 +23,9 @@ import com.torpill.fribot.commands.Command;
 public class InfoCommand extends Command {
 
 	/**
-	 * 
+	 *
 	 * Constructeur de la classe <code>InfoCommand</code>.
-	 * 
+	 *
 	 */
 	public InfoCommand() {
 
@@ -45,7 +45,7 @@ public class InfoCommand extends Command {
 	}
 
 	@Override
-	public int execute(DiscordBot bot, String[] args, User user, TextChannel channel, Server server) {
+	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		final EmbedBuilder embed = bot.defaultEmbedBuilder("Informations :", bot.getName() + " :", user);
 		embed.addField("Propriétaire :", bot.owner().getDiscriminatedName(), true);

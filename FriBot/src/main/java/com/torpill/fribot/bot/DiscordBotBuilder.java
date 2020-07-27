@@ -17,6 +17,7 @@ import com.torpill.fribot.commands.utility.DevRoleCommand;
 import com.torpill.fribot.commands.utility.HelpCommand;
 import com.torpill.fribot.commands.utility.InfoCommand;
 import com.torpill.fribot.commands.utility.KeyArgsCommand;
+import com.torpill.fribot.commands.utility.MemberArgsCommand;
 import com.torpill.fribot.commands.utility.NoneArgsCommand;
 import com.torpill.fribot.commands.utility.QuoteArgsCommand;
 import com.torpill.fribot.commands.utility.RawArgsCommand;
@@ -88,6 +89,7 @@ public class DiscordBotBuilder {
 			.addCommand(RawArgsCommand.class)
 			.addCommand(QuoteArgsCommand.class)
 			.addCommand(KeyArgsCommand.class)
+			.addCommand(MemberArgsCommand.class)
 			.addCommand(TypeCommand.class)
 			.addCommand(DevRoleCommand.class)
 			.addCommand(ImageCommand.class)

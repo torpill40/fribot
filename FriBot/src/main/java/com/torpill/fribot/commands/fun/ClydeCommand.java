@@ -59,7 +59,7 @@ public class ClydeCommand extends Command {
 	public int execute(final DiscordBot bot, final String[] args, final User user, final TextChannel channel, final Server server) {
 
 		User user0 = null;
-		if (args.length > 0) user0 = bot.getUserFromMention(args[0]);
+		if (args.length > 0) user0 = bot.getUser(server, channel, user, args[0]);
 		if (user0 == null) user0 = user;
 
 		final BufferedImage avatar = ImageProcessor.multiply(ImageProcessor.noise(bot.getAvatar(user0), 0.35F, 0F, 1F), 0F, 0.18F, 0.36F);

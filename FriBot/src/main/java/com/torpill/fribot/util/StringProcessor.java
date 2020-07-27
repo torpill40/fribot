@@ -14,8 +14,8 @@ public class StringProcessor {
 
 	/**
 	 *
-	 * Rejoindre les chaines de caractères d'un tableau selon les indices de de
-	 * début et de fin.
+	 * Rejoindre les chaines de caractères d'un tableau selon les indices de début
+	 * et de fin.
 	 *
 	 * @param array
 	 *            : tableau de chaine de caractères

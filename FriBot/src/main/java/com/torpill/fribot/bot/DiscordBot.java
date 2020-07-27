@@ -2,6 +2,7 @@ package com.torpill.fribot.bot;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1008,7 +1009,73 @@ public class DiscordBot {
 
 	/**
 	 *
-	 * Récupérer un utilisateur selon sa mention.
+	 * Récupérer un utilisateur depuis une de ses caractéristiques.
+	 *
+	 * @param server
+	 *            : serveur sur lequel on cherche l'utilisateur
+	 * @param channel
+	 *            : salon dans lequel on envoie les messages d'erreur
+	 * @param user
+	 *            : utilisateur voulant récupérer l'utilisateur correspondant au
+	 *            memebre
+	 * @param member
+	 *            : caractéristique de l'utilisateur
+	 * @return utilisteur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 * @see org.javacord.api.entity.channel.TextChannel
+	 */
+	public User getUser(final Server server, final TextChannel channel, final User user, final String member) {
+
+		if (member.matches("^<@!?[0-9]{1,}>$")) {
+
+			final User user0 = this.getUserFromMention(member);
+			if (user0 == null) channel.sendMessage(this.defaultEmbedBuilder("Membre inconnu :", "La mention passée en paramètre n'existe pas.", user).addField("Mention :", member));
+			return user0;
+
+		} else if (member.matches("^[0-9]{1,}$")) {
+
+			final User user0 = this.getUserFromID(member);
+			if (user0 == null) channel.sendMessage(this.defaultEmbedBuilder("Membre inconnu :", "L'ID passé en paramètre n'existe pas.", user).addField("ID :", member));
+			return user0;
+
+		} else if (member.matches("^.{1,}#[0-9]{4}$")) {
+
+			final User user0 = this.getUserFromDiscriminatedName(server, member);
+			if (user0 == null) channel.sendMessage(this.defaultEmbedBuilder("Membre inconnu :", "Le pseudo passé en paramètre n'existe pas.", user).addField("Pseudo :", member));
+			return user0;
+
+		} else {
+
+			final List<User> displayUsers = this.getUsersFromDisplayName(server, member);
+			if (displayUsers.size() == 1) return displayUsers.get(0);
+			final boolean flag = displayUsers.size() > 1;
+			final List<User> nameUsers = this.getUserFromName(server, member);
+			if (nameUsers.size() == 1) return nameUsers.get(0);
+			else if (nameUsers.size() == 0) {
+
+				if (flag) {
+
+					final EmbedBuilder embed = this.defaultEmbedBuilder("Plusieurs membres possibles :", "Le pseudo passé en paramètre correspond à plusieurs membres du serveur. Réessaies avec un membre ci-dessous.", user);
+					for (final User user0 : displayUsers) embed.addInlineField(user0.getDisplayName(server) + " :", user0.getDiscriminatedName());
+					channel.sendMessage(embed);
+
+				} else channel.sendMessage(this.defaultEmbedBuilder("Membre inconnu :", "Le pseudo passé en paramètre n'existe pas.", user).addField("Pseudo :", member));
+
+			} else {
+
+				final EmbedBuilder embed = this.defaultEmbedBuilder("Plusieurs membres possibles :", "Le pseudo passé en paramètre correspond à plusieurs membres du serveur. Réessaies avec un membre ci-dessous.", user);
+				for (final User user0 : nameUsers) embed.addInlineField(user0.getDisplayName(server) + " :", user0.getDiscriminatedName());
+				channel.sendMessage(embed);
+			}
+			return null;
+		}
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur depuis une mention.
 	 *
 	 * @param mention
 	 *            : mention de l'utilisateur
@@ -1018,23 +1085,125 @@ public class DiscordBot {
 	 */
 	public User getUserFromMention(final String mention) {
 
-		final String text = mention.replace("!", "");
-		final Pattern pattern = Pattern.compile("^<@[0-9]{1,}>$");
-		final Matcher matcher = pattern.matcher(text);
-		User user = null;
+		try {
 
-		while (matcher.find()) {
+			return this.api.getUserById(mention.split("<@!?")[1].split(">")[0]).get();
 
-			if (user != null) return null;
-			try {
+		} catch (final IndexOutOfBoundsException | InterruptedException | ExecutionException e) {
 
-				user = this.api.getUserById(text.split("<@")[1].split(">")[0]).get();
-
-			} catch (InterruptedException | ExecutionException e) {
-
-				App.LOGGER.error("ERREUR: ", e);
-			}
+			App.LOGGER.error("ERREUR: ", e);
+			return null;
 		}
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur depuis un ID.
+	 *
+	 * @param id
+	 *            : ID de l'utilisateur
+	 * @return utilisateur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 */
+	public User getUserFromID(final String id) {
+
+		try {
+
+			return this.api.getUserById(id).get();
+
+		} catch (InterruptedException | ExecutionException e) {
+
+			App.LOGGER.error("ERREUR: ", e);
+			return null;
+		}
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur depuis un nom.
+	 *
+	 * @param server
+	 *            : serveur sur lequel on cherche l'utilisateur
+	 * @param name
+	 *            : nom de l'utilisateur
+	 * @return utilisateur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public List<User> getUserFromName(final Server server, final String name) {
+
+		final Collection<User> colUsers = server.getMembersByNameIgnoreCase(name);
+		final List<User> users = new ArrayList<>(colUsers);
+
+		return users;
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur depuis un nom avec son descriminant.
+	 *
+	 * @param server
+	 *            : serveur sur lequel on cherche l'utilisateur
+	 * @param name
+	 *            : nom descriminé de l'utilisateur
+	 * @return utilisateur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public User getUserFromDiscriminatedName(final Server server, final String discriminatedName) {
+
+		final Optional<User> optUser = server.getMemberByDiscriminatedNameIgnoreCase(discriminatedName);
+
+		if (optUser.isPresent()) return optUser.get();
+
+		return null;
+	}
+
+	/**
+	 *
+	 * Récupérer un utilisateur depuis un nom visible.
+	 *
+	 * @param server
+	 *            : serveur sur lequel on cherche l'utilisateur
+	 * @param name
+	 *            : nom visible de l'utilisateur
+	 * @return utilisateur correspondant
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 * @see org.javacord.api.entity.server.Server
+	 */
+	public List<User> getUsersFromDisplayName(final Server server, final String name) {
+
+		final Collection<User> colUsers = server.getMembersByDisplayNameIgnoreCase(name);
+		final List<User> users = new ArrayList<>(colUsers);
+
+		return users;
+	}
+
+	/**
+	 *
+	 * Envoyer un message dans un salon textuel.
+	 *
+	 * @param serverId
+	 *            : ID du serveur
+	 * @param channelId
+	 *            : ID du salon textuel
+	 * @param text
+	 *            : Texte du message
+	 */
+	public void send(final String serverId, final String channelId, final String text) {
+
+		this.api.getServerById(serverId).ifPresent(server -> {
+
+			server.getTextChannelById(channelId).ifPresent(channel -> {
+
+				channel.sendMessage(text);
+			});
+		});
+	}
 
 		return user;
 	}
