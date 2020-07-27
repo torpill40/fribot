@@ -40,8 +40,6 @@ public class App {
 
 	public static String SRC = "./src/";
 
-	private static DiscordBot BOT;
-
 	/**
 	 *
 	 * Point d'entrée du programme, démarrage du bot.
