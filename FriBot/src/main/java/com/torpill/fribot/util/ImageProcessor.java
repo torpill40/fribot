@@ -610,7 +610,7 @@ public class ImageProcessor {
 		final Vector4f ndcBL = clipBL.scale(1F / clipBL.getW());
 		final Vector4f ndcBR = clipBR.scale(1F / clipBR.getW());
 
-		final float accuracy = 1F / 64F * ((width + height) / 256F);
+		final float accuracy = 1F / 4F;
 
 		for (float i = 0; i < width; i += accuracy) {
 
