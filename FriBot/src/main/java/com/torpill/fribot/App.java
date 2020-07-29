@@ -13,9 +13,11 @@ import com.torpill.fribot.commands.fun.ComputerCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
 import com.torpill.fribot.commands.fun.ProphecyCommand;
 import com.torpill.fribot.commands.fun.TVCommand;
+import com.torpill.fribot.commands.game.RightPriceCommand;
 import com.torpill.fribot.commands.tutorial.TutorialTorpill40Command;
 import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
+import com.torpill.fribot.threads.RightPriceThread;
 import com.torpill.fribot.threads.WeatherThread;
 
 /**
@@ -108,8 +110,10 @@ public class App {
 				.addCommand(TVCommand.class)
 				.addCommand(ProphecyCommand.class)
 				.addCommand(WeatherCommand.class)
+				.addCommand(RightPriceCommand.class)
 				.addListener(NitroListener.class)
 				.addThread(WeatherThread.class)
+				.addThread(RightPriceThread.class)
 				.build();
 
 			// @formatter:on

@@ -111,11 +111,11 @@ public class WeatherThread extends BotThread {
 					switch (EmojiParser.parseToAliases(emoji.getMentionTag())) {
 
 					case ":arrow_right:":
-						WeatherThread.this.next();
+						this.next();
 						break;
 
 					case ":arrow_left:":
-						WeatherThread.this.prev();
+						this.prev();
 						break;
 
 					default:
