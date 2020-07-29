@@ -27,6 +27,7 @@ public class RightPriceThread extends BotThread {
 	private int attempt = 0;
 	private boolean find = false;
 	private boolean end = false;
+	private long time = 0;
 
 	/**
 	 *
@@ -73,6 +74,7 @@ public class RightPriceThread extends BotThread {
 					try {
 
 						final int n = Integer.parseInt(msg);
+						this.time = System.currentTimeMillis();
 						this.attempt++;
 						this.find = n == number;
 						this.end = this.attempt == 15 || this.find;
@@ -94,10 +96,19 @@ public class RightPriceThread extends BotThread {
 				}
 			});
 		};
+		this.time = System.currentTimeMillis();
 		channel.addMessageCreateListener(listener);
 		try {
 
-			while (!this.find && !this.end) Thread.sleep(2000);
+			while (!this.end) {
+
+				Thread.sleep(2000);
+				if (System.currentTimeMillis() > this.time + 30000) {
+
+					this.end = true;
+					channel.sendMessage(this.bot.defaultEmbedBuilder("Juste Prix", "Ta partie a été interrompue car tu as mis trop de temps pour proposer un nouveau nombre. Recommences une nouvelle partie quand tu veux !", user));
+				}
+			}
 
 		} catch (final InterruptedException e) {
 
