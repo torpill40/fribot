@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.torpill.fribot.api.weather.WeatherAPI;
+import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.bot.DiscordBotBuilder;
 import com.torpill.fribot.commands.fun.ClydeCommand;
 import com.torpill.fribot.commands.fun.ComputerCommand;
@@ -41,6 +42,9 @@ public class App {
 	public static final WeatherAPI WEATHER = new WeatherAPI();
 
 	public static String SRC = "./src/";
+	public static boolean TEST = false;
+
+	private static DiscordBot BOT;
 
 	/**
 	 *
@@ -96,6 +100,10 @@ public class App {
 			case "--weather":
 				App.WEATHER.setAppID(args[i + 1]);
 				break;
+
+			case "--test":
+				App.TEST = Boolean.parseBoolean(args[i + 1]);
+				break;
 			}
 		}
 
@@ -103,7 +111,7 @@ public class App {
 
 			// @formatter:off
 
-			botBuilder.addCommand(TutorialTorpill40Command.class)
+			App.BOT = botBuilder.addCommand(TutorialTorpill40Command.class)
 				.addCommand(DogCommand.class)
 				.addCommand(ClydeCommand.class)
 				.addCommand(ComputerCommand.class)
@@ -124,5 +132,18 @@ public class App {
 
 			App.LOGGER.fatal("Une erreur est survenue : ", e);
 		}
+	}
+
+	/**
+	 *
+	 * Retourne le bot de l'application.
+	 *
+	 * @return DiscordBot
+	 *
+	 * @see com.torpill.fribot.bot.DiscordBot
+	 */
+	public static DiscordBot getBot() {
+
+		return App.BOT;
 	}
 }

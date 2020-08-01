@@ -1,0 +1,16 @@
+{
+	"name": "__json",
+	"args": "key",
+	"category": "utility",
+	"help": "Tester les commandes JSON.",
+	"deleteUsage": false,
+	"send": 
+	[
+		{
+			"lines": 
+			[
+				"Je m'appelle ${arg:name|$[arg:%|Albert]$}$, je vais ${arg:status}$ !"
+			]
+		}
+	]
+}

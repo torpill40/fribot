@@ -380,20 +380,14 @@ public abstract class Command {
 
 				if (prev != '\\' && chr == '\"') {
 
-					if (i++ % 2 == 0) {
-
-						builders.add(0, new StringBuilder());
-					}
+					if (i++ % 2 == 0) builders.add(0, new StringBuilder());
 
 				} else {
 
-					if (!in && (beforePrev != '\\' && prev == '\"' || chr == ' ') && next != ' ' && next != '\"') {
-
-						builders.add(0, new StringBuilder());
-					}
-
+					if (!in && (beforePrev != '\\' && prev == '\"' || chr == ' ') && next != ' ' && next != '\"') builders.add(0, new StringBuilder());
 					if (!(chr == '\\' || !in && chr == ' ')) {
 
+						if (builders.isEmpty()) builders.add(new StringBuilder());
 						builders.get(0).append(chr);
 					}
 				}
@@ -438,7 +432,7 @@ public abstract class Command {
 			for (final String builderKey : builders.keySet()) {
 
 				key[i++] = builderKey;
-				key[i++] = builders.get(builderKey).toString();
+				key[i++] = builders.get(builderKey).toString().trim();
 			}
 
 			return key;

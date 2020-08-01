@@ -6,7 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.activity.ActivityType;
 import org.json.JSONObject;
 
 import com.torpill.fribot.App;
@@ -119,11 +121,20 @@ public class DiscordBotBuilder {
 			for (final String file : jsonDir.list()) {
 
 				final JSONObject command = FileUtils.readJSONFile(jsonDir.getPath() + File.separator + file);
-				if (command != null) bot.addCommand(new JSONCommand(command));
+				try {
+
+					if (command != null) bot.addCommand(new JSONCommand(command));
+
+				} catch (final IllegalArgumentException e) {
+
+					App.LOGGER.error("Une erreur est survenue : \u001B[91m{}\u001B[0m", e.getMessage());
+				}
 			}
 		}
 
-		return bot.api(builder.login().join());
+		final DiscordApi api = builder.login().join();
+		if (!App.TEST) api.updateActivity(ActivityType.LISTENING, bot.getPrefix() + "help");
+		return bot.api(api);
 	}
 
 	/**

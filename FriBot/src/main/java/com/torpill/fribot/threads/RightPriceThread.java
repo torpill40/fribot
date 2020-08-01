@@ -78,8 +78,7 @@ public class RightPriceThread extends BotThread {
 						this.attempt++;
 						this.find = n == number;
 						this.end = this.attempt == 15 || this.find;
-						final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Juste Prix", null, null);
-						embed.setFooter("Essai n°" + this.attempt, user.getAvatar());
+						final EmbedBuilder embed = this.bot.defaultEmbedBuilder("Juste Prix", null, null).setFooter("Essai n°" + this.attempt, user.getAvatar());
 						if (this.find) embed.setDescription("Bravo ! Tu as trouvé le nombre mystère " + number + " !").setColor(new Color(0x19BE19));
 						else if (!this.end) embed.setDescription("C'est " + (n < number ? "plus" : "moins") + " !");
 						else embed.setDescription("Dommage... Tu n'as pas réussi à trouver le nombre mystère " + number + " en moins de 15 essais...").setColor(new Color(0xEA3323));

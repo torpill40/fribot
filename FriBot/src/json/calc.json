@@ -3,13 +3,13 @@
 	"args": "raw",
 	"category": "utility",
 	"help": "Faire un calcul dans Discord.\nListe des fonctions mathématiques utilisables : https://www.w3schools.com/js/js_math.asp",
-	"example": "{bot.prefix}{cmd.name} 5 + 6 / 2\n{bot.prefix}{cmd.name} Math.cos(Math.PI / 3)\n{bot.prefix}{cmd.name} x = 5; 5 * Math.pow(x, 2) + 2 * x + 7\n{bot.prefix}{cmd.name} pow2 = function(x) { return x * x }; pow2(4)\n{bot.prefix}{cmd.name} x = [10, 20, 15, 17.5], average = 0; for (i in x) average += x[i] / x.length",
+	"example": "${bot.prefix}$${cmd.name}$ 5 + 6 / 2\n${bot.prefix}$${cmd.name}$ Math.cos(Math.PI / 3)\n${bot.prefix}$${cmd.name}$ x = 5; 5 * Math.pow(x, 2) + 2 * x + 7\n${bot.prefix}$${cmd.name}$ pow2 = function(x) { return x * x }; pow2(4)\n${bot.prefix}$${cmd.name}$ x = [10, 20, 15, 17.5], average = 0; for (i in x) average += x[i] / x.length",
 	"send": 
 	[
 		{
 			"lines": 
 			[
-				"```js\n({arg:0:*}) => $eval:[arg:0:*]$```"
+				"```js\n(${arg:0:*}$) => $(eval:$[arg:0:*]$)$```"
 			]
 		}
 	]

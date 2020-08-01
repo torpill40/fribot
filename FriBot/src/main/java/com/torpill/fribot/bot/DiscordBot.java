@@ -210,6 +210,19 @@ public class DiscordBot {
 
 	/**
 	 *
+	 * Récupérer l'utilisateur du bot.
+	 *
+	 * @return bot
+	 *
+	 * @see org.javacord.api.entity.user.User
+	 */
+	public User bot() {
+
+		return this.api.getYourself();
+	}
+
+	/**
+	 *
 	 * Exécuter une commande.
 	 *
 	 * @param user

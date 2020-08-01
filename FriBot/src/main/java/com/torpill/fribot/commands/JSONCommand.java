@@ -55,7 +55,7 @@ public class JSONCommand extends Command {
 	 *
 	 * @see org.json.JSONObject
 	 */
-	public JSONCommand(final JSONObject command) {
+	public JSONCommand(final JSONObject command) throws IllegalArgumentException {
 
 		super(JSONCommand.stringFromJSON(command, "name"), JSONCommand.argTypeFromJSON(command), JSONCommand.categoryFromJSON(command));
 
@@ -125,12 +125,12 @@ public class JSONCommand extends Command {
 		}
 	}
 
-	private static Command.ArgumentType argTypeFromJSON(final JSONObject source) {
+	private static Command.ArgumentType argTypeFromJSON(final JSONObject source) throws IllegalArgumentException {
 
 		return Command.ArgumentType.valueOf(JSONCommand.stringFromJSON(source, "args").toUpperCase());
 	}
 
-	private static Command.Category categoryFromJSON(final JSONObject source) {
+	private static Command.Category categoryFromJSON(final JSONObject source) throws IllegalArgumentException {
 
 		return Command.Category.valueOf(JSONCommand.stringFromJSON(source, "category").toUpperCase());
 	}
@@ -175,9 +175,9 @@ public class JSONCommand extends Command {
 
 		String res = text;
 		String newRes = res;
-		final Pattern brackets = Pattern.compile("(\\[[^\\n\\r\\]]+\\])");
-		final Pattern braces = Pattern.compile("(\\{[^\\n\\r\\}]+\\})");
-		final Pattern dollars = Pattern.compile("(\\$[^\\n\\r\\$]+\\$)");
+		final Pattern brackets = Pattern.compile("(\\$\\[[^\\n\\r\\$]+\\]\\$)");
+		final Pattern braces = Pattern.compile("(\\$\\{[^\\n\\r\\$]+\\}\\$)");
+		final Pattern parentheses = Pattern.compile("(\\$\\([^\\n\\r\\$]+\\)\\$)");
 		try {
 
 			final Matcher bracketsMatcher = brackets.matcher(res);
@@ -202,21 +202,17 @@ public class JSONCommand extends Command {
 				newRes = start + this.replaceParameter(par, prefix, bot, args, user) + end;
 			}
 			res = newRes;
-			final Matcher dollarsMatcher = dollars.matcher(res);
-			while (dollarsMatcher.find()) {
+			final Matcher parenthesesMatcher = parentheses.matcher(res);
+			while (parenthesesMatcher.find()) {
 
 				final int offset = newRes.length() - res.length();
-				final String start = newRes.substring(0, dollarsMatcher.start() + offset);
-				final String par = newRes.substring(dollarsMatcher.start() + offset, dollarsMatcher.end() + offset);
-				final String end = newRes.substring(dollarsMatcher.end() + offset);
+				final String start = newRes.substring(0, parenthesesMatcher.start() + offset);
+				final String par = newRes.substring(parenthesesMatcher.start() + offset, parenthesesMatcher.end() + offset);
+				final String end = newRes.substring(parenthesesMatcher.end() + offset);
 
 				newRes = start + this.replaceParameter(par, prefix, bot, args, user) + end;
 			}
 			return newRes;
-
-		} catch (final IndexOutOfBoundsException e) {
-
-			return user != null ? user.getMentionTag() + ", tu dois entrer l'expression à calculer. Fais `" + prefix + "help " + this.getName() + "` pour plus d'informations." : "```Une erreur est survenue : " + e.getMessage() + "```";
 
 		} catch (final ScriptException | NullPointerException | NumberFormatException | AssertionError e) {
 
@@ -226,30 +222,62 @@ public class JSONCommand extends Command {
 
 	private String replaceParameter(final String par, final String prefix, final DiscordBot bot, final String[] args, final User user) throws ScriptException {
 
-		final String res = par.substring(1, par.length() - 1);
+		final String res = par.substring(2, par.length() - 2);
 		final ScriptEngineManager manager = new ScriptEngineManager();
 		final ScriptEngine engine = manager.getEngineByName("js");
 		if (res.contains(":")) {
 
-			final String[] parts = res.split(":");
+			final String defaultVal = res.contains("|") ? res.split("\\|")[1] : null;
+			final String[] parts = res.split("\\|")[0].split(":");
 			switch (parts[0]) {
 
 			case "arg":
-				final String index = parts[1].replace("*", args.length - 1 + "");
-				final int resultIndex = (int) engine.eval(index);
-				if (parts.length == 2) return args[resultIndex];
-				else {
+				if (this.getType() == Command.ArgumentType.RAW || this.getType() == Command.ArgumentType.QUOTE) {
 
-					final String end = parts[2].replace("*", args.length - 1 + "");
-					final int resultEnd = (int) engine.eval(end);
-					return StringProcessor.join(args, resultIndex, resultEnd);
-				}
+					try {
+
+						final String index = parts[1].replace("*", args.length - 1 + "");
+						final int resultIndex = (int) engine.eval(index);
+						if (parts.length == 2) return args[resultIndex];
+						else {
+
+							final String end = parts[2].replace("*", args.length - 1 + "");
+							final int resultEnd = (int) engine.eval(end);
+							return StringProcessor.join(args, resultIndex, resultEnd);
+						}
+
+					} catch (final IndexOutOfBoundsException e) {
+
+						if (defaultVal == null) throw new NullPointerException();
+						return defaultVal;
+					}
+
+				} else if (this.getType() == Command.ArgumentType.KEY) {
+
+					final String key = parts[1];
+					for (int i = 0; i < args.length; i += 2) {
+
+						if (args[i].equals(key) && !args[i + 1].isEmpty()) return args[i + 1];
+					}
+
+					if (defaultVal == null) throw new NullPointerException();
+					return defaultVal;
+
+				} else throw new NullPointerException();
 
 			case "eval":
-				final Object calc = engine.eval(parts[1]);
-				if (calc instanceof Integer) return (double) (int) calc + "";
-				else if (calc instanceof Double) return (double) calc + "";
-				else throw new NumberFormatException();
+				try {
+
+					final Object calc = engine.eval(parts[1]);
+					if (calc instanceof Integer) return (double) (int) calc + "";
+					else if (calc instanceof Double) return (double) calc + "";
+					else throw new NumberFormatException();
+
+				} catch (final IndexOutOfBoundsException e) {
+
+					if (defaultVal == null) throw new NullPointerException();
+					return defaultVal;
+				}
 			}
 		}
 		switch (res) {

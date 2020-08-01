@@ -51,15 +51,24 @@ public class CommandListener extends BotListener implements MessageCreateListene
 		final Message message = event.getMessage();
 		final String content = message.getContent();
 
-		if (!user.isBot() && content.startsWith(this.bot.getPrefix())) {
+		if (!user.isBot()) {
 
-			App.LOGGER.debug("Commande envoyée par " + user.getDiscriminatedName() + ": " + message);
+			if (content.startsWith(this.bot.getPrefix())) {
 
-			final String command = content.substring(this.bot.getPrefix().length(), content.length()).replace("\n", " ");
-			final String[] args = command.split(" ");
-			final String commandName = args[0];
+				App.LOGGER.debug("Commande envoyée par " + user.getDiscriminatedName() + ": " + message);
 
-			this.bot.startThread(CommandThread.class, user, channel, message, server, commandName, args);
+				final String command = content.substring(this.bot.getPrefix().length(), content.length()).replace("\n", " ");
+				final String[] args = command.split(" ");
+				final String commandName = args[0];
+
+				this.bot.startThread(CommandThread.class, user, channel, message, server, commandName, args);
+
+			} else if (content.startsWith(this.bot.bot().getMentionTag()) || content.startsWith(this.bot.bot().getNicknameMentionTag()) && !App.TEST) {
+
+				App.LOGGER.debug("Mention envoyée par " + user.getDiscriminatedName() + ": " + message);
+
+				channel.sendMessage(user.getMentionTag() + ", mon préfix est `" + this.bot.getPrefix() + "`. Fais `" + this.bot.getPrefix() + "help` pour la liste des commandes par catégories.");
+			}
 		}
 	}
 }
