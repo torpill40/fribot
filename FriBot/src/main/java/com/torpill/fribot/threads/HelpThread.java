@@ -1,6 +1,7 @@
 package com.torpill.fribot.threads;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -102,7 +103,7 @@ public class HelpThread extends BotThread {
 				if (!optReaction.isPresent()) return;
 				final Reaction reaction = optReaction.get();
 				final Emoji emoji = reaction.getEmoji();
-				if (!HelpThread.this.bot.is(user1)) {
+				if (!this.bot.is(user1)) {
 
 					App.LOGGER.debug("Reaction '" + EmojiParser.parseToAliases(emoji.getMentionTag()) + "' added !");
 
@@ -111,47 +112,47 @@ public class HelpThread extends BotThread {
 					switch (EmojiParser.parseToAliases(emoji.getMentionTag())) {
 
 					case ":arrow_right:":
-						HelpThread.this.next();
+						this.next();
 						break;
 
 					case ":arrow_left:":
-						HelpThread.this.prev();
+						this.prev();
 						break;
 
 					case ":one:":
-						HelpThread.this.changeCategory(Command.Category.UTILITY);
+						this.changeCategory(Command.Category.UTILITY);
 						break;
 
 					case ":two:":
-						HelpThread.this.changeCategory(Command.Category.FUN);
+						this.changeCategory(Command.Category.FUN);
 						break;
 
 					case ":three:":
-						HelpThread.this.changeCategory(Command.Category.MODERATION);
+						this.changeCategory(Command.Category.MODERATION);
 						break;
 
 					case ":four:":
-						HelpThread.this.changeCategory(Command.Category.GAME);
+						this.changeCategory(Command.Category.GAME);
 						break;
 
 					case ":five:":
-						HelpThread.this.changeCategory(Command.Category.TUTORIAL);
+						this.changeCategory(Command.Category.TUTORIAL);
 						break;
 
 					default:
 						return;
 					}
 
-					final EmbedBuilder embed1 = HelpThread.this.bot.defaultEmbedBuilder("Aide :", HelpThread.this.category.DESCRIPTION + " :", null);
-					embed1.setFooter("Page : " + HelpThread.this.page + " / " + HelpThread.this.numberOfPage, user1.getAvatar());
+					final EmbedBuilder embed1 = this.bot.defaultEmbedBuilder("Aide :", this.category.DESCRIPTION + " :", null);
+					embed1.setFooter("Page : " + this.page + " / " + this.numberOfPage, user1.getAvatar());
 
-					for (int i = 0; i < HelpThread.this.commandPerPage; i++) {
+					for (int i = 0; i < this.commandPerPage; i++) {
 
-						final int index = i + (HelpThread.this.page - 1) * HelpThread.this.commandPerPage;
-						if (index < HelpThread.this.commandNames.size()) {
+						final int index = i + (this.page - 1) * this.commandPerPage;
+						if (index < this.commandNames.size()) {
 
-							final String command = HelpThread.this.commandNames.get(index);
-							embed1.addField(command + " :", HelpThread.this.bot.getHelpFor(command).split("\n")[0]);
+							final String command = this.commandNames.get(index);
+							embed1.addField(command + " :", this.bot.getHelpFor(command).split("\n")[0]);
 						}
 					}
 					event.editMessage(embed1);
@@ -196,6 +197,7 @@ public class HelpThread extends BotThread {
 
 			if (!command.isPrivate()) this.commandNames.add(command.getName());
 		}
+		Collections.sort(this.commandNames);
 		this.numberOfPage = Math.floorDiv(this.commandNames.size() - 1, this.commandPerPage) + 1;
 		this.page = 1;
 	}

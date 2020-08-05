@@ -1,6 +1,9 @@
 package com.torpill.fribot.commands.utility;
 
+import java.util.List;
+
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
@@ -49,6 +52,12 @@ public class WeatherCommand extends Command {
 	public boolean deleteCommandUsage() {
 
 		return true;
+	}
+
+	@Override
+	public List<Role> whiteListedRoles(final DiscordBot bot, final Server server) {
+
+		return bot.roles(server, "user-role");
 	}
 
 	@Override

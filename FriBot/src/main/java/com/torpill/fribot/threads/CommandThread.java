@@ -67,16 +67,16 @@ public class CommandThread extends BotThread {
 
 			case -1:
 				message.delete();
-				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : faites `" + this.bot.getPrefix() + "help` pour avoir la liste des commandes.");
+				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : fais `" + this.bot.getPrefix() + "help` pour avoir la liste des commandes.");
 				break;
 
 			case -2:
 				message.delete();
-				channel.sendMessage(user.getMentionTag() + ", vous n'avez pas les permissions pour exécuter cette commande : faites `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
+				channel.sendMessage(user.getMentionTag() + ", tu n'as pas les permissions pour exécuter cette commande : fais `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
 				break;
 
 			case 1:
-				channel.sendMessage(user.getMentionTag() + ", vous n'avez pas entré un nombre correct d'arguments : faites `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
+				channel.sendMessage(user.getMentionTag() + ", tu n'as pas entré un nombre correct d'arguments : fais `" + this.bot.getPrefix() + "help " + commandName + "` pour plus d'informations.");
 				break;
 			}
 		}

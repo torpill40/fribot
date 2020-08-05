@@ -76,7 +76,7 @@ public class HelpCommand extends Command {
 
 			if (help == null) {
 
-				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : faites `" + bot.getPrefix() + "help` pour avoir la liste des commandes.");
+				channel.sendMessage(user.getMentionTag() + ", la commande `" + commandName + "` n'existe pas : fais `" + bot.getPrefix() + "help` pour avoir la liste des commandes.");
 				return 2;
 			}
 
@@ -88,13 +88,13 @@ public class HelpCommand extends Command {
 			if (!bot.isOwner(user)) {
 
 				if (bot.isPrivate(commandName)) embed.addField("Commande privée :", "Seul le propriétaire du bot peut utiliser cette commande.");
-				else if (bot.onBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Vous êtes sur la liste noire, vous ne pouvez pas utiliser cette commande.");
-				else if (bot.onWhitelist(user, commandName, server) == 0) embed.addField("Liste blanche :", "Vous n'êtes pas sur la liste blanche, vous ne pouvez pas pas utiliser cette commande.");
+				else if (bot.onBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Tu es sur la liste noire, tu ne peux pas utiliser cette commande.");
+				else if (bot.onWhitelist(user, commandName, server) == 0) embed.addField("Liste blanche :", "Tu n'es pas sur la liste blanche, tu ne peux pas utiliser cette commande.");
 				else if (!bot.isAdmin(user, server)) {
 
-					if (bot.onRoleBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Vous avez un rôle sur la liste noire, vous ne pouvez pas utiliser cette commande.");
-					else if (bot.onRoleWhitelist(user, commandName, server) == 0) embed.addField("Liste blanche :", "Vous n'avez aucun rôle sur la liste blanche, vous ne pouvez pas utiliser cette commande.");
-					else if (bot.canUse(user, commandName, server) == 0) embed.addField("Permissions :", "Vous n'avez pas les permissions requises pour utiliser cette commande.");
+					if (bot.onRoleBlacklist(user, commandName, server) == 1) embed.addField("Liste noire :", "Tu as un rôle sur la liste noire, tu ne peux pas utiliser cette commande.");
+					else if (bot.onRoleWhitelist(user, commandName, server) == 0) embed.addField("Liste blanche :", "Tu n'as aucun rôle sur la liste blanche, tu ne peux pas utiliser cette commande.");
+					else if (bot.canUse(user, commandName, server) == 0) embed.addField("Permissions :", "Tu n'as pas les permissions requises pour utiliser cette commande.");
 				}
 			}
 			channel.sendMessage(embed);
