@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.torpill.fribot.api.weather.WeatherAPI;
 import com.torpill.fribot.bot.DiscordBot;
 import com.torpill.fribot.bot.DiscordBotBuilder;
+import com.torpill.fribot.commands.fun.ByeBroCommand;
 import com.torpill.fribot.commands.fun.ClydeCommand;
 import com.torpill.fribot.commands.fun.ComputerCommand;
 import com.torpill.fribot.commands.fun.DogCommand;
@@ -20,6 +21,7 @@ import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
 import com.torpill.fribot.threads.RightPriceThread;
 import com.torpill.fribot.threads.WeatherThread;
+import com.torpill.fribot.util.TempFileManager;
 
 /**
  *
@@ -34,15 +36,16 @@ import com.torpill.fribot.threads.WeatherThread;
 
 public class App {
 
+	public static String SRC = "./src/";
+	public static boolean TEST = false;
+
 	public static final String APP_NAME = "FriBot";
 	public static final String APP_ID = "fribot";
 	public static final Logger LOGGER = LogManager.getLogger(APP_NAME);
 	public static final String VERSION = "RELEASE-1.2";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 	public static final WeatherAPI WEATHER = new WeatherAPI();
-
-	public static String SRC = "./src/";
-	public static boolean TEST = false;
+	public static final TempFileManager TEMP = new TempFileManager();
 
 	private static DiscordBot BOT;
 
@@ -117,6 +120,7 @@ public class App {
 				.addCommand(ComputerCommand.class)
 				.addCommand(TVCommand.class)
 				.addCommand(ProphecyCommand.class)
+				.addCommand(ByeBroCommand.class)
 				.addCommand(WeatherCommand.class)
 				.addCommand(RightPriceCommand.class)
 				.addListener(NitroListener.class)

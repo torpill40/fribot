@@ -48,6 +48,20 @@ public abstract class Command {
 		this.category = category;
 	}
 
+	protected static String defaultExampleForOneMemberArgument(final Command command, final String prefix, final User user) {
+
+		//@formatter:off
+
+		return new StringBuilder()
+			.append(prefix + command.getName() + " " + user.getMentionTag() + "\n")
+			.append(prefix + command.getName() + " " + user.getIdAsString() + "\n")
+			.append(prefix + command.getName() + " " + user.getDiscriminatedName() + "\n")
+			.append(prefix + command.getName() + " " + user.getName())
+			.toString();
+
+		//@formatter:on
+	}
+
 	/**
 	 *
 	 * Récupérer le message d'aide de la commande.

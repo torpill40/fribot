@@ -44,7 +44,7 @@ public class DogCommand extends Command {
 	@Override
 	public String getExample(final String prefix, final User user) {
 
-		return prefix + this.getName() + "\n" + prefix + this.getName() + " " + user.getMentionTag();
+		return prefix + this.getName() + "\n" + Command.defaultExampleForOneMemberArgument(this, prefix, user);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class DogCommand extends Command {
 
 		new MessageBuilder()
 			.append(EmojiParser.parseToUnicode(":dog:"))
-			.addAttachment(res, user0.getName() + ".png")
+			.addAttachment(res, Long.toHexString(user.getId()) + "-" + Long.toHexString(user0.getId()) + ".png")
 			.send(channel);
 
 		// @formatter:on

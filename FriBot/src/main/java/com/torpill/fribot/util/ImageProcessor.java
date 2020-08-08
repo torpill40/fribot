@@ -1,8 +1,12 @@
 package com.torpill.fribot.util;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -641,6 +645,59 @@ public class ImageProcessor {
 				}
 			}
 		}
+
+		return res;
+	}
+
+	/**
+	 *
+	 * Redimensionner une image selon un pourcentage.
+	 *
+	 * @param source
+	 *            : image à redimensionner
+	 * @param percent
+	 *            : pourcentage d'aggrandissement
+	 * @return image redimensionnée
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage resize(final BufferedImage source, final int percent) {
+
+		final int width = source.getWidth() * percent / 100;
+		final int height = source.getHeight() * percent / 100;
+		final BufferedImage res = new BufferedImage(width, height, source.getType());
+		final Graphics g = res.getGraphics();
+		g.drawImage(source, 0, 0, width, height, null);
+		g.dispose();
+
+		return res;
+	}
+
+	/**
+	 *
+	 * Arrondir les coins d'une image.
+	 *
+	 * @param source
+	 *            : image dont on veut arrondir les coins
+	 * @param radius
+	 *            : rayon de l'arrondi en pixels
+	 * @return image avec les coins arrondis
+	 *
+	 * @see java.awt.image.BufferedImage
+	 */
+	public static BufferedImage makeRoundedCorner(final BufferedImage source, final int radius) {
+
+		final int width = source.getWidth();
+		final int height = source.getHeight();
+		final BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2 = res.createGraphics();
+		g2.setComposite(AlphaComposite.Src);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setColor(Color.WHITE);
+		g2.fill(new RoundRectangle2D.Float(0, 0, width, height, radius, radius));
+		g2.setComposite(AlphaComposite.SrcIn);
+		g2.drawImage(source, 0, 0, null);
+		g2.dispose();
 
 		return res;
 	}

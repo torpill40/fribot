@@ -65,11 +65,11 @@ public class ImageCommand extends Command {
 
 		new MessageBuilder()
 			.append("Avant :")
-			.addAttachment(avatar, user.getName() + ".png")
+			.addAttachment(avatar, Long.toHexString(user.getId()) + "-" + Long.toHexString(user0.getId()) + ".png")
 			.send(channel).join();
 		new MessageBuilder()
 			.append("Après :")
-			.addAttachment(res, user.getName() + ".png")
+			.addAttachment(res, Long.toHexString(user.getId()) + "-" + Long.toHexString(user0.getId()) + ".png")
 			.send(channel);
 
 		// @formatter:on
