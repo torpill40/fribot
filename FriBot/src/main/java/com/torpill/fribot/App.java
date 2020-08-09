@@ -52,7 +52,7 @@ public class App {
 	public static final String APP_NAME = "FriBot";
 	public static final String APP_ID = "fribot";
 	public static final Logger LOGGER = LogManager.getLogger(APP_NAME);
-	public static final String VERSION = "RELEASE-1.2";
+	public static final String VERSION = "RELEASE-1.3";
 	public static final String GITHUB = "https://github.com/torpill40/fribot";
 	public static final WeatherAPI WEATHER = new WeatherAPI();
 	public static final TempFileManager TEMP = new TempFileManager();
