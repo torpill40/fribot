@@ -89,8 +89,8 @@ public class ByeBroCommand extends Command {
 			ImageIO.write(ImageProcessor.makeRoundedCorner(ImageProcessor.resize(bot.getAvatar(user), 210), 50), "PNG", App.TEMP.getTempFile(tempId, "pp1"));
 			ImageIO.write(ImageProcessor.makeRoundedCorner(ImageProcessor.resize(bot.getAvatar(other), 190), 50), "PNG", App.TEMP.getTempFile(tempId, "pp2"));
 
-			final FFmpeg ffmpeg = new FFmpeg(System.getenv("FFMPEG_HOME") + "/bin/ffmpeg");
-			final FFprobe ffprobe = new FFprobe(System.getenv("FFMPEG_HOME") + "/bin/ffprobe");
+			final FFmpeg ffmpeg = new FFmpeg(App.FFMPEG + "/ffmpeg");
+			final FFprobe ffprobe = new FFprobe(App.FFMPEG + "/ffprobe");
 
 			//@formatter:off
 

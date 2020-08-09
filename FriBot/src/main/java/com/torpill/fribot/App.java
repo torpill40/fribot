@@ -1,10 +1,13 @@
 package com.torpill.fribot;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 import com.torpill.fribot.api.weather.WeatherAPI;
 import com.torpill.fribot.bot.DiscordBot;
@@ -21,6 +24,8 @@ import com.torpill.fribot.commands.utility.WeatherCommand;
 import com.torpill.fribot.listeners.NitroListener;
 import com.torpill.fribot.threads.RightPriceThread;
 import com.torpill.fribot.threads.WeatherThread;
+import com.torpill.fribot.util.FileUtils;
+import com.torpill.fribot.util.JSON;
 import com.torpill.fribot.util.TempFileManager;
 
 /**
@@ -36,7 +41,12 @@ import com.torpill.fribot.util.TempFileManager;
 
 public class App {
 
+	private static String CONFIG_DIR = "config/";
+	private static String CONFIG_PATH = App.CONFIG_DIR + "config.json";
+	private static JSONObject CONFIG;
+
 	public static String SRC = "./src/";
+	public static String FFMPEG = "/usr/bin";
 	public static boolean TEST = false;
 
 	public static final String APP_NAME = "FriBot";
@@ -49,66 +59,86 @@ public class App {
 
 	private static DiscordBot BOT;
 
+	static {
+
+		App.CONFIG = App.readConfig();
+		if (App.CONFIG == null) {
+
+			App.LOGGER.warn("Le fichier de configuration est vide, FriBot ne peut pas démarrer.");
+			App.createConfig();
+			System.exit(0);
+		}
+	}
+
+	private static void createConfig() {
+
+		try {
+
+			new File(CONFIG_DIR).mkdirs();
+			new File(CONFIG_PATH).createNewFile();
+
+		} catch (final IOException e) {
+
+			App.LOGGER.fatal("Impossible de créer le fichier de configuration : ", e);
+			System.exit(-1);
+		}
+	}
+
+	private static JSONObject readConfig() {
+
+		return FileUtils.readJSONFile(CONFIG_PATH);
+	}
+
 	/**
 	 *
 	 * Point d'entrée du programme, démarrage du bot.
 	 *
-	 * @param args
-	 *            <br />
-	 *            <b>--token &lt;TOKEN&gt;</b> : token du bot. <br />
-	 *            <b>--prefix &lt;PREFIX&gt;</b> : préfix du bot. <br />
-	 *            <b>--color &lt;R&gt; &lt;G&gt; &lt;B&gt;</b> : couleurs des embeds
-	 *            par défaut. <br />
-	 *            <b>--role &lt;ROLE_ID&gt;</b> : rôle utilisateur par défaut.
-	 *            <br />
-	 *            <b>--devrole &lt;ROLE_ID&gt;</b> : rôle développeur par défaut.
-	 *            <br />
-	 *            <b>--weather &lt;APP_ID&gt;</b> : clé d'API Open Weather Map.
-	 *            <br />
-	 *            <b>--src &lt;SRC&gt;</b> : chemin vers le dossier de sources.
-	 *            <br />
 	 */
 
 	public static void main(final String[] args) {
 
 		final DiscordBotBuilder botBuilder = new DiscordBotBuilder();
-		for (int i = 0; i < args.length; i++) {
+		App.CONFIG.keySet().forEach(key -> {
 
-			switch (args[i]) {
+			switch (key) {
 
-			case "--token":
-				botBuilder.setToken(args[i + 1]);
+			case "token":
+				botBuilder.setToken(JSON.getString(App.CONFIG, key));
 				break;
 
-			case "--prefix":
-				botBuilder.setPrefix(args[i + 1]);
+			case "prefix":
+				botBuilder.setPrefix(JSON.getString(App.CONFIG, key));
 				break;
 
-			case "--color":
-				botBuilder.setColor(new Color(Integer.parseInt(args[i + 1]), Integer.parseInt(args[i + 2]), Integer.parseInt(args[i + 3])));
+			case "color":
+				botBuilder.setColor(new Color(JSON.getInt(App.CONFIG, key)));
 				break;
 
-			case "--role":
-				botBuilder.setRole(args[i + 1]);
+			case "role":
+				botBuilder.setRole(JSON.getString(App.CONFIG, key));
 				break;
 
-			case "--devrole":
-				botBuilder.setDevRole(args[i + 1]);
+			case "devrole":
+				botBuilder.setDevRole(JSON.getString(App.CONFIG, key));
 				break;
 
-			case "--src":
-				App.SRC = args[i + 1];
+			case "src":
+				App.SRC = JSON.getString(App.CONFIG, key);
 				break;
 
-			case "--weather":
-				App.WEATHER.setAppID(args[i + 1]);
+			case "ffmpeg":
+				App.FFMPEG = JSON.getString(App.CONFIG, key);
 				break;
 
-			case "--test":
-				App.TEST = Boolean.parseBoolean(args[i + 1]);
+			case "weather":
+				App.WEATHER.setAppID(JSON.getString(App.CONFIG, key));
+				break;
+
+			case "test":
+				App.TEST = JSON.getBoolean(App.CONFIG, key);
 				break;
 			}
-		}
+		});
 
 		try {
 

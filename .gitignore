@@ -13,3 +13,4 @@ FriBot/target/
 *.bat
 *.sh
 \.pydevproject
+config.json
