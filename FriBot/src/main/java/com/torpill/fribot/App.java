@@ -41,9 +41,9 @@ import com.torpill.fribot.util.TempFileManager;
 
 public class App {
 
-	private static String CONFIG_DIR = "config/";
-	private static String CONFIG_PATH = App.CONFIG_DIR + "config.json";
-	private static JSONObject CONFIG;
+	private static final String CONFIG_DIR = "config/";
+	private static final String CONFIG_PATH = App.CONFIG_DIR + "config.json";
+	private static final JSONObject CONFIG = App.readConfig();
 
 	public static String SRC = "./src/";
 	public static String FFMPEG = "/usr/bin";
@@ -61,7 +61,6 @@ public class App {
 
 	static {
 
-		App.CONFIG = App.readConfig();
 		if (App.CONFIG == null) {
 
 			App.LOGGER.warn("Le fichier de configuration est vide, FriBot ne peut pas démarrer.");

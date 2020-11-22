@@ -2,7 +2,6 @@ package com.torpill.fribot.bot;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -442,7 +441,7 @@ public class DiscordBot {
 	 */
 	public boolean is(final User user) {
 
-		return this.api.getYourself() == user;
+		return this.api.getYourself().getId() == user.getId();
 	}
 
 	/**

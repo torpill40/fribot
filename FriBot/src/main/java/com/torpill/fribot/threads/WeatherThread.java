@@ -2,6 +2,7 @@ package com.torpill.fribot.threads;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.javacord.api.entity.channel.TextChannel;
@@ -97,9 +98,10 @@ public class WeatherThread extends BotThread {
 			message.addReaction(EmojiParser.parseToUnicode(":arrow_right:"));
 			final ReactionAddListener listener = event -> {
 
-				final User user1 = event.getUser();
+				final CompletableFuture<User> cfUser1 = event.requestUser();
 				final Optional<Reaction> optReaction = event.getReaction();
 				if (!optReaction.isPresent()) return;
+				final User user1 = cfUser1.join();
 				final Reaction reaction = optReaction.get();
 				final Emoji emoji = reaction.getEmoji();
 				if (!WeatherThread.this.bot.is(user1)) {
