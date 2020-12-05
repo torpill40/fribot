@@ -132,7 +132,7 @@ public class DiscordBotBuilder {
 			}
 		}
 
-		final DiscordApi api = builder.login().join();
+		final DiscordApi api = builder.setAllIntents().login().join();
 		if (!App.TEST) api.updateActivity(ActivityType.LISTENING, bot.getPrefix() + "help");
 		return bot.api(api);
 	}
